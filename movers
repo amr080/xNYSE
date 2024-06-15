@@ -1,0 +1,1050 @@
+<!doctype html>
+<!--[if lt IE 7 ]> <html lang="en" class="no-js ie6"> <![endif]-->
+<!--[if IE 7 ]>    <html lang="en" class="no-js ie7"> <![endif]-->
+<!--[if IE 8 ]>    <html lang="en" class="no-js ie8"> <![endif]-->
+<!--[if IE 9 ]>    <html lang="en" class="no-js ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html lang="en"> <!--<![endif]-->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+    <!-- Always force latest IE rendering engine & Chrome Frame -->
+    
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-PWL6G5M');</script>
+    <!-- End Google Tag Manager -->
+    
+	<meta charset="UTF-8">
+
+	<!-- Consider taking all following comments for performance / deployment -->
+ 
+	<title>Top Movers | ICE: Vantage</title>	<!--<title>Transparency</title>-->
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<!-- Mobile viewport optimized: j.mp/bplateviewport -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<!-- Styles -->
+    <style>
+    @font-face {
+        font-family: 'Glyphicons Halflings';
+        src: url('/fonts/glyphicons-halflings-regular.eot');
+        src: url('/fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('/fonts/glyphicons-halflings-regular.woff') format('woff'), url('/fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('/fonts/glyphicons-halflings-regular.svg#glyphicons-halflingsregular') format('svg');
+    }
+
+    @media print {
+        /* make sure charts can print */
+        .flot-overlay {
+            display: none;
+        }
+    }
+
+    </style>
+	<link type="text/css" rel="stylesheet" href="/min/f=/css/fa/css/all.css,/css/fa/css/v4-shims.css,/css/bootstrap_fa.css,/css/styles.css,/css/sections/table-striping.css,/css/vantage-ui/jquery-ui.custom.css" />	<!--[if lte IE 8 ]><script type="text/javascript" src="/js/libs/excanvas.min.js"></script><![endif]-->
+    <!--[if lte IE 9 ]>
+        <script type="text/javascript" src="/js/html5.js"></script>
+        <script type="text/javascript" src="/js/selectivizr-min.js"></script>
+    <![endif]-->
+	<script type="text/javascript" src="/min/f=/js/respond.min.js,/js/libs/jquery-1.8.3.js,/js/jquery-ui-1.9.2.custom.js,/js/libs/awesomplete.js,/js/placeholder.js,/js/jqDatepicker_todaypatch.js,/js/libs/webtoolkit.base64.js,/js/jquery.mousewheel.js,/js/vantage.util.js,/js/vantage.historyPlugin.js,/js/bootstrap.js,/js/utils/bootstrap.modal.fixes.js,/js/moment.js,/js/moment-timezone.js,/js/jstz.min.js,/js/common.js,/js/angular.js,/js/angular-cookies.js,/js/highstock.js,/js/highcharts-more.js,/js/highcharts-export-csv.js,/js/modules/exporting.js,/js/vantage.jqGridWrapper.js,/js/grid.locale-en_us.js,/js/jquery.jqGrid.min.js,/js/vantage.module.preferences.js,/js/vantage.module.preferences.filters.js,/js/vantage.module.preferences.directives.js,/js/vantage.module.realtime.js,/js/vantage.module.realtime.securitytradehistory.js,/js/vantage.module.realtime.filters.js,/js/vantage.module.realtime.directives.js,/js/vantage.module.realtime.directive.chart.js,/js/vantage.module.realtime.directive.cepconditiontoggle.js,/js/vantage.module.realtime.directive.teaser.chart.js,/js/vantage.module.realtime.directive.tradetoggles.js,/js/vantage.module.realtime.directive.grid.js,/js/vantage.module.hepler.serives.js,/js/utils/notifier.js,/js/vantage.module.socket.io.js,/js/vantage.module.http.js,/js/vantage.module.directives.js,/js/vantage.module.filters.js,/js/angular/ng-grid.debug.js,/js/ajaxfileupload.js,/js/angular-resource.min.js,/js/vantage.userPreferences.js"></script>    <script>
+        onAngularReady(function(Auth) {
+            Auth.addInfo("canViewTRACE",false); // Corporates
+            Auth.addInfo("canViewTbaTrace",false); // TBAs
+            Auth.addInfo("canViewAgcyTrace",false); // Agencies
+            Auth.addInfo("canView144aTrace",false); // 144a
+            Auth.setLoggedIn(false)
+        });
+    </script>
+    
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+	<!-- DOCUMENT READY JAVASCRIPT -->
+	<script>
+        VntgApp = angular.module('VntgApp', [
+                        'ModuleDirectives',
+            'ModuleFilters',
+            'ModuleWebsocket',
+            'ModuleHttp',
+            'ModuleRealtime',
+            'ModuleHelperServices',
+            'ngGrid',
+            'ngResource',
+            'ngCookies',
+            'ModulePreferences'
+        ])
+        
+        /* Localized date formats for formatting date on fornt end */
+        Obj_VTG_Config = {
+                        format : {
+                date :{ 
+                    php : "m/d/Y",
+                    js : "mm/dd/yy",
+                    momentUrl: "YYYY-MM-DD"
+                }
+            },
+            as_of_date :{
+                prefDateVal : ""
+            }
+        };
+        /* some formatter needs PHP format */
+		var Vantage_Date_Format_Php = "m/d/Y";
+        /* some formatter needs Javascript format */
+		var Vantage_Date_Format = "mm/dd/yy";
+        var Obj_VTG_CEP = [{"assetType":"Strips","micCode":"","timeZone":"America\/New_York","coreStartTime":"12:00:00","coreEndTime":"21:30:00","extStartTime":"07:00:00","extEndTime":"03:59:00","dispCoreStartTime":"8:00 AM ET","dispCoreEndTime":"5:30 PM ET","dispExtStartTime":"3:00 AM ET","dispExtEndTime":"12:00 AM ET","assetClassName":null,"displayFlag":0},{"assetType":"Default","micCode":"","timeZone":"America\/New_York","coreStartTime":"12:00:00","coreEndTime":"21:30:00","extStartTime":"07:00:00","extEndTime":"03:59:00","dispCoreStartTime":"8:00 AM ET","dispCoreEndTime":"5:30 PM ET","dispExtStartTime":"3:00 AM ET","dispExtEndTime":"12:00 AM ET","assetClassName":null,"displayFlag":0},{"assetType":"APACCorpSov","micCode":"_333","timeZone":"Australia\/Melbourne","coreStartTime":"22:30:00","coreEndTime":"08:00:00","extStartTime":"17:00:00","extEndTime":"13:59:00","dispCoreStartTime":"8:30 AM AEDT","dispCoreEndTime":"6:00 PM AEDT","dispExtStartTime":"3:00 AM AEDT","dispExtEndTime":"12:00 AM AEDT","assetClassName":"ASIA Corps & Sovs (AU)","displayFlag":1},{"assetType":"APACCorpSov","micCode":"_335","timeZone":"Australia\/Melbourne","coreStartTime":"22:30:00","coreEndTime":"08:00:00","extStartTime":"17:00:00","extEndTime":"13:59:00","dispCoreStartTime":"8:30 AM AEDT","dispCoreEndTime":"6:00 PM AEDT","dispExtStartTime":"3:00 AM AEDT","dispExtEndTime":"12:00 AM AEDT","assetClassName":"ASIA Corps & Sovs (JP)","displayFlag":1},{"assetType":"APACCorpSov","micCode":"_334","timeZone":"Australia\/Melbourne","coreStartTime":"22:30:00","coreEndTime":"08:00:00","extStartTime":"17:00:00","extEndTime":"13:59:00","dispCoreStartTime":"8:30 AM AEDT","dispCoreEndTime":"6:00 PM AEDT","dispExtStartTime":"3:00 AM AEDT","dispExtEndTime":"12:00 AM AEDT","assetClassName":"ASIA Corps & Sovs (NZ)","displayFlag":1},{"assetType":"APACCorpSov","micCode":"_223","timeZone":"Asia\/Hong_Kong","coreStartTime":"01:00:00","coreEndTime":"10:00:00","extStartTime":"19:00:00","extEndTime":"15:59:00","dispCoreStartTime":"9:00 AM HKT","dispCoreEndTime":"6:00 PM HKT","dispExtStartTime":"3:00 AM HKT","dispExtEndTime":"12:00 AM HKT","assetClassName":"ASIA Corps & Sovs (Other Currencies)","displayFlag":1},{"assetType":"APACMM","micCode":"_333","timeZone":"Australia\/Melbourne","coreStartTime":"22:30:00","coreEndTime":"08:00:00","extStartTime":"17:00:00","extEndTime":"13:59:00","dispCoreStartTime":"8:30 AM AEDT","dispCoreEndTime":"6:00 PM AEDT","dispExtStartTime":"3:00 AM AEDT","dispExtEndTime":"12:00 AM AEDT","assetClassName":"ASIA Money Markets (AU)","displayFlag":1},{"assetType":"APACMM","micCode":"_335","timeZone":"Australia\/Melbourne","coreStartTime":"22:30:00","coreEndTime":"08:00:00","extStartTime":"17:00:00","extEndTime":"13:59:00","dispCoreStartTime":"8:30 AM AEDT","dispCoreEndTime":"6:00 PM AEDT","dispExtStartTime":"3:00 AM AEDT","dispExtEndTime":"12:00 AM AEDT","assetClassName":"ASIA Money Markets (JP)","displayFlag":1},{"assetType":"APACMM","micCode":"_334","timeZone":"Australia\/Melbourne","coreStartTime":"22:30:00","coreEndTime":"08:00:00","extStartTime":"17:00:00","extEndTime":"13:59:00","dispCoreStartTime":"8:30 AM AEDT","dispCoreEndTime":"6:00 PM AEDT","dispExtStartTime":"3:00 AM AEDT","dispExtEndTime":"12:00 AM AEDT","assetClassName":"ASIA Money Markets (NZ)","displayFlag":1},{"assetType":"APACMM","micCode":"_223","timeZone":"Asia\/Hong_Kong","coreStartTime":"01:00:00","coreEndTime":"10:00:00","extStartTime":"19:00:00","extEndTime":"15:59:00","dispCoreStartTime":"9:00 AM HKT","dispCoreEndTime":"6:00 PM HKT","dispExtStartTime":"3:00 AM HKT","dispExtEndTime":"12:00 AM HKT","assetClassName":"ASIA Money Markets (Other Currencies)","displayFlag":1},{"assetType":"EMEACorpSov","micCode":"","timeZone":"Europe\/London","coreStartTime":"07:00:00","coreEndTime":"17:00:00","extStartTime":"02:00:00","extEndTime":"22:59:00","dispCoreStartTime":"8:00 AM GMT\/BST","dispCoreEndTime":"6:00 PM GMT\/BST","dispExtStartTime":"3:00 AM GMT\/BST","dispExtEndTime":"12:00 AM GMT\/BST","assetClassName":"EMEA Corps & Sovs","displayFlag":1},{"assetType":"EMEAMM","micCode":"","timeZone":"Europe\/London","coreStartTime":"07:00:00","coreEndTime":"17:00:00","extStartTime":"02:00:00","extEndTime":"22:59:00","dispCoreStartTime":"8:00 AM GMT\/BST","dispCoreEndTime":"6:00 PM GMT\/BST","dispExtStartTime":"3:00 AM GMT\/BST","dispExtEndTime":"12:00 AM GMT\/BST","assetClassName":"EMEA Money Markets","displayFlag":1},{"assetType":"Agencies","micCode":"","timeZone":"America\/New_York","coreStartTime":"12:00:00","coreEndTime":"21:30:00","extStartTime":"07:00:00","extEndTime":"03:59:00","dispCoreStartTime":"8:00 AM ET","dispCoreEndTime":"5:30 PM ET","dispExtStartTime":"3:00 AM ET","dispExtEndTime":"12:00 AM ET","assetClassName":"US Agencies","displayFlag":1},{"assetType":"USHY","micCode":"","timeZone":"America\/New_York","coreStartTime":"12:00:00","coreEndTime":"21:30:00","extStartTime":"07:00:00","extEndTime":"03:59:00","dispCoreStartTime":"8:00 AM ET","dispCoreEndTime":"5:30 PM ET","dispExtStartTime":"3:00 AM ET","dispExtEndTime":"12:00 AM ET","assetClassName":"US Corporate HY","displayFlag":1},{"assetType":"USIG","micCode":"","timeZone":"America\/New_York","coreStartTime":"12:00:00","coreEndTime":"21:30:00","extStartTime":"07:00:00","extEndTime":"03:59:00","dispCoreStartTime":"8:00 AM ET","dispCoreEndTime":"5:30 PM ET","dispExtStartTime":"3:00 AM ET","dispExtEndTime":"12:00 AM ET","assetClassName":"US Corporate IG","displayFlag":1},{"assetType":"MBS","micCode":"","timeZone":"America\/New_York","coreStartTime":"12:00:00","coreEndTime":"21:30:00","extStartTime":"07:00:00","extEndTime":"03:59:00","dispCoreStartTime":"8:00 AM ET","dispCoreEndTime":"5:30 PM ET","dispExtStartTime":"3:00 AM ET","dispExtEndTime":"12:00 AM ET","assetClassName":"US MBS (TBA & Pass-through)","displayFlag":1},{"assetType":"Muni","micCode":"_223","timeZone":"America\/New_York","coreStartTime":"12:00:00","coreEndTime":"21:30:00","extStartTime":"07:00:00","extEndTime":"03:59:00","dispCoreStartTime":"8:00 AM ET","dispCoreEndTime":"5:30 PM ET","dispExtStartTime":"3:00 AM ET","dispExtEndTime":"12:00 AM ET","assetClassName":"US Municipals","displayFlag":1},{"assetType":"Treasuries","micCode":"","timeZone":"America\/New_York","coreStartTime":"12:00:00","coreEndTime":"21:30:00","extStartTime":"07:00:00","extEndTime":"03:59:00","dispCoreStartTime":"8:00 AM ET","dispCoreEndTime":"5:30 PM ET","dispExtStartTime":"3:00 AM ET","dispExtEndTime":"12:00 AM ET","assetClassName":"US Treasuries & Strips","displayFlag":1},{"assetType":"LOAN","micCode":"","timeZone":"America\/New_York","coreStartTime":"12:00:00","coreEndTime":"21:30:00","extStartTime":"07:00:00","extEndTime":"03:59:00","dispCoreStartTime":"8:00 AM ET","dispCoreEndTime":"5:30 PM ET","dispExtStartTime":"3:00 AM ET","dispExtEndTime":"12:00 AM ET","assetClassName":"Leveraged Loan","displayFlag":1}]; 
+        var userPrefChartHour = 'core';
+                var Obj_VTG_UserPreferences = new Class_VTG_UserPreferences();
+
+		$(function() {
+
+			// ******************** PAGE SPECIFIC CODE ******************** //
+
+			$('.tooltip').click(function (event) {
+				event.preventDefault();
+			});
+			$('.tooltip').live('mouseenter',function () {
+				var helpTitle = true;
+				if($(this).hasClass('no-help'))
+					helpTitle = false;
+				var contentData = $(this).find("span:last").html();
+				var content = '';
+				if(contentData != "") {
+				    content = '<br /><p>' + contentData + '</p>';
+							    if(helpTitle){
+								    content =	'<div class="vtg-tooltip-title">Help</div>' + content;
+							    }
+				    if($(this).attr('tooltip-title')){
+				       content =	'<div class="vtg-tooltip-title">'+$(this).attr('tooltip-title')+'</div>' + content; 
+				    }
+
+				    var addtlClasses = '';
+				    var classArr = $(this).attr('class').split(" ");
+				    var re = "vtg-tooltip-[/\S]*";
+				    for (var i = 0; i < classArr.length; i++) {
+					if (classArr[i].match(re))
+					    addtlClasses += " " + classArr[i];
+				    }
+
+				    Vantage.tooltip.createPosition($(this));
+				    Vantage.tooltip.show(content, Vantage.tooltip.mouseXPos, Vantage.tooltip.mouseYPos, false, addtlClasses);
+			    }
+			});
+			$('.tooltip').live('mouseleave',  function () {
+				Vantage.tooltip.hide();
+			 });
+			initFeedback();
+		});
+	</script>
+</head>
+
+<body ng-app="VntgApp">
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PWL6G5M"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+        
+
+
+<script>
+$(function() {
+    $("i.fa-search").click(function() {
+        $(".navbar-right").toggleClass("expanded-search");
+        if ($(".navbar-right").hasClass("expanded-search")) {
+            $(".search-query").focus();
+        } else {
+            $(".search-query").blur();
+        }
+    });
+    var helpTTContent = "<p>Search is limited to 50 characters total and all valid search query types are listed below (returns only actively evaluated bonds):</b></p><ul><li>Security ID<span>(e.g. CUSIP 8 or 9, ISIN, SEDOL 6 or 7, or LCD ID)</span><li>Ticker <span>(e.g. GE)</span><li>Ticker + Coupon <span>(e.g. GE 8)</span><li>Ticker + Maturity Year <span>(e.g. GE 2039 returns all GE bonds maturing in 2039)</span><li>Ticker + Maturity Date (Month/Year) <span>(e.g. GE 01/39 or GE 01/2039)</span><li>Ticker + Maturity Date <span>(e.g. GE 01/14/39 or GE 01/14/2039)</span><li>Ticker + Coupon + Maturity Month/Year <span>(e.g. GE 8 01/39 or GE 8 01/2039)</span><li>Ticker + Coupon + Maturity Year <span>(e.g. GE 8 39 or GE 8 2039)</span><li>Ticker + Coupon + Maturity Date <span>(e.g. GE 8 01/14/39 or GE 8 01/14/2039)</span><li>Issuer Name <span>(e.g. e.g 'Home' returns securities where Issuer name begins with 'Home')</span></ul><a href='/advancedsearch' class='btn btn-primary'>Advanced Search</a>";
+    $(".search-help").popover({
+        trigger:'click',
+        html: true,
+        placement: 'bottom',
+        title: 'Search Help',
+        content: helpTTContent,
+        delay: { show: 0, hide: 100 }
+    });
+    // click anywhere else to dismiss popover
+    $('body').on('click', function (e) {
+        var clickedOutside = false;
+        $('.popover').each(function () {
+            //the 'is' for buttons that trigger popups
+            //the 'has' for icons within a button that triggers a popup
+            if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+                clickedOutside = true;
+            }
+        });
+        if (clickedOutside) {
+            $("#search_results").hide();
+            $("#Portfolio_results").hide();
+            $(".search-query").val("");
+            if ($(".search-help").next('div.popover:visible').length && !$(".search-help").is(e.target)) {
+                $(".search-help").popover('hide');
+            }
+        }
+    });
+});
+</script>
+<style>
+    #search_results {
+        padding: 10px;
+        min-width: 500px;
+        color: black;
+        width: auto;
+        top:40px;
+    }
+    #search_results .sr_paginate {
+        float: right;
+        margin-top: -3px;
+        font-size: .9em;
+    }
+    #search_results a {
+        color: #0071A7;
+    }
+    #search_results h3 { line-height: 1em; color: black; margin-top: 0px; font-size: 14px; font-weight: bold; }
+    #search_results td span {
+        display: block;
+        font-size: .9em;
+        color: #999;
+        line-height: .95em;
+    }
+    #search_results .fa { font-size: 14px; }
+    #search_results td:last-child,
+    #search_results th:last-child { text-align: right }
+    .smartSearchShow{
+        display:block;
+    }
+    .smartSearchHide{
+        display:none;
+    }
+    #vtg-header {
+        font-family: sans-serif;
+        font-size: 20px;
+        letter-spacing: 0.9px;
+        white-space: nowrap;
+        margin: 12px 5px 0 10px;
+        font-weight: bold;
+        display: inline-block
+         }
+    #ICE-logo-img{
+        width: 36px; 
+        float: left; 
+        margin: 8px 8px 8px; 
+        
+    }
+    #app-header {
+        width: 13em;
+        display: block;  
+         }
+    #ICE-print-logo
+    {
+        width: 5.4em;
+        height: 4.95em;
+
+    }
+    #vtg-header-click
+    {
+     text-decoration: none;
+      color: inherit;
+    }
+
+</style>
+<img class="print-logo visible-print" id="ICE-print-logo" src="/images/layout/ICE_logo_small_rev.png" />
+<nav class="navbar navbar-default" role="navigation" >
+    <div class="navbar-header hidden-print">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <span id="app-header">  <div> <a href=/><img id="ICE-logo-img"  src="/images/layout/ICE_logo_small.png" /></a></div>     
+        <a id="vtg-header-click" href=/> <div id="vtg-header">Vantage</div></a></span>
+       
+    </div>
+    <div class="collapse navbar-collapse navbar-ex1-collapse hidden-print">
+                    <ul class="nav navbar-nav">
+                <li><a href="/">Home</a></li>
+                
+                                                <li class="active"><a href="/movers">Markets</a></li>
+                            </ul>
+                <ul class="nav navbar-nav navbar-right">
+                                                <li><a class="btn btn-lnk join-vantage" target="_blank" href="http://e.theice.com/Vantage_TrialRequest"><em>Click here to submit feedback or join the Vantage Test Group</em></a></li>
+                                                                           <li><a href ="/login" class="btn btn-default"><i class="fa fa-sign-in"></i> Log In</a></li>
+                                    </ul>
+    </div><!-- /.navbar-collapse -->
+</nav>
+
+<div class="wrapper">
+
+
+    <ul class="nav nav-secondary nav-tabs">
+                                <li class=active>
+                <a href="/movers">Gainers &amp; Decliners</a>
+            </li>
+                        <li>
+                <a href="/aggregate">Structured Aggregates</a>
+            </li>
+            <li class=hide>
+                <a href="/cds">CDS</a>
+            </li>
+            <li class=hide>
+                <a href="/curves">Curves</a>
+            </li>
+            </ul>
+<script>
+    $(document).ready(function() {
+        var preferencesService = angular.element(document.body).injector().get('UserPreferencesService');
+                    preferencesService.assignPreferences({currentPriceFormatterId: '32nds'});
+            });
+</script>
+<style>
+    .ui-autocomplete { height: 200px; overflow-y: scroll; overflow-x: hidden;}
+</style>
+<div class="DirectivePreferencesDialog"></div>
+<!--[if lt IE 7 ]>
+<script src="/js/libs/dd_belatedpng.js"></script>
+<script> DD_belatedPNG.fix('img, .png_bg');</script>
+<![endif]-->
+    <input type="hidden" id="userServicesPageUrl" name="userServicesPageUrl" value="L21vdmVycw==" size="100" />
+    <script type="text/javascript">
+    var invalidDiv = '<div id="send_email_dialog_invalid" style="display: none;color: red;"><p><b>Please fill up all the fields.</b></p></div>';
+    var helperDiv = '<div><p><b>* Fields are required. Please separate each recipients email id with a comma(,).</b></p></div>';
+    var divTempHolder = "";
+    function validateEmail(elementValue){
+        var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+        return emailPattern.test(elementValue);
+    }
+    function validateBatchEmail(elementValue){
+        var emailPattern =/^[A-Z0-9\._%-]+@[A-Z0-9\.-]+\.[A-Z]{2,4}(?:[,][A-Z0-9\._%-]+@[A-Z0-9\.-]+\.[A-Z]{2,4})*$/i;
+        return emailPattern.test(elementValue);
+    }
+    var supportGroup='';
+    var subjectForNotPriced="New Evaluation Request";
+    $(function() {
+        divTempHolder = $("#send_email_dialog").html();
+        $('#vtg-pdf').click(function (event){
+            event.preventDefault();
+            var pdfUrlString = Base64.decode($("#userServicesPageUrl").val());
+            // append date to URL if doesn't exist and not from the workflow report page
+            if ( !pdfUrlString.match(/date\=\d\d\d\d\D?\d\d\D?\d\d/i) && pdfUrlString.indexOf('/workflowreport') != 0) {
+                var dpDate = $(".ptf-view-datepicker").datepicker('getDate');
+                // ensure we have a Date object
+                var dateObj = Object.prototype.toString.call(dpDate).toLowerCase().match(/date/) ? dpDate : new Date();
+                var dateStr = $.datepicker.formatDate('yy-mm-dd', dateObj);
+                pdfUrlString += '&date='+dateStr;
+            }
+            // anchor for muni tabs
+            if (window.location.href.split('#').length > 1) {
+                pdfUrlString += "#" + window.location.href.split('#')[1];
+            }
+            window.open('/Userservices/pdf?url='+Base64.encode(pdfUrlString));
+        });
+        $('#vtg-print').click(function (event){
+            event.preventDefault();
+            window.print();
+        });
+        $('#vtg-mail').click(function (event){
+            event.preventDefault();
+            var sendEmailBox = $("#send_email_dialog");		
+            sendEmailBox.html(divTempHolder);
+            var userServicesPageUrl = $("#userServicesPageUrl").val();
+            $("#page_url").val(userServicesPageUrl);
+            $("#generatePDFFile").val("true");
+            sendEmailBox.dialog('open');
+        });
+
+        var sendEmailBox = $("#send_email_dialog");
+        sendEmailBox.dialog({
+            title: 'Email Page',
+            autoOpen: false,
+            draggable: false,
+            modal: true,
+            resizable: false,
+            width : 500,
+            closeOnEscape: false,
+            buttons: {
+                "Send": function() {
+                    /*validate*/
+                    var userServicesPageUrl ="";
+                    if($("#generatePDFFile").val()=="true") {
+                        userServicesPageUrl = $("#userServicesPageUrl").val();
+                    }			
+                    var recipient_email = $.trim($('#recipient_email').val());
+                    var sender_name = $.trim($('#sender_name').val());
+                    var sender_email =$.trim( $('#sender_email').val());
+                    var sender_comment = $('#sender_comment').val();
+                    var subject = $.trim($('#email_subject').val());
+
+                    if(recipient_email == ''					
+                        || sender_email == '' ||sender_name=='' ){
+                            $('#send_email_dialog_invalid').html("Please fill up all required fields.");
+                            $('#send_email_dialog_invalid').show();
+                            return false;
+                    }
+
+                    if(!validateEmail(sender_email))
+                    {
+                        $('#send_email_dialog_invalid').html("Invalid Sender Email Address.");
+                        $('#send_email_dialog_invalid').show();
+                        return false;
+                    }
+                    if(!validateBatchEmail(recipient_email))
+                    {
+                        $('#send_email_dialog_invalid').html("Invalid Recipient Email Address.");
+                        $('#send_email_dialog_invalid').show();
+                        return false;
+                    }
+                    var urldata = {
+                        'recipient_email' : recipient_email,
+                        'sender_name' : sender_name,
+                        'sender_email' : sender_email,
+                        'sender_comment' : sender_comment,
+                        'subject' : subject,
+                        'page_url' : userServicesPageUrl
+                    }
+
+                    var currentDialog = $( this );
+                    currentDialog.prev().children('.ui-dialog-titlebar-close').hide();
+                    currentDialog.next().hide();
+                    currentDialog.html('<div class="ajax_loader"><img style="vertical-align: middle" src="/images/icon_wait.gif" /> <span style="display: inline-block; vertical-align: middle">Processing request...<span></div>');
+                    ajaxReq = $.ajax({
+                        type: "POST",
+                        url: '/Userservices/email',
+                        dataType: 'json',
+                        data: urldata,
+                        success: function(data) {
+                            if(data['status'] == 's'){
+                                currentDialog.dialog( "close" );
+                                update_success = $("#email_success");
+                                update_success.dialog('open');
+                            }
+                            else if(data['status'] == 'f'){
+                                currentDialog.dialog( "close" );
+                                update_error = $("#email_error ");
+                                update_error .dialog('open');
+                            }
+                            currentDialog.html( divTempHolder + helperDiv);
+                            currentDialog.prev().children('.ui-dialog-titlebar-close').show();
+                            currentDialog.next().show();
+                        },
+                        error : function(xhr, ajaxOptions, thrownError){
+                            if (xhr.status == 420) {
+                                currentDialog.dialog( "close" );
+                                Vantage.util.ajax.trapRedirect(xhr.responseText);
+                                return;
+                            }						
+                            currentDialog.prev().children('.ui-dialog-titlebar-close').show();
+                            currentDialog.next().show();
+                            $("#send_email_dialog").html( xhr.responseText + helperDiv);
+                        }
+                    });
+
+                },
+                Cancel: function() {
+                    $( this ).dialog( "close" );
+                }
+            }
+        });
+
+        var update_error = $("#email_error");
+        update_error.dialog({
+            title: 'Email Page', autoOpen: false, draggable: false, modal: true, resizable: false, width : 420,
+            buttons: {
+                "Ok": function() {
+                    $( this ).dialog( "close" );
+                }
+            }
+        });
+
+
+        var update_success = $("#email_success");
+        update_success.dialog({
+            title: 'Email Page', autoOpen: false, draggable: false, modal: true, resizable: false, width : 420,
+            buttons: {
+                "Ok": function() {
+                    $( this ).dialog( "close" );
+                }
+            }
+        });
+    });
+    </script>
+    <div id="email_error" style="display: none;">
+        <p>Your requested to send email failed.</p>
+    </div>
+    <div id="email_success" style="display: none">
+        <p><br/><br/>Email Sent</p>
+    </div>
+    <div id="send_email_dialog" style="display: none;">
+        <form enctype="application/x-www-form-urlencoded" method="post" action="">
+            <input type="hidden" name="page_url" id="page_url" value="" />
+            <table>
+                <tr class="fromDialogElementTr">
+                    <td id="subject_email-label"><label for="subject"
+                        class="fromDialogLabelTd required">Subject </label></td>
+                    <td class="fromDialogElementTd"><input type="text"
+                        name="email_subject" id="email_subject" value="Vantage message from " maxlength="128"
+                        size="40" /></td>
+                </tr>
+                <tr class="fromDialogElementTr">
+                    <td id="recipient_email-label"><label for="recipient_email"
+                        class="fromDialogLabelTd required">Recipient Email *</label></td>
+                    <td class="fromDialogElementTd"><input type="text"
+                        name="recipient_email" id="recipient_email" value="" size="40"
+                        maxlength="512" /> <input type="hidden" name="generatePDFFile"
+                        id="generatePDFFile" value="true" size="40" /></td>
+                </tr>
+                <tr class="fromDialogElementTr">
+                    <td id="sender_name-label"><label for="sender_name"
+                        class="fromDialogLabelTd required">Sender Name *</label></td>
+                    <td class="fromDialogElementTd"><input type="text" disabled="disabled" name="sender_name"
+                        id="sender_name" maxlength="50"
+                        value="" size="40" /></td>
+                </tr>
+                <tr class="fromDialogElementTr">
+                    <td id="sender_email-label"><label for="sender_email"
+                        class="fromDialogLabelTd required">Sender Email *</label></td>
+                    <td class="fromDialogElementTd"><input type="text" disabled="disabled" name="sender_email"
+                        id="sender_email" value=""
+                        maxlength="50" size="40" /></td>
+                </tr>
+                <tr class="fromDialogElementTr">
+                    <td id="sender_comment-label"><label for="sender_comment"
+                        class="fromDialogLabelTd optional">Comment</label></td>
+                    <td class="fromDialogElementTd"><textarea name="sender_comment"
+                        id="sender_comment" COLS="50" ROWS="4" maxlength="1000"></textarea></td>
+                </tr>
+                
+            </table>
+        </form>
+        <div id="send_email_dialog_invalid" style="display: none;color: red;">
+            <p><b>Please fill up all required fields.</b></p>
+        </div>
+    </div>
+
+<style>
+    .gainers-header {
+        color: #00B22D;
+        border-bottom: 2px solid #00B22D;
+    }
+
+    .losers-header {
+        color: #F00;
+        border-bottom: 2px solid #F00;
+    }
+
+    #realtime-grid {
+        font-size: 11px;
+    }
+
+	#realtime-grid tbody > tr > th,
+    .table-styled#realtime-grid tbody > tr > td,
+    #realtime-grid_frozen tbody > tr > th,
+    .table-styled#realtime-grid_frozen tbody > tr > td {
+        font-size: 11px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+        display: none !important;
+    }
+    
+    .delayed-data {
+        color: #FFE000 !important;
+    }
+    .table-styled td div.delayed-data i.fa-circle {
+        font-size: 10px;
+        color: #FFE000 !important;
+        opacity: 1;
+        /*float: left;*/
+    }
+
+</style>
+<div ng-controller="CtrlMovers" ng-cloak>
+
+    <div class="row row-utility" style="margin-bottom: 0px">
+        <div class="col-xs-6">
+            <div class="realtimeSelector"></div>
+        </div>
+            </div>
+
+    <div class="DirectiveRealtimeMoversControls buffer_top" controls-value="controlsValue" apply-criteria="applyCriteria"></div>
+
+    <div class="row buffer_top">
+        <div class="col-md-12">
+            <div ng-hide="ws.loading">
+                <div class="row realtime-error" ng-show="ws.error">
+                    <div class="col-xs-12">
+                        <div class="alert alert-danger">
+                            <p><i class="fa fa-exclamation-triangle"></i>We are experiencing technical problems with realtime data. Please check back later.</p>
+                        </div><!-- alert -->
+                    </div><!-- end col -->
+                </div><!-- end alert row -->
+                <div class="row realtime-error" ng-show="!ws.error && (ws.closed || ws.booted)">
+                    <div class="col-xs-12">
+                        <div class="alert alert-danger">
+                            <p><i class="fa fa-exclamation-triangle"></i> Connection was lost. Please refresh the page.</p>
+                        </div><!-- alert -->
+                    </div><!-- end col -->
+                </div><!-- end alert row -->
+            </div>
+
+            <div class="row realtime-info" ng-show="!ws.closed && !ws.booted && !ws.error && !socketReady && source.ready">
+                <div class="col-xs-12">
+                    <div class="alert alert-info">
+                        <p><i class="fa fa-exclamation-triangle"></i> Connecting to the server ...</p>
+                    </div><!-- alert -->
+                </div><!-- end col -->
+            </div><!-- end alert row -->
+
+            <div class="socketPrpcessing" ng-show="loading">
+                <img style="vertical-align: middle" src="/images/icon_wait.gif" />
+                <span style="display: inline-block; vertical-align: middle">Processing request...</span>
+            </div>
+
+            <div id="no-securities" class="row intraday-info no-data" ng-show="noSecurities">
+                <div class="col-md-12">
+                    <div class="alert alert-info">
+                        <p><i class="fa fa-exclamation-triangle"></i> {{ noSecuritiesMsg }}</p>
+                    </div><!-- alert -->
+                </div><!-- end col -->
+            </div><!-- end alert row -->
+            <div class="table-container table-wrapper">
+                <div class="row">
+                    <div id="realtime-grid-container" class="col-md-12">
+                        <div class="DirectiveRealtimeMoversGrid" sort-options="sortOptions"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>          
+</div>             
+
+<script type="text/javascript" src="/min/f=/js/vantage.module.realtime.realtimeprovider.js,/js/vantage.module.realtime.moversconstants.js,/js/vantage.module.realtime.moversfactory.js,/js/vantage.module.realtime.movers.js,/js/vantage.module.realtime.controller.movers.js,/js/vantage.module.realtime.directive.moversgrid.js,/js/vantage.module.realtime.directive.moverscontrols.js,/js/vantage.module.realtime.movers.controlssource.js,/js/bootstrap-multiselect.js,/js/vantage.module.realtime.directive.moversdownload.js"></script>
+<script type="application/javascript">
+    userPrefChartHour = 'core';
+
+    onAngularReady(function($rootScope) {
+        $rootScope.controlsContent = {"portfolios":[],"watchLists":[],"sectors":[{"id":3291,"name":"Abrasive Products"},{"id":6321,"name":"Accident and Health Insurance"},{"id":8721,"name":"Accounting, Auditing, and Bookkeeping Services"},{"id":2891,"name":"Adhesives and Sealants"},{"id":7322,"name":"Adjustment and Collection Services"},{"id":9411,"name":"Administration of Educational Programs"},{"id":9611,"name":"Administration of General Economic Programs"},{"id":9531,"name":"Administration of Housing Programs"},{"id":9431,"name":"Administration of Public Health Programs"},{"id":9441,"name":"Administration of Social, Human Resource and Income Maintenance Programs"},{"id":9532,"name":"Administration of Urban Planning and Community and Rural Development"},{"id":9451,"name":"Administration of Veterans' Affairs, Except Health Insurance"},{"id":7311,"name":"Advertising Agencies"},{"id":7319,"name":"Advertising, NEC"},{"id":3563,"name":"Air and Gas Compressors"},{"id":9511,"name":"Air and Water Resource and Solid Waste Management"},{"id":4513,"name":"Air Courier Services"},{"id":4522,"name":"Air Transportation, Nonscheduled"},{"id":4512,"name":"Air Transportation, Scheduled"},{"id":3585,"name":"Air-Conditioning and Warm Air Heating Equipment and Commercial and Industrial Refrigeration Equipmen"},{"id":3721,"name":"Aircraft"},{"id":3724,"name":"Aircraft Engines and Engine Parts"},{"id":3728,"name":"Aircraft Parts and Auxiliary Equipment, NEC"},{"id":4581,"name":"Airports, Flying Fields, and Airport Terminal Services"},{"id":2812,"name":"Alkalies and Chlorine"},{"id":3363,"name":"Aluminum Die-Castings"},{"id":3354,"name":"Aluminum Extruded Products"},{"id":3365,"name":"Aluminum Foundries"},{"id":3355,"name":"Aluminum Rolling and Drawing, NEC"},{"id":3353,"name":"Aluminum Sheet, Plate, and Foil"},{"id":3483,"name":"Ammunition, Except for Small Arms"},{"id":7999,"name":"Amusement and Recreation Services, NEC"},{"id":7996,"name":"Amusement Parks"},{"id":2077,"name":"Animal and Marine Fats and Oils"},{"id":"0273","name":"ANIMAL AQUACULTURE"},{"id":"0279","name":"ANIMAL SPECIALTIES, NOT ELSEWHERE CLASSIFIED"},{"id":"0752","name":"ANIMAL SPECIALTY SERVICES, EXCEPT VETERINARY"},{"id":1231,"name":"Anthracite Mining"},{"id":2389,"name":"Apparel and Accessories, NEC"},{"id":2387,"name":"Apparel Belts"},{"id":8422,"name":"Arboreta and Botanical or Zoological Gardens"},{"id":3446,"name":"Architectural and Ornamental Metal Work"},{"id":8712,"name":"Architectural Services"},{"id":7694,"name":"Armature Rewinding Shops"},{"id":4729,"name":"Arrangement of Passenger Transportation, NEC"},{"id":4731,"name":"Arrangement of Transportation of  Freight and Cargo"},{"id":3292,"name":"Asbestos Products"},{"id":2952,"name":"Asphalt Felts and Coatings"},{"id":2951,"name":"Asphalt Paving Mixtures and Blocks"},{"id":6189,"name":"ASSET-BACKED SECURITIES"},{"id":5531,"name":"Auto and Home Supply Stores"},{"id":3822,"name":"Automatic Controls for Regulating Residential and Commercial Environments and Appliances"},{"id":5962,"name":"Automatic Merchandising Machine Operator"},{"id":3581,"name":"Automatic Vending Machines"},{"id":7521,"name":"Automobile Parking"},{"id":5012,"name":"Automobiles and Other Motor Vehicles"},{"id":5599,"name":"Automotive Dealers, NEC"},{"id":7533,"name":"Automotive Exhaust System Repair Shops"},{"id":7536,"name":"Automotive Glass Replacement Shops"},{"id":7539,"name":"Automotive Repair Shops, NEC"},{"id":7549,"name":"Automotive Services, Except Repair and Carwashes"},{"id":3465,"name":"Automotive Stamping"},{"id":7537,"name":"Automotive Transmission Repair Shops"},{"id":2396,"name":"Automotive Trimmings, Apparel Findings, and Related Products"},{"id":3562,"name":"Ball and Roller Bearings"},{"id":7929,"name":"Bands, Orchestras, Actors, and Other Entertainers and Entertainment Groups"},{"id":7241,"name":"Barber Shops"},{"id":7231,"name":"Beauty Shops"},{"id":"0211","name":"BEEF CATTLE FEEDLOTS"},{"id":"0212","name":"BEEF CATTLE, EXCEPT FEEDLOTS"},{"id":5181,"name":"Beer and Ale"},{"id":2063,"name":"Beet Sugar"},{"id":"0171","name":"BERRY CROPS"},{"id":2836,"name":"Biological Products, Except Diagnostic Substances"},{"id":1221,"name":"Bituminous Coal and Lignite Surface Mining"},{"id":1222,"name":"Bituminous Coal Underground Mining"},{"id":2782,"name":"Blankbooks, Loose-leaf Binders and Devices"},{"id":3732,"name":"Boat  Building and Repairing"},{"id":5551,"name":"Boat Dealers"},{"id":3452,"name":"Bolts, Nuts, Screws, Rivets, and Washers"},{"id":2732,"name":"Book Printing"},{"id":5942,"name":"Book Stores"},{"id":2789,"name":"Bookbinding and Related Work"},{"id":5192,"name":"Books, Periodicals, and Newspapers"},{"id":2731,"name":"Books: Publishing, or Publishing and Printing"},{"id":3131,"name":"Boot and Shoe Cut Stock and Findings"},{"id":2086,"name":"Bottled and Canned Soft Drinks and Carbonated Waters"},{"id":7933,"name":"Bowling Centers"},{"id":6081,"name":"Branches and Agencies of Foreign Banks"},{"id":2342,"name":"Brassieres, Girdles, and Allied Garments"},{"id":2051,"name":"Bread and Other Bakery Products, Except Cookies and Crackers"},{"id":3251,"name":"Brick and Structural Clay Tile"},{"id":5032,"name":"Brick, Stone and Related Construction Materials"},{"id":1622,"name":"Bridge, Tunnel, and Elevated Highway Construction"},{"id":2211,"name":"Broadwoven Fabric Mills, Cotton"},{"id":2221,"name":"Broadwoven Fabric Mills, Manmade Fiber and Silk"},{"id":2231,"name":"Broadwoven Fabric Mills, Wool (Including Dyeing and Finishing)"},{"id":"0251","name":"BROILER, FRYER, AND ROASTER CHICKENS"},{"id":3991,"name":"Brooms and Brushes"},{"id":7349,"name":"Building Cleaning and Maintenance Services, NEC"},{"id":3995,"name":"Burial Caskets"},{"id":4142,"name":"Bus Charter Service, Except Local"},{"id":8244,"name":"Business and Secretarial Schools"},{"id":8611,"name":"Business Associations"},{"id":8748,"name":"Business Consulting Services, NEC"},{"id":7389,"name":"Business Services, NEC"},{"id":4841,"name":"Cable and Other Pay Television Services"},{"id":3578,"name":"Calculating and Accounting Machines, Except Electronic Computers"},{"id":5946,"name":"Camera and Photographic Supply Stores"},{"id":2064,"name":"Candy and Other Confectionery Products"},{"id":5441,"name":"Candy, Nut, and Confectionery Stores"},{"id":2062,"name":"Cane Sugar Refining"},{"id":2061,"name":"Cane Sugar, Except Refining"},{"id":2091,"name":"Canned and Cured Fish and Seafood"},{"id":2033,"name":"Canned Fruits, Vegetables, Preserves, Jams, and Jellies"},{"id":2032,"name":"Canned Specialties"},{"id":2394,"name":"Canvas and Related Products"},{"id":3624,"name":"Carbon and Graphite Products"},{"id":2895,"name":"Carbon Black"},{"id":3955,"name":"Carbon Paper and Inked Ribbons"},{"id":3592,"name":"Carburetors, Pistons, Piston Rings, and Valves"},{"id":1751,"name":"Carpentry Work"},{"id":7217,"name":"Carpet and Upholstery Cleaning"},{"id":2273,"name":"Carpets and Rugs"},{"id":7542,"name":"Carwashes"},{"id":"0119","name":"CASH GRAINS, NOT ELSEWHERE CLASSIFIED"},{"id":5961,"name":"Catalog and Mail-Order Houses"},{"id":2823,"name":"Cellulosic Manmade Fibers"},{"id":3241,"name":"Cement, Hydraulic"},{"id":6553,"name":"Cemetery Subdividers and Developers"},{"id":6019,"name":"Central Reserve Depository Institutions, NEC"},{"id":3253,"name":"Ceramic Wall and Floor Tile"},{"id":2043,"name":"Cereal Breakfast Foods"},{"id":1479,"name":"Chemical and Fertilizer Mineral Mining, NEC"},{"id":5169,"name":"Chemicals and Allied Products, NEC"},{"id":2899,"name":"Chemicals and Chemical Preparations, NEC"},{"id":2131,"name":"Chewing and Smoking Tobacco and Snuff"},{"id":2067,"name":"Chewing Gum"},{"id":"0252","name":"CHICKEN EGGS"},{"id":8351,"name":"Child Day Care Services"},{"id":5641,"name":"Children's and Infants' Wear Stores"},{"id":2066,"name":"Chocolate and Cocoa Products"},{"id":2111,"name":"Cigarettes"},{"id":2121,"name":"Cigars"},{"id":"0174","name":"CITRUS FRUITS"},{"id":8641,"name":"Civic, Social, and Fraternal Associations"},{"id":3255,"name":"Clay Refractories"},{"id":1459,"name":"Clay, Ceramic, and Refractory Minerals, NEC"},{"id":5052,"name":"Coal and Other Minerals and Ores"},{"id":1241,"name":"Coal Mining Services"},{"id":2672,"name":"Coated and Laminated Paper, NEC"},{"id":2295,"name":"Coated Fabrics, Not Rubberized"},{"id":3479,"name":"Coating, Engraving, and Allied Services, NEC"},{"id":4991,"name":"COGENERATION SERVICES AND SMALL POWER PRODUCERS"},{"id":7993,"name":"Coin-Operated Amusement Devices"},{"id":7215,"name":"Coin-Operated Laundries and Drycleaning"},{"id":3316,"name":"Cold-Rolled Steel Sheet, Strip, and Bars"},{"id":8221,"name":"Colleges, Universities, and Professional Schools"},{"id":4939,"name":"Combination Utilities, NEC"},{"id":7336,"name":"Commercial Art and Graphic Design"},{"id":6029,"name":"Commercial Banks, NEC"},{"id":8732,"name":"Commercial Economic, Sociological, and Educational Research"},{"id":5046,"name":"Commercial Equipment, NEC"},{"id":3582,"name":"Commercial Laundry, Drycleaning, and Pressing Machines"},{"id":7335,"name":"Commercial Photography"},{"id":8731,"name":"Commercial Physical and Biological Research"},{"id":2754,"name":"Commercial Printing, Gravure"},{"id":2752,"name":"Commercial Printing, Lithographic"},{"id":2759,"name":"Commercial Printing, NEC"},{"id":3646,"name":"Commercial, Industrial, and Institutional Electric Lighting Fixtures"},{"id":6221,"name":"Commodity Contracts Brokers and Dealers"},{"id":3669,"name":"Communications Equipment, NEC"},{"id":4899,"name":"Communications Services, NEC"},{"id":5734,"name":"Computer and Computer Software Stores"},{"id":3576,"name":"COMPUTER COMMUNICATIONS EQUIPMENT"},{"id":7376,"name":"Computer Facilities Management Services"},{"id":7373,"name":"Computer Integrated Systems Design"},{"id":7378,"name":"Computer Maintenance and Repair"},{"id":3577,"name":"Computer Peripheral Equipment, NEC"},{"id":7374,"name":"Computer Processing and Data Preparation and Processing Services"},{"id":7371,"name":"Computer Programming Services"},{"id":7379,"name":"Computer Related Services, NEC"},{"id":7377,"name":"Computer Rental and Leasing"},{"id":3572,"name":"Computer Storage Devices"},{"id":3575,"name":"Computer Terminals"},{"id":5045,"name":"Computers and Computer Peripheral Equipment and Software"},{"id":3271,"name":"Concrete Block and Brick"},{"id":3272,"name":"Concrete Products, Except Block and Brick"},{"id":1771,"name":"Concrete Work"},{"id":5145,"name":"Confectionery"},{"id":5082,"name":"Construction and Mining (Except Petroleum) Machinery and Equipment"},{"id":3531,"name":"Construction Machinery and Equipment"},{"id":5039,"name":"Construction Materials, NEC"},{"id":1442,"name":"Construction Sand and Gravel"},{"id":2679,"name":"Converted Paper and Paperboard Products, NEC"},{"id":3535,"name":"Conveyors and Conveying Equipment"},{"id":2052,"name":"Cookies and Crackers"},{"id":3366,"name":"Copper Foundries"},{"id":1021,"name":"Copper Ores"},{"id":2298,"name":"Cordage and Twine"},{"id":"0115","name":"CORN"},{"id":9223,"name":"Correctional Institutions"},{"id":2653,"name":"Corrugated and Solid Fiber Boxes"},{"id":3961,"name":"Costume Jewelry and Costume Novelties, Except Precious Metals"},{"id":"0131","name":"COTTON"},{"id":"0724","name":"COTTON GINNING"},{"id":2074,"name":"Cottonseed Oil Mills"},{"id":4215,"name":"Courier Services Except by Air"},{"id":9211,"name":"Courts"},{"id":2021,"name":"Creamery Butter"},{"id":7323,"name":"Credit Reporting Services"},{"id":6061,"name":"Credit Unions, Federally Chartered"},{"id":6062,"name":"Credit Unions, Not Federally Chartered"},{"id":"0722","name":"CROP HARVESTING, PRIMARILY BY MACHINE"},{"id":"0721","name":"CROP PLANTING, CULTIVATING, AND PROTECTING"},{"id":"0723","name":"CROP PREPARATION SERVICES FOR MARKET, EXCEPT COTTON GINNING"},{"id":3466,"name":"Crowns and Closures"},{"id":1311,"name":"Crude Petroleum and Natural Gas"},{"id":4612,"name":"Crude Petroleum Pipelines"},{"id":1423,"name":"Crushed and Broken Granite"},{"id":1422,"name":"Crushed and Broken Limestone"},{"id":1429,"name":"Crushed and Broken Stone, NEC"},{"id":3643,"name":"Current-Carrying Wiring Devices"},{"id":2391,"name":"Curtains and Draperies"},{"id":3087,"name":"Custom Compounding of Purchased Plastics Resins"},{"id":3281,"name":"Cut Stone and Stone Products"},{"id":3421,"name":"Cutlery"},{"id":3545,"name":"Cutting Tools, Machine Tool Accessories, and Machinists' Precision Measuring Devices"},{"id":2865,"name":"Cyclic Organic Crudes and Intermediates, and Organic Dyes and Pigments"},{"id":"0241","name":"DAIRY FARMS"},{"id":5451,"name":"Dairy Products Stores"},{"id":5143,"name":"Dairy Products, Except Dried or Canned"},{"id":7911,"name":"Dance Studios, Schools, and Halls"},{"id":8243,"name":"Data Processing Schools"},{"id":"0175","name":"DECIDUOUS TREE FRUITS"},{"id":4424,"name":"Deep Sea Domestic Transportation of Freight"},{"id":4412,"name":"Deep Sea Foreign Transportation of  Freight"},{"id":4481,"name":"Deep Sea Transportation of Passengers, Except by Ferry"},{"id":3843,"name":"Dental Equipment and Supplies"},{"id":8072,"name":"Dental Laboratories"},{"id":5311,"name":"Department Stores"},{"id":7381,"name":"Detective, Guard, and Armored Car Services"},{"id":2675,"name":"Die-Cut Paper and Paperboard and Cardboard"},{"id":1411,"name":"Dimension Stone"},{"id":7331,"name":"Direct Mail Advertising Services"},{"id":5963,"name":"Direct Selling Establishments"},{"id":7342,"name":"Disinfecting and Pest Control Services"},{"id":2085,"name":"Distilled and Blended Liquors"},{"id":2047,"name":"Dog and Cat Food"},{"id":3942,"name":"Dolls and Stuffed Toys"},{"id":2591,"name":"Drapery Hardware and Window Blinds and Shades"},{"id":5714,"name":"Drapery, Curtain, and Upholstery Stores"},{"id":3357,"name":"Drawing and Insulating of Nonferrous Wire"},{"id":2381,"name":"Dress and Work Gloves, Except Knit and All-Leather"},{"id":2034,"name":"Dried and Dehydrated Fruits, Vegetables, and Soup Mixes"},{"id":1381,"name":"Drilling Oil and Gas Wells"},{"id":5813,"name":"Drinking Places (Alcoholic Beverages)"},{"id":7833,"name":"Drive-In Motion Picture Theaters"},{"id":5912,"name":"Drug Stores and Proprietary Stores"},{"id":5122,"name":"Drugs, Drug Proprietaries, and Druggists' Sundries"},{"id":2023,"name":"Dry, Condensed, and Evaporated Dairy Products"},{"id":7216,"name":"Drycleaning Plants, Except Rug Cleaning"},{"id":5099,"name":"Durable Goods, NEC"},{"id":5812,"name":"Eating and Drinking Places"},{"id":6732,"name":"Education, Religious, and Charitable Trusts"},{"id":3548,"name":"Electric and Gas Welding and Soldering Equipment"},{"id":4931,"name":"Electric and Other Services Combined"},{"id":3634,"name":"Electric Housewares and Fans"},{"id":3641,"name":"Electric Lamp Bulbs and Tubes"},{"id":4911,"name":"Electric Services"},{"id":7629,"name":"Electrical and Electronic Repair Shops, NEC"},{"id":5063,"name":"Electrical Apparatus and Equipment Wiring Supplies, and Construction Materials"},{"id":5064,"name":"Electrical Appliances, Television and Radio Sets"},{"id":3694,"name":"Electrical Equipment for Internal Combustion Engines"},{"id":3629,"name":"Electrical Industrial Apparatus, NEC"},{"id":3699,"name":"Electrical Machinery, Equipment, and Supplies, NEC"},{"id":1731,"name":"Electrical Work"},{"id":3845,"name":"Electromedical and Electrotherapeutic Apparatus"},{"id":3313,"name":"Electrometallurgical Products, Except Steel"},{"id":3671,"name":"Electron Tubes"},{"id":3675,"name":"Electronic Capacitors"},{"id":3677,"name":"Electronic Coils, Transformers, and Other Inductors"},{"id":3679,"name":"Electronic Components, NEC"},{"id":3571,"name":"Electronic Computers"},{"id":3678,"name":"Electronic Connectors"},{"id":5065,"name":"Electronic Parts and Equipment, NEC"},{"id":3676,"name":"Electronic Resistors"},{"id":3471,"name":"Electroplating, Plating, Polishing, Anodizing, and Coloring"},{"id":8211,"name":"Elementary and Secondary Schools"},{"id":3534,"name":"Elevators and Moving Stairways"},{"id":7361,"name":"Employment Agencies"},{"id":3431,"name":"Enameled Iron and Metal Sanitary Ware"},{"id":8711,"name":"Engineering Services"},{"id":2677,"name":"Envelopes"},{"id":7359,"name":"Equipment Rental and Leasing, NEC"},{"id":1794,"name":"Excavation Work"},{"id":9131,"name":"Executive and Legislative Offices, Combined"},{"id":9111,"name":"Executive Offices"},{"id":2892,"name":"Explosives"},{"id":3499,"name":"Fabricated Metal Products, NEC"},{"id":3498,"name":"Fabricated Pipe and Pipe Fittings"},{"id":3443,"name":"Fabricated Plate Work (Boiler Shops)"},{"id":3069,"name":"Fabricated Rubber Products, NEC"},{"id":3441,"name":"Fabricated Structural Metal"},{"id":2399,"name":"Fabricated Textile Products, NEC"},{"id":8744,"name":"Facilities Support Management Services"},{"id":5651,"name":"Family Clothing Stores"},{"id":5083,"name":"Farm and Garden Machinery and Equipment"},{"id":"0761","name":"FARM LABOR CONTRACTORS AND CREW LEADERS"},{"id":3523,"name":"Farm Machinery and Equipment"},{"id":"0762","name":"FARM MANAGEMENT SERVICES"},{"id":4221,"name":"Farm Product Warehousing and Storage"},{"id":5191,"name":"Farm Supplies"},{"id":5159,"name":"Farm-Product Raw Materials, NEC"},{"id":3965,"name":"Fasteners, Buttons, Needles, and Pins"},{"id":6111,"name":"Federal and Federally-Sponsored Credit Agencies"},{"id":6011,"name":"Federal Reserve Banks"},{"id":4482,"name":"Ferries"},{"id":1061,"name":"Ferroalloy Ores, Except Vanadium"},{"id":2875,"name":"Fertilizers, Mixing Only"},{"id":2655,"name":"Fiber Cans, Tubes, Drums, and Similar Products"},{"id":"0139","name":"FIELD CROPS, EXCEPT CASH GRAINS, NOT ELSEWHERE CLASSIFIED"},{"id":6172,"name":"FINANCE LESSORS"},{"id":6199,"name":"FINANCE SERVICES"},{"id":3263,"name":"Fine Earthenware (Whiteware) Table and Kitchen Articles"},{"id":"0912","name":"FINFISH"},{"id":2261,"name":"Finishers of Broadwoven Fabrics of Cotton"},{"id":2262,"name":"Finishers of Broadwoven Fabrics of Manmade Fiber and Silk"},{"id":2269,"name":"Finishers of Textiles, NEC"},{"id":9224,"name":"Fire Protection"},{"id":6331,"name":"Fire, Marine, and Casualty Insurance"},{"id":5146,"name":"Fish and Seafoods"},{"id":"0921","name":"FISH HATCHERIES AND PRESERVES"},{"id":4785,"name":"Fixed Facilities and Inspection and Weighing Services for Motor Vehicle Transportation"},{"id":3211,"name":"Flat Glass"},{"id":2087,"name":"Flavoring Extracts and Flavoring Syrups NEC"},{"id":5713,"name":"Floor Covering Stores"},{"id":1752,"name":"Floor Laying and Other Floor Work, NEC"},{"id":5992,"name":"Florists"},{"id":2041,"name":"Flour and Other Grain Mill Products"},{"id":5193,"name":"Flowers, Nursery Stock, and Florists' Supplies"},{"id":2026,"name":"Fluid Milk"},{"id":3593,"name":"Fluid Power Cylinders and Actuators"},{"id":3594,"name":"Fluid Power Pumps and Motors"},{"id":3492,"name":"Fluid Power Valves and Hose Fittings"},{"id":2657,"name":"Folding Paperboard Boxes, Including Sanitary"},{"id":"0182","name":"FOOD CROPS GROWN UNDER COVER"},{"id":2099,"name":"Food Preparations, NEC"},{"id":3556,"name":"Food Products Machinery"},{"id":5139,"name":"Footwear"},{"id":3149,"name":"Footwear, Except Rubber, NEC"},{"id":8888,"name":"FOREIGN GOVERNMENTS"},{"id":6082,"name":"Foreign Trade and International Banking Institutions"},{"id":"0831","name":"FOREST NURSERIES AND GATHERING OF FOREST PRODUCTS"},{"id":"0851","name":"FORESTRY SERVICES"},{"id":4432,"name":"Freight Transportation on the Great Lakes - St. Lawrence Seaway"},{"id":5148,"name":"Fresh Fruits and Vegetables"},{"id":2053,"name":"Frozen Bakery Products, Except Bread"},{"id":2037,"name":"Frozen Fruits, Fruit Juices, and Vegetables"},{"id":2038,"name":"Frozen Specialties, NEC"},{"id":5431,"name":"Fruit and Vegetable Markets"},{"id":"0179","name":"FRUITS AND TREE NUTS, NOT ELSEWHERE CLASSIFIED"},{"id":5989,"name":"Fuel Dealers, NEC"},{"id":5983,"name":"Fuel Oil Dealers"},{"id":6099,"name":"Functions Related to Deposit Banking, NEC"},{"id":7261,"name":"Funeral Services and Crematories"},{"id":2371,"name":"Fur Goods"},{"id":"0271","name":"FUR-BEARING ANIMALS AND RABBITS"},{"id":5021,"name":"Furniture"},{"id":2599,"name":"Furniture and Fixtures, NEC"},{"id":5712,"name":"Furniture Stores"},{"id":3944,"name":"Games, Toys, and Children's Vehicles, Except Dolls and Bicycles"},{"id":7212,"name":"Garment Pressing, and Agents for Laundries and Drycleaners"},{"id":4932,"name":"Gas and Other Services Combined"},{"id":3053,"name":"Gaskets, Packing, and Sealing Devices"},{"id":5541,"name":"Gasoline Service Stations"},{"id":7538,"name":"General Automotive Repair Shops"},{"id":1541,"name":"General Contractors-Industrial Buildings and Warehouses"},{"id":1542,"name":"General Contractors-Nonresidential Buildings, Other than Industrial Buildings and Warehouses"},{"id":1522,"name":"General Contractors-Residential Buildings, Other Than Single-Family"},{"id":1521,"name":"General Contractors-Single-Family Houses"},{"id":"0191","name":"GENERAL FARMS, PRIMARILY CROP"},{"id":"0291","name":"GENERAL FARMS, PRIMARILY LIVESTOCK AND ANIMAL SPECIALTIES"},{"id":9199,"name":"General Government, NEC"},{"id":3569,"name":"General Industrial Machinery and Equipment, NEC"},{"id":"0219","name":"GENERAL LIVESTOCK, EXCEPT DAIRY AND POULTRY"},{"id":8062,"name":"General Medical and Surgical Hospitals"},{"id":4225,"name":"General Warehousing and Storage"},{"id":5947,"name":"Gift, Novelty, and Souvenir Shops"},{"id":2361,"name":"Girls', Children's, and Infants' Dresses, Blouses, and Shirts"},{"id":2369,"name":"Girls', Children's, and Infants' Outerwear, NEC"},{"id":1793,"name":"Glass and Glazing Work"},{"id":3221,"name":"Glass Containers"},{"id":3231,"name":"Glass Products, Made of Purchased Glass"},{"id":1041,"name":"Gold Ores"},{"id":5153,"name":"Grain and Field Beans"},{"id":"0172","name":"GRAPES"},{"id":3321,"name":"Gray and Ductile Iron Foundries"},{"id":2771,"name":"Greeting Cards"},{"id":5149,"name":"Groceries and Related Products, NEC"},{"id":5141,"name":"Groceries, General Line"},{"id":5411,"name":"Grocery Stores"},{"id":3764,"name":"Guided Missile and Space Vehicle Propulsion Units and Propulsion Unit Parts"},{"id":3769,"name":"Guided Missile Space Vehicle Parts and Auxiliary Equipment, NEC"},{"id":3761,"name":"Guided Missiles and Space Vehicles"},{"id":2861,"name":"Gum and Wood Chemicals"},{"id":3275,"name":"Gypsum Products"},{"id":3423,"name":"Hand and Edge Tools, Except Machine Tools and Handsaws"},{"id":5072,"name":"Hardware"},{"id":5251,"name":"Hardware Stores"},{"id":3429,"name":"Hardware, NEC"},{"id":2426,"name":"Hardwood Dimension and Flooring Mills"},{"id":2435,"name":"Hardwood Veneer and Plywood"},{"id":2353,"name":"Hats, Caps, and Millinery"},{"id":4955,"name":"HAZARDOUS WASTE MANAGEMENT"},{"id":8099,"name":"Health and Allied Services, NEC"},{"id":3433,"name":"Heating Equipment, Except Electric and Warm Air Furnaces"},{"id":7353,"name":"Heavy Construction Equipment Rental and Leasing"},{"id":1629,"name":"Heavy Construction, NEC"},{"id":7363,"name":"Help Supply Services"},{"id":1611,"name":"Highway and Street Construction, Except Elevated Highways"},{"id":5945,"name":"Hobby, Toy, and Game Shops"},{"id":"0213","name":"HOGS"},{"id":5023,"name":"Home Furnishings"},{"id":8082,"name":"Home Health Care Services"},{"id":"0272","name":"HORSES AND OTHER EQUINES"},{"id":2252,"name":"Hosiery, NEC"},{"id":6324,"name":"Hospital and Medical Service Plans"},{"id":7011,"name":"Hotels and Motels"},{"id":3142,"name":"House Slippers"},{"id":2392,"name":"Housefurnishings, Except Curtains and Draperies"},{"id":5722,"name":"Household Appliance Stores"},{"id":3639,"name":"Household Appliances, NEC"},{"id":3651,"name":"Household Audio and Video Equipment"},{"id":3631,"name":"Household Cooking Equipment"},{"id":2519,"name":"Household Furniture, NEC"},{"id":3633,"name":"Household Laundry Equipment"},{"id":3632,"name":"Household Refrigerators and Home and Farm Freezers"},{"id":3635,"name":"Household Vacuum Cleaners"},{"id":"0971","name":"HUNTING AND TRAPPING, AND GAME PROPAGATION"},{"id":2024,"name":"Ice Cream and Frozen Desserts"},{"id":2835,"name":"In Vitro and In Vivo Diagnostic Substances"},{"id":8322,"name":"Individual and Family Social Services"},{"id":3564,"name":"Industrial and Commercial Fans and Blowers and Air  Purification Equipment"},{"id":3599,"name":"Industrial and Commercial Machinery and Equipment, NEC"},{"id":5113,"name":"Industrial and Personal Service Paper"},{"id":2813,"name":"Industrial Gases"},{"id":2819,"name":"Industrial Inorganic Chemicals, NEC"},{"id":3823,"name":"Industrial Instruments for Measurement, Display, and Control of Process Variables; and Related Produ"},{"id":7218,"name":"Industrial Launderers"},{"id":5084,"name":"Industrial Machinery and Equipment"},{"id":2869,"name":"Industrial Organic Chemicals, NEC"},{"id":3543,"name":"Industrial Patterns"},{"id":3567,"name":"Industrial Process Furnaces and Ovens"},{"id":1446,"name":"Industrial Sand"},{"id":5085,"name":"Industrial Supplies"},{"id":3537,"name":"Industrial Trucks, Tractors, Trailers, and Stackers"},{"id":3491,"name":"Industrial Valves"},{"id":7375,"name":"Information Retrieval Services"},{"id":2816,"name":"Inorganic Pigments"},{"id":1796,"name":"Installation or Erection of Building Equipment, NEC"},{"id":3825,"name":"Instruments for Measuring and Testing of Electricity and Electrical Signals"},{"id":6411,"name":"Insurance Agents, Brokers, and Service"},{"id":6399,"name":"Insurance Carriers, NEC"},{"id":4131,"name":"Intercity and Rural Bus Transportation"},{"id":8052,"name":"Intermediate Care Facilities"},{"id":3519,"name":"Internal Combustion Engines, NEC"},{"id":9721,"name":"International Affairs"},{"id":6282,"name":"Investment Advice"},{"id":6799,"name":"Investors, NEC"},{"id":"0134","name":"IRISH POTATOES"},{"id":3462,"name":"Iron and Steel Forgings"},{"id":1011,"name":"Iron Ores"},{"id":4971,"name":"Irrigation Systems"},{"id":3915,"name":"Jewelers' Findings and Materials, and Lapidary Work"},{"id":5944,"name":"Jewelry Stores"},{"id":3911,"name":"Jewelry, Precious Metal"},{"id":5094,"name":"Jewelry, Watches, Precious Stones, and Precious Metals"},{"id":8331,"name":"Job Training and Vocational Rehabilitation Services"},{"id":8222,"name":"Junior Colleges and Technical Institutes"},{"id":1455,"name":"Kaolin and Ball Clay"},{"id":8092,"name":"Kidney Dialysis Centers"},{"id":2253,"name":"Knit Outerwear Mills"},{"id":2254,"name":"Knit Underwear and Nightwear Mills"},{"id":2259,"name":"Knitting Mills, NEC"},{"id":8631,"name":"Labor Unions and Similar Labor Organizations"},{"id":3826,"name":"Laboratory Analytical Instruments"},{"id":3821,"name":"Laboratory Apparatus and Furniture"},{"id":2258,"name":"Lace and Warp Knit Fabric Mills"},{"id":3083,"name":"Laminated Plastics Plate, Sheet, and Profile Shapes"},{"id":6552,"name":"Land Subdividers and Developers, Except Cemeteries"},{"id":9512,"name":"Land, Mineral, Wildlife, and Forest Conservation"},{"id":"0781","name":"LANDSCAPE COUNSELING AND PLANNING"},{"id":7219,"name":"Laundry and Garment Services, NEC"},{"id":"0782","name":"LAWN AND GARDEN SERVICES"},{"id":3524,"name":"Lawn and Garden Tractors and Home Lawn and Garden  Equipment"},{"id":1031,"name":"Lead and Zinc Ores"},{"id":3952,"name":"Lead Pencils, Crayons, and Artist's Materials"},{"id":2386,"name":"Leather and Sheep-Lined Clothing"},{"id":3151,"name":"Leather Gloves and Mittens"},{"id":3199,"name":"Leather Goods, NEC"},{"id":3111,"name":"Leather Tanning and Finishing"},{"id":9222,"name":"Legal Counsel and Prosecution"},{"id":8111,"name":"Legal Services"},{"id":9121,"name":"Legislative Bodies"},{"id":6517,"name":"Lessors of Railroad Property"},{"id":6519,"name":"Lessors of Real Property, NEC"},{"id":8231,"name":"Libraries"},{"id":6311,"name":"Life Insurance"},{"id":3648,"name":"Lighting Equipment, NEC"},{"id":3274,"name":"Lime"},{"id":7213,"name":"Linen Supply"},{"id":3996,"name":"Linoleum, Asphalted-Felt-Base, and Other Hard Surface Floor Coverings, NEC"},{"id":5984,"name":"Liquefied Petroleum Gas (Bottled Gas) Dealers"},{"id":5921,"name":"Liquor Stores"},{"id":5154,"name":"Livestock"},{"id":"0751","name":"LIVESTOCK SERVICES, EXCEPT VETERINARY"},{"id":6163,"name":"Loan Brokers"},{"id":4111,"name":"Local and Suburban Transit"},{"id":4141,"name":"Local Bus Charter Service"},{"id":4119,"name":"Local Passenger Transportation, NEC"},{"id":4214,"name":"Local Trucking with Storage"},{"id":4212,"name":"Local Trucking Without Storage"},{"id":2411,"name":"Logging"},{"id":2992,"name":"Lubricating Oils and Greases"},{"id":3161,"name":"Luggage"},{"id":5948,"name":"Luggage and Leather Goods Stores"},{"id":5211,"name":"Lumber and Other Building Materials Dealers"},{"id":5031,"name":"Lumber, Plywood, Millwork, and Wood Panels"},{"id":2098,"name":"Macaroni, Spaghetti, Vermicelli, and Noodles"},{"id":3541,"name":"Machine Tools,  Metal Cutting Type"},{"id":3542,"name":"Machine Tools, Metal Forming Type"},{"id":3695,"name":"Magnetic and Optical Recording Media"},{"id":3322,"name":"Malleable Iron Foundries"},{"id":2083,"name":"Malt"},{"id":2082,"name":"Malt Beverages"},{"id":8742,"name":"Management Consulting Services"},{"id":6722,"name":"Management Investment Offices, Open-End"},{"id":8741,"name":"Management Services"},{"id":2761,"name":"Manifold Business Forms"},{"id":2824,"name":"Manmade Organic Fibers, Except Cellulosic"},{"id":2097,"name":"Manufactured Ice"},{"id":3999,"name":"Manufacturing Industries, NEC"},{"id":4493,"name":"Marinas"},{"id":4491,"name":"Marine Cargo Handling"},{"id":3953,"name":"Marking Devices"},{"id":1741,"name":"Masonry, Stone Setting, and Other Stone Work"},{"id":2515,"name":"Mattresses, Foundations, and Convertible Beds"},{"id":3829,"name":"Measuring and Controlling Devices, NEC"},{"id":3586,"name":"Measuring and Dispensing Pumps"},{"id":5421,"name":"Meat and Fish (Seafood) Markets, Including Freezer Provisioners"},{"id":2011,"name":"Meat Packing Plants"},{"id":5147,"name":"Meats and Meat Products"},{"id":3568,"name":"Mechanical Power Transmission Equipment, NEC"},{"id":7352,"name":"Medical Equipment Rental and Leasing"},{"id":8071,"name":"Medical Laboratories"},{"id":5047,"name":"Medical, Dental, and Hospital Equipment and Supplies"},{"id":2833,"name":"Medicinal Chemicals and Botanical Products"},{"id":8699,"name":"Membership Organizations, NEC"},{"id":7997,"name":"Membership Sports and Recreation Clubs"},{"id":5611,"name":"Men's and Boys' Clothing and Accessory Stores"},{"id":5136,"name":"Men's and Boys' Clothing and Furnishings"},{"id":2329,"name":"Men's and Boys' Clothing, NEC"},{"id":2323,"name":"Men's and Boys' Neckwear"},{"id":2321,"name":"Men's and Boys' Shirts, Except Work Shirts"},{"id":2311,"name":"Men's and Boys' Suits, Coats, and Overcoats"},{"id":2325,"name":"Men's and Boys' Trousers and Slacks"},{"id":2322,"name":"Men's and Boys' Underwear and Nightwear"},{"id":2326,"name":"Men's and Boys' Work Clothing"},{"id":3143,"name":"Men's Footwear, Except Athletic"},{"id":3411,"name":"Metal Cans"},{"id":3442,"name":"Metal Doors, Sash, Frames, Molding, and Trim Manufacturing"},{"id":3497,"name":"Metal Foil and Leaf"},{"id":3398,"name":"Metal Heat Treating"},{"id":2514,"name":"Metal Household Furniture"},{"id":1081,"name":"Metal Mining Services"},{"id":3412,"name":"Metal Shipping Barrels, Drums, Kegs, and Pails"},{"id":3469,"name":"Metal Stamping, NEC"},{"id":5051,"name":"Metals Service Centers and Offices"},{"id":3549,"name":"Metalworking Machinery, NEC"},{"id":2431,"name":"Millwork"},{"id":6795,"name":"MINERAL ROYALTY TRADERS"},{"id":3296,"name":"Mineral Wool"},{"id":3295,"name":"Minerals and Earths, Ground or Otherwise Treated"},{"id":3532,"name":"Mining Machinery and Equipment, Except Oil and Gas Field  Machinery and Equipment"},{"id":5699,"name":"Miscellaneous Apparel and Accessory Stores"},{"id":6159,"name":"Miscellaneous Business Credit Institutions"},{"id":3496,"name":"Miscellaneous Fabricated Wire Products"},{"id":5499,"name":"Miscellaneous Food Stores"},{"id":5399,"name":"Miscellaneous General Merchandise Stores"},{"id":5719,"name":"Miscellaneous Homefurnishings Stores"},{"id":"0919","name":"MISCELLANEOUS MARINE PRODUCTS"},{"id":1099,"name":"Miscellaneous Metal Ores, NEC"},{"id":1499,"name":"Miscellaneous Nonmetallic Minerals, Except Fuels"},{"id":7299,"name":"Miscellaneous Personal Services, NEC"},{"id":2741,"name":"Miscellaneous Publishing"},{"id":5999,"name":"Miscellaneous Retail Stores, NEC"},{"id":3449,"name":"Miscellaneous Structural Metal Work"},{"id":4925,"name":"Mixed, Manufactured, or Liquefied Petroleum Gas Production and\/or Distribution"},{"id":5271,"name":"Mobile Home Dealers"},{"id":2451,"name":"Mobile Homes"},{"id":3061,"name":"Molded, Extruded, and Lathe-Cut Mechanical Rubber Goods"},{"id":6162,"name":"Mortgage Bankers and Loan Correspondents"},{"id":7822,"name":"Motion Picture and Video Tape Distribution"},{"id":7812,"name":"Motion Picture and Video Tape Production"},{"id":7832,"name":"Motion Picture Theaters, Except Drive-In"},{"id":3716,"name":"Motor  Homes"},{"id":5511,"name":"Motor Vehicle Dealers (New and Used)"},{"id":5521,"name":"Motor Vehicle Dealers (Used Only)"},{"id":3714,"name":"Motor Vehicle Parts and Accessories"},{"id":5015,"name":"Motor Vehicle Parts, Used"},{"id":5013,"name":"Motor Vehicle Supplies and New Parts"},{"id":3711,"name":"Motor Vehicles and Passenger Car Bodies"},{"id":5571,"name":"Motorcycle Dealers"},{"id":3751,"name":"Motorcycles, Bicycles, and Parts"},{"id":3621,"name":"Motors and Generators"},{"id":8412,"name":"Museums and Art Galleries"},{"id":5736,"name":"Musical Instrument Stores"},{"id":3931,"name":"Musical Instruments"},{"id":2441,"name":"Nailed and Lock Corner Wood Boxes and Shook"},{"id":2241,"name":"Narrow  Fabric and Other Smallware Mills:  Cotton, Wool, Silk, and Manmade Fiber"},{"id":6021,"name":"National Commercial Banks"},{"id":9711,"name":"National Security"},{"id":4924,"name":"Natural Gas Distribution"},{"id":1321,"name":"Natural Gas Liquids"},{"id":4922,"name":"Natural Gas Transmission"},{"id":4923,"name":"Natural Gas Transmission and Distribution"},{"id":2022,"name":"Natural, Processed, and Imitation Cheese"},{"id":5994,"name":"News Dealers and Newsstands"},{"id":7383,"name":"News Syndicates"},{"id":2711,"name":"Newspapers:  Publishing, or Publishing and Printing"},{"id":2873,"name":"Nitrogenous Fertilizers"},{"id":9995,"name":"NON-OPERATING ESTABLISHMENTS"},{"id":9999,"name":"Nonclassifiable Establishments"},{"id":3297,"name":"Nonclay Refractories"},{"id":8733,"name":"Noncommercial Research Organizations"},{"id":3644,"name":"Noncurrent-Carrying Wiring Devices"},{"id":6091,"name":"Nondeposit Trust Facilities"},{"id":5199,"name":"Nondurable Goods, NEC"},{"id":3364,"name":"Nonferrous Die-Castings, Except Aluminum"},{"id":3463,"name":"Nonferrous Forgings"},{"id":3369,"name":"Nonferrous Foundries, Except Aluminum and Copper"},{"id":3299,"name":"Nonmetallic Mineral Products, NEC"},{"id":1481,"name":"Nonmetallic Minerals Services Except Fuels"},{"id":2297,"name":"Nonwoven Fabrics"},{"id":8059,"name":"Nursing and Personal Care Facilities, NEC"},{"id":2542,"name":"Office and Store Fixtures, Partitions, Shelving, and Lockers, Except Wood"},{"id":5044,"name":"Office Equipment"},{"id":2522,"name":"Office Furniture, Except Wood"},{"id":3579,"name":"Office Machines, NEC"},{"id":8041,"name":"Offices and Clinics of Chiropractors"},{"id":8021,"name":"Offices and Clinics of Dentists"},{"id":8011,"name":"Offices and Clinics of Doctors of Medicine"},{"id":8031,"name":"Offices and Clinics of Doctors of Osteopathy"},{"id":8049,"name":"Offices and Clinics of Health Practitioners, NEC"},{"id":8042,"name":"Offices and Clinics of Optometrists"},{"id":8043,"name":"Offices and Clinics of Podiatrists"},{"id":6712,"name":"Offices of Bank Holding Companies"},{"id":6719,"name":"Offices of Holding Companies, NEC"},{"id":1382,"name":"Oil and Gas Field Exploration Services"},{"id":3533,"name":"Oil and Gas Field Machinery and Equipment"},{"id":1389,"name":"Oil and Gas Field Services, NEC"},{"id":6792,"name":"Oil Royalty Traders"},{"id":1531,"name":"Operative Builders"},{"id":6513,"name":"Operators of Apartment Buildings"},{"id":6514,"name":"Operators of Dwellings Other Than Apartment Buildings"},{"id":6512,"name":"Operators of Nonresidential Buildings"},{"id":6515,"name":"Operators of Residential Mobile Home Sites"},{"id":3851,"name":"Ophthalmic Goods"},{"id":5048,"name":"Ophthalmic Goods"},{"id":5995,"name":"Optical Goods Stores"},{"id":3827,"name":"Optical Instruments and Lenses"},{"id":3489,"name":"Ordnance and Accessories, NEC"},{"id":7041,"name":"Organization Hotels and Lodging Houses, on Membership Basis"},{"id":"0181","name":"ORNAMENTAL FLORICULTURE AND NURSERY PRODUCTS"},{"id":"0783","name":"ORNAMENTAL SHRUB AND TREE SERVICES"},{"id":3842,"name":"Orthopedic, Prosthetic, and Surgical Appliances and Supplies"},{"id":7312,"name":"Outdoor Advertising Services"},{"id":3536,"name":"Overhead Traveling Cranes, Hoists, and Monorail Systems"},{"id":5142,"name":"Packaged Frozen Foods"},{"id":3565,"name":"Packaging Machinery"},{"id":2671,"name":"Packaging Paper and Plastics Film, Coated and Laminated"},{"id":4783,"name":"Packing and Crating"},{"id":5231,"name":"Paint, Glass, and Wallpaper Stores"},{"id":5198,"name":"Paint, Varnishes, and Supplies"},{"id":1721,"name":"Painting and Paper Hanging"},{"id":2851,"name":"Paints, Varnishes, Lacquers, Enamels, and Allied Products"},{"id":3554,"name":"Paper Industries Machinery"},{"id":2621,"name":"Paper Mills"},{"id":2631,"name":"Paperboard Mills"},{"id":7515,"name":"Passenger Car Leasing"},{"id":7514,"name":"Passenger Car Rental"},{"id":6794,"name":"Patent Owners and Lessors"},{"id":3951,"name":"Pens, Mechanical Pencils, and Parts"},{"id":6371,"name":"Pension, Health, and Welfare Funds"},{"id":2844,"name":"Perfumes, Cosmetics, and Other Toilet Preparations"},{"id":2721,"name":"Periodicals: Publishing, or Publishing and Printing"},{"id":6141,"name":"Personal Credit Institutions"},{"id":3172,"name":"Personal Leather Goods, Except Women's Handbags and Purses"},{"id":2879,"name":"Pesticides and Agricultural Chemicals, NEC"},{"id":5172,"name":"Petroleum and Petroleum Products Wholesalers, Except Bulk Stations and Terminals"},{"id":5171,"name":"Petroleum Bulk Stations and Terminals"},{"id":2911,"name":"Petroleum Refining"},{"id":2834,"name":"Pharmaceutical Preparations"},{"id":3652,"name":"Phonograph Records and Prerecorded Audio Tapes and Disks"},{"id":1475,"name":"Phosphate Rock"},{"id":2874,"name":"Phosphatic Fertilizers"},{"id":7334,"name":"Photocopying and Duplicating Services"},{"id":7384,"name":"Photofinishing Laboratories"},{"id":3861,"name":"Photographic Equipment and Supplies"},{"id":5043,"name":"Photographic Equipment and Supplies"},{"id":7221,"name":"Photographic Studios, Portrait"},{"id":7991,"name":"Physical Fitness Facilities"},{"id":2035,"name":"Pickled Fruits and Vegetables, Vegetable Sauces and Seasonings, and Salad Dressings"},{"id":5131,"name":"Piece Goods, Notions, and Other Dry Goods"},{"id":4619,"name":"Pipelines, NEC"},{"id":1742,"name":"Plastering, Drywall, Acoustical, and Insulation Work"},{"id":3085,"name":"Plastics Bottles"},{"id":3086,"name":"Plastics Foam Products"},{"id":2821,"name":"Plastics Material and Synthetic Resins, and Nonvulcanizable Elastomers"},{"id":5162,"name":"Plastics Materials and Basic Forms and Shapes"},{"id":3084,"name":"Plastics Pipe"},{"id":3088,"name":"Plastics Plumbing Fixtures"},{"id":3089,"name":"Plastics Products, NEC"},{"id":2673,"name":"Plastics, Foil, and Coated Paper Bags"},{"id":2796,"name":"Platemaking and Related Services"},{"id":2395,"name":"Pleating, Decorative and Novelty Stitching, and Tucking for the Trade"},{"id":5074,"name":"Plumbing and Heating Equipment and Supplies (Hydronics)"},{"id":3432,"name":"Plumbing Fixture Fittings and Trim"},{"id":1711,"name":"Plumbing, Heating, and Air-Conditioning"},{"id":9221,"name":"Police Protection"},{"id":8651,"name":"Political Organizations"},{"id":3264,"name":"Porcelain Electrical Supplies"},{"id":1474,"name":"Potash, Soda, and Borate Minerals"},{"id":2096,"name":"Potato Chips, Corn Chips, and Similar Snacks"},{"id":3269,"name":"Pottery Products, NEC"},{"id":"0259","name":"POULTRY AND EGGS, NOT ELSEWHERE CLASSIFIED"},{"id":5144,"name":"Poultry and Poultry Products"},{"id":"0254","name":"POULTRY HATCHERIES"},{"id":2015,"name":"Poultry Slaughtering and Processing"},{"id":7211,"name":"Power Laundries, Family and Commercial"},{"id":3546,"name":"Power-Driven Handtools"},{"id":3612,"name":"Power, Distribution, and Specialty Transformers"},{"id":3448,"name":"Prefabricated Metal Buildings and Components"},{"id":2452,"name":"Prefabricated Wood Buildings and Components"},{"id":7372,"name":"Prepackaged Software"},{"id":2048,"name":"Prepared Feed and Feed Ingredients for Animals and Fowls, Except Dogs and Cats"},{"id":2045,"name":"Prepared Flour Mixes and Doughs"},{"id":2092,"name":"Prepared Fresh or Frozen Fish and Seafoods"},{"id":3229,"name":"Pressed and Blown Glass and Glassware, NEC"},{"id":3692,"name":"Primary Batteries, Dry and Wet"},{"id":3399,"name":"Primary Metal Products, NEC"},{"id":3334,"name":"Primary Production of Aluminum"},{"id":3331,"name":"Primary Smelting and Refining of Copper"},{"id":3339,"name":"Primary Smelting and Refining of Nonferrous Metals, Except Copper and Aluminum"},{"id":3672,"name":"Printed Circuit Boards"},{"id":5111,"name":"Printing and Writing Paper"},{"id":2893,"name":"Printing Ink"},{"id":3555,"name":"Printing Trades Machinery and Equipment"},{"id":8811,"name":"Private Households"},{"id":2999,"name":"Products of Petroleum and Coal, NEC"},{"id":5049,"name":"Professional Equipment and Supplies, NEC"},{"id":8621,"name":"Professional Membership Organizations"},{"id":7941,"name":"Professional Sports Clubs and Promoters"},{"id":8063,"name":"Psychiatric Hospitals"},{"id":2531,"name":"Public Building and Related Furniture"},{"id":9311,"name":"Public Finance, Taxation, and Monetary Policy"},{"id":7992,"name":"Public Golf Courses"},{"id":9229,"name":"Public Order and Safety, NEC"},{"id":8743,"name":"Public Relations Services"},{"id":2611,"name":"Pulp Mills"},{"id":3561,"name":"Pumps and Pumping Equipment"},{"id":7948,"name":"Racing, Including Track Operations"},{"id":3663,"name":"Radio and Television Broadcasting and Communications Equipment"},{"id":7622,"name":"Radio and Television Repair Shops"},{"id":4832,"name":"Radio Broadcasting Stations"},{"id":5731,"name":"Radio, Television, and Consumer Electronics Stores"},{"id":7313,"name":"Radio, Television, and Publishers' Advertising Representatives"},{"id":4812,"name":"Radiotelephone Communications"},{"id":3743,"name":"Railroad Equipment"},{"id":4013,"name":"Railroad Switching and Terminal Establishments"},{"id":4011,"name":"Railroads, Line-haul Operating"},{"id":3273,"name":"Ready-Mixed Concrete"},{"id":6531,"name":"Real Estate Agents and Managers"},{"id":6532,"name":"REAL ESTATE DEALERS (FOR THEIR OWN ACCOUNT)"},{"id":6798,"name":"Real Estate Investment Trusts"},{"id":2493,"name":"Reconstituted Wood Products"},{"id":5735,"name":"Record and Prerecorded Tape Stores"},{"id":5561,"name":"Recreational Vehicle Dealers"},{"id":7033,"name":"Recreational Vehicle Parks and Campsites"},{"id":4613,"name":"Refined Petroleum Pipelines"},{"id":4222,"name":"Refrigerated Warehousing and Storage"},{"id":7623,"name":"Refrigeration and Air-Conditioning Services and Repair Shops"},{"id":5078,"name":"Refrigeration Equipment and Supplies"},{"id":4953,"name":"Refuse Systems"},{"id":9631,"name":"Regulation and Administration of Communications, Electric, Gas, and Other Utilities"},{"id":9621,"name":"Regulation and Administration of Transportation Programs"},{"id":9641,"name":"Regulation of Agricultural Marketing and Commodities"},{"id":9651,"name":"Regulation, Licensing, and Inspection of Miscellaneous Commercial Sectors"},{"id":3625,"name":"Relays and Industrial Controls"},{"id":8661,"name":"Religious Organizations"},{"id":4741,"name":"Rental of Railroad Cars"},{"id":7699,"name":"Repair Shops and Related Services, NEC"},{"id":8361,"name":"Residential Care"},{"id":3645,"name":"Residential Electric Lighting Fixtures"},{"id":5461,"name":"Retail Bakeries"},{"id":5261,"name":"Retail Nurseries, Lawn and Garden Supply Stores"},{"id":5412,"name":"RETAIL-CONVENIENCE STORES"},{"id":7641,"name":"Reupholstery and Furniture Repair"},{"id":"0112","name":"RICE"},{"id":2044,"name":"Rice Milling"},{"id":2095,"name":"Roasted Coffee"},{"id":2384,"name":"Robes and Dressing Gowns"},{"id":3547,"name":"Rolling Mill Machinery and Equipment"},{"id":3351,"name":"Rolling, Drawing, and Extruding of Copper"},{"id":3356,"name":"Rolling, Drawing, and Extruding of Nonferrous Metals, Except Copper and Aluminum"},{"id":5033,"name":"Roofing, Siding, and Insulation Materials"},{"id":1761,"name":"Roofing, Siding, and Sheet Metal Work"},{"id":7021,"name":"Rooming and Boarding Houses"},{"id":3021,"name":"Rubber and Plastics Footwear"},{"id":3052,"name":"Rubber and Plastics Hose and Belting"},{"id":2068,"name":"Salted and Roasted Nuts and Seeds"},{"id":2656,"name":"Sanitary Food Containers, Except Folding"},{"id":2676,"name":"Sanitary Paper Products"},{"id":4959,"name":"Sanitary Services, NEC"},{"id":2013,"name":"Sausages and Other Prepared Meats"},{"id":6035,"name":"Savings Institutions, Federally Chartered"},{"id":6036,"name":"Savings institutions, Not Federally Chartered"},{"id":3425,"name":"Saw Blades and Handsaws"},{"id":2421,"name":"Sawmills and Planing Mills, General"},{"id":3596,"name":"Scales and Balances, Except Laboratory"},{"id":2397,"name":"Schiffli Machine Embroideries"},{"id":4151,"name":"School Buses"},{"id":8299,"name":"Schools and Educational Services, NEC"},{"id":5093,"name":"Scrap and Waste Materials"},{"id":3451,"name":"Screw Machine Products"},{"id":3812,"name":"Search, Detection, Navigation, Guidance, Aeronautical, and Nautical Systems and  Instruments"},{"id":3341,"name":"Secondary Smelting and Refining of Nonferrous Metals"},{"id":7338,"name":"Secretarial and Court Reporting Services"},{"id":6231,"name":"Security and Commodity Exchanges"},{"id":6211,"name":"Security Brokers, Dealers, and Flotation Companies"},{"id":7382,"name":"Security Systems Services"},{"id":3674,"name":"Semiconductors and Related Devices"},{"id":5087,"name":"Service Establishment Equipment and Supplies"},{"id":3589,"name":"Service Industry Machinery, NEC"},{"id":7829,"name":"Services Allied to Motion Picture Distribution"},{"id":7819,"name":"Services Allied to Motion Picture Production"},{"id":6289,"name":"Services Allied With the Exchange of Securities or Commodities, NEC"},{"id":7385,"name":"SERVICES-TELEPHONE INTERCONNECT SYSTEMS"},{"id":8999,"name":"Services, NEC"},{"id":2652,"name":"Setup Paperboard Boxes"},{"id":4952,"name":"Sewerage Systems"},{"id":5949,"name":"Sewing, Needlework, and Piece Goods Stores"},{"id":"0214","name":"SHEEP AND GOATS"},{"id":3444,"name":"Sheet Metal Work"},{"id":"0913","name":"SHELLFISH"},{"id":3731,"name":"Ship Building and Repairing"},{"id":7251,"name":"Shoe Repair Shops and Shoeshine Parlors"},{"id":5661,"name":"Shoe Stores"},{"id":6153,"name":"Short-Term Business Credit Institutions, Except Agricultural"},{"id":2079,"name":"Shortening, Table Oils, Margarine, and Other Edible Fats and Oils, NEC"},{"id":3993,"name":"Signs and Advertising Specialties"},{"id":1044,"name":"Silver Ores"},{"id":3914,"name":"Silverware, Plated Ware, and Stainless Steel Ware"},{"id":8051,"name":"Skilled Nursing Care Facilities"},{"id":3484,"name":"Small Arms"},{"id":3482,"name":"Small Arms Ammunition"},{"id":2841,"name":"Soaps and Other Detergents, Except Speciality Cleaners"},{"id":8399,"name":"Social Services, NEC"},{"id":2436,"name":"Softwood Veneer and Plywood"},{"id":"0711","name":"SOIL PREPARATION SERVICES"},{"id":2075,"name":"Soybean Oil Mills"},{"id":"0116","name":"SOYBEANS"},{"id":9661,"name":"Space Research and Technology"},{"id":3559,"name":"Special  Industry Machinery, NEC"},{"id":3544,"name":"Special Dies and Tools, Die Sets, Jigs and Fixtures, and Industrial Molds"},{"id":2429,"name":"Special Product Sawmills, NEC"},{"id":1799,"name":"Special Trade Contractors, NEC"},{"id":4226,"name":"Special Warehousing and Storage, NEC"},{"id":2842,"name":"Speciality Cleaning, Polishing, and Sanitary Preparations"},{"id":8069,"name":"Specialty Hospitals, Except Psychiatric"},{"id":8093,"name":"Specialty Outpatient Facilities, NEC"},{"id":3566,"name":"Speed Changers, Industrial High-Speed Drives, and Gears"},{"id":3949,"name":"Sporting and Athletic Goods, NEC"},{"id":7032,"name":"Sporting and Recreational Camps"},{"id":5091,"name":"Sporting and Recreational Goods and Supplies"},{"id":5941,"name":"Sporting Goods Stores and Bicycle Shops"},{"id":6022,"name":"State Commercial Banks"},{"id":5112,"name":"Stationery and Office Supplies"},{"id":5943,"name":"Stationery Stores"},{"id":2678,"name":"Stationery, Tablets, and Related Products"},{"id":4961,"name":"Steam and Air-Conditioning Supply"},{"id":3511,"name":"Steam, Gas, and Hydraulic Turbines, and Turbine Generator Set Units"},{"id":3325,"name":"Steel Foundries, NEC"},{"id":3324,"name":"Steel Investment Foundries"},{"id":3317,"name":"Steel Pipe and Tubes"},{"id":3493,"name":"Steel Springs, Except Wire"},{"id":3315,"name":"Steel Wiredrawing and Steel Nails and Spikes"},{"id":3312,"name":"Steel Works, Blast Furnaces (Including Coke Ovens), and Rolling Mills"},{"id":3691,"name":"Storage Batteries"},{"id":3259,"name":"Structural Clay Products, NEC"},{"id":1791,"name":"Structural Steel Erection"},{"id":2439,"name":"Structural Wood Members, NEC"},{"id":"0133","name":"SUGARCANE AND SUGAR BEETS"},{"id":6351,"name":"Surety Insurance"},{"id":2843,"name":"Surface Active Agents, Finishing Agents, Sulfonated Oils, and Assistants"},{"id":3841,"name":"Surgical and Medical Instruments and Apparatus"},{"id":8713,"name":"Surveying Services"},{"id":3613,"name":"Switchgear and Switchboard Apparatus"},{"id":2822,"name":"Synthetic Rubber"},{"id":3795,"name":"Tanks and Tank Components"},{"id":7291,"name":"Tax Return Preparation Services"},{"id":4121,"name":"Taxicabs"},{"id":4822,"name":"Telegraph and Other  Message Communications"},{"id":3661,"name":"Telephone and Telegraph Apparatus"},{"id":4813,"name":"Telephone Communications, Except Radiotelephone"},{"id":4833,"name":"Television Broadcasting Stations"},{"id":4231,"name":"Terminal and Joint Terminal Maintenance Facilities for Motor Freight Transportation"},{"id":4173,"name":"Terminal and Service Facilities for Motor Vehicle Passenger Transportation"},{"id":1743,"name":"Terrazzo, Tile, Marble, and Mosaic Work"},{"id":8734,"name":"Testing Laboratories"},{"id":2393,"name":"Textile Bags"},{"id":2299,"name":"Textile Goods, NEC"},{"id":3552,"name":"Textile Machinery"},{"id":7922,"name":"Theatrical Producers (Except Motion Picture) and Miscellaneous Theatrical Services"},{"id":2284,"name":"Thread Mills"},{"id":"0811","name":"TIMBER TRACTS"},{"id":2296,"name":"Tire Cord and Fabrics"},{"id":7534,"name":"Tire Retreading and Repair Shops"},{"id":3011,"name":"Tires and Inner Tubes"},{"id":5014,"name":"Tires and Tubes"},{"id":6541,"name":"Title Abstract Offices"},{"id":6361,"name":"Title Insurance"},{"id":"0132","name":"TOBACCO"},{"id":5194,"name":"Tobacco and Tobacco Products"},{"id":2141,"name":"Tobacco Stemming and Redrying"},{"id":5993,"name":"Tobacco Stores and Stands"},{"id":7532,"name":"Top, Body, and Upholstery Repair Shops and Paint Shops"},{"id":3824,"name":"Totalizing Fluid Meters and Counting Devices"},{"id":4725,"name":"Tour Operators"},{"id":4492,"name":"Towing and Tugboat Services"},{"id":5092,"name":"Toys and Hobby Goods and Supplies"},{"id":5088,"name":"Transportation Equipment and Supplies, Except Motor Vehicles"},{"id":3799,"name":"Transportation Equipment, NEC"},{"id":4789,"name":"Transportation Services, NEC"},{"id":4724,"name":"Travel Agencies"},{"id":3792,"name":"Travel Trailers and Campers"},{"id":"0173","name":"TREE NUTS"},{"id":3713,"name":"Truck and Bus Bodies"},{"id":7513,"name":"Truck Rental and Leasing, Without Drivers"},{"id":3715,"name":"Truck Trailers"},{"id":4213,"name":"Trucking, Except Local"},{"id":6733,"name":"Trusts, Except Educational, Religious, and Charitable"},{"id":"0253","name":"TURKEYS AND TURKEY EGGS"},{"id":2791,"name":"Typesetting"},{"id":2674,"name":"Uncoated Paper and Multiwall Bags"},{"id":6726,"name":"Unit Investment Trusts, Face-Amount Certificate Offices, and Closed-End Management Investment Office"},{"id":4311,"name":"United States Postal Service"},{"id":3081,"name":"Unsupported Plastics Film and Sheet"},{"id":3082,"name":"Unsupported Plastics Profile Shapes"},{"id":1094,"name":"Uranium-Radium-Vanadium Ores"},{"id":5932,"name":"Used Merchandise Stores"},{"id":7519,"name":"Utility Trailer and Recreational Vehicle Rental"},{"id":3494,"name":"Valves and Pipe Fittings, NEC"},{"id":5331,"name":"Variety Stores"},{"id":2076,"name":"Vegetable Oil Mills, Except Corn, Cottonseed, and Soybeans"},{"id":"0161","name":"VEGETABLES AND MELONS"},{"id":3647,"name":"Vehicular Lighting Equipment"},{"id":"0742","name":"VETERINARY SERVICES FOR ANIMAL SPECIALTIES"},{"id":"0741","name":"VETERINARY SERVICES FOR LIVESTOCK"},{"id":7841,"name":"Video Tape Rental"},{"id":3261,"name":"Vitreous China Plumbing Fixtures and China and Earthenware Fittings and Bathroom Accessories"},{"id":3262,"name":"Vitreous China Table and Kitchen Articles"},{"id":8249,"name":"Vocational Schools, NEC"},{"id":5075,"name":"Warm Air Heating and Air-Conditioning Equipment and Supplies"},{"id":7631,"name":"Watch, Clock, and Jewelry Repair"},{"id":3873,"name":"Watches, Clocks, Clockwork Operated Devices and Parts"},{"id":4941,"name":"Water Supply"},{"id":4449,"name":"Water Transportation of Freight, NEC"},{"id":4489,"name":"Water Transportation of Passengers, NEC"},{"id":4499,"name":"Water Transportation Services, NEC"},{"id":1781,"name":"Water Well Drilling"},{"id":1623,"name":"Water, Sewer, Pipeline, and Communications and Power Line Construction"},{"id":2385,"name":"Waterproof Outerwear"},{"id":2257,"name":"Weft Knit Fabric Mills"},{"id":7692,"name":"Welding Repair"},{"id":2046,"name":"Wet Corn Milling"},{"id":"0111","name":"WHEAT"},{"id":5182,"name":"Wine and Distilled Alcoholic Beverages"},{"id":2084,"name":"Wines, Brandy, and Brandy Spirits"},{"id":3495,"name":"Wire Springs"},{"id":5632,"name":"Women's Accessory and Specialty Stores"},{"id":5621,"name":"Women's Clothing Stores"},{"id":3144,"name":"Women's Footwear, Except Athletic"},{"id":2251,"name":"Women's Full-Length and Knee-Length Hosiery, Except Socks"},{"id":3171,"name":"Women's Handbags and Purses"},{"id":5137,"name":"Women's, Children's, and Infants' Clothing and Accessories"},{"id":2337,"name":"Women's, Misses' and Juniors' Suits, Skirts, and Coats"},{"id":2331,"name":"Women's, Misses', and Juniors' Blouses and Shirts"},{"id":2335,"name":"Women's, Misses', and Juniors' Dresses"},{"id":2339,"name":"Women's, Misses', and Juniors' Outerwear, NEC"},{"id":2341,"name":"Women's, Misses', Children's, and Infants' Underwear and Nightwear"},{"id":2449,"name":"Wood Containers, NEC"},{"id":2511,"name":"Wood Household Furniture, Except Upholstered"},{"id":2512,"name":"Wood Household Furniture, Upholstered"},{"id":2434,"name":"Wood Kitchen Cabinets"},{"id":2541,"name":"Wood Office and Store Fixtures, Partitions, Shelving, and Lockers"},{"id":2521,"name":"Wood Office Furniture"},{"id":2448,"name":"Wood Pallets and Skids"},{"id":2491,"name":"Wood Preserving"},{"id":2499,"name":"Wood Products, NEC"},{"id":2517,"name":"Wood Television, Radio, Phonograph and Sewing Machine Cabinets"},{"id":3553,"name":"Woodworking Machinery"},{"id":1795,"name":"Wrecking and Demolition Work"},{"id":3844,"name":"X-Ray Apparatus and Tubes and Related Irradiation Apparatus"},{"id":2281,"name":"Yarn Spinning Mills"},{"id":2282,"name":"Yarn Texturizing, Throwing, Twisting, and Winding Mills"}],"maturities":[{"id":"Short","name":"Short"},{"id":"1Yr","name":"1Y"},{"id":"2Yr","name":"2Y"},{"id":"3Yr","name":"3Y"},{"id":"5Yr","name":"5Y"},{"id":"7Yr","name":"7Y"},{"id":"10Yr","name":"10Y"},{"id":"15Yr","name":"15Y"},{"id":"30Yr","name":"30Y"},{"id":"Perpetual","name":"Perpetual"}],"assetTypes":[{"id":"USIG","name":"US IG Corporates"},{"id":"USHY","name":"US HY Corporates"},{"id":"Agencies","name":"Agencies"},{"id":"TBA","name":"TBA MBS"},{"id":"MBS","name":"MBS Passthroughs"},{"id":"EMEACorpSov","name":"EMEA Corporates and Sovereign"},{"id":"EMEAMM","name":"EMEA Money Markets"}],"currencies":[{"id":"USD","name":"United States Dollar"},{"id":"EUR","name":"Euro"},{"id":"JPY","name":"Japanese Yen"},{"id":"GBP","name":"Pound Sterling"},{"id":"CNY","name":"Chinese Yuan"},{"id":"AED","name":"United Arab Emirates Dirham"},{"id":"ALL","name":"Albanian Lek"},{"id":"AMD","name":"Armenian Dram"},{"id":"ANG","name":"Netherlands Antillean Guilder"},{"id":"AOA","name":"Angolan Kwanza"},{"id":"ARS","name":"Argentine Peso"},{"id":"AUD","name":"Australian Dollar"},{"id":"AZN","name":"Azerbaijani Manat"},{"id":"BAM","name":"Bosnia And Herzegovina Mark"},{"id":"BBD","name":"Barbados Dollar"},{"id":"BDT","name":"Bangladeshi Taka"},{"id":"BGN","name":"Bulgarian Lev"},{"id":"BHD","name":"Bahraini Dinar"},{"id":"BIF","name":"Burundian Franc"},{"id":"BMD","name":"Bermudian Dollar"},{"id":"BOB","name":"Boliviano"},{"id":"BRL","name":"Brazilian Real"},{"id":"BSD","name":"Bahamian Dollar"},{"id":"BTN","name":"Bhutanese Ngultrum"},{"id":"BWP","name":"Botswana Pula"},{"id":"BYR","name":"Belarusian Ruble"},{"id":"CAD","name":"Canadian Dollar"},{"id":"CDF","name":"Congolese Franc"},{"id":"CHF","name":"Swiss Franc"},{"id":"CLF","name":"Unidad De Fomento"},{"id":"CLP","name":"Chilean Peso"},{"id":"COP","name":"Colombian Peso"},{"id":"COU","name":"Unidad De Valor Real"},{"id":"CRC","name":"Costa Rican Colon"},{"id":"CUP","name":"Cuban Peso"},{"id":"CVE","name":"Cape Verde Escudo"},{"id":"CZK","name":"Czech Koruna"},{"id":"DKK","name":"Danish Krone"},{"id":"DOP","name":"Dominican Peso"},{"id":"DZD","name":"Algerian Dinar"},{"id":"EGP","name":"Egyptian Pound"},{"id":"ERN","name":"Eritrean Nakfa"},{"id":"ETB","name":"Ethiopian Birr"},{"id":"FJD","name":"Fiji Dollar"},{"id":"GEL","name":"Georgian Lari"},{"id":"GHS","name":"Ghanaian Cedi"},{"id":"GIP","name":"Gibraltar Pound"},{"id":"GMD","name":"Gambian Dalasi"},{"id":"GTQ","name":"Guatemalan Quetzal"},{"id":"HKD","name":"Hong Kong Dollar"},{"id":"HNL","name":"Honduran Lempira"},{"id":"HRK","name":"Croatian Kuna"},{"id":"HUF","name":"Hungarian Forint"},{"id":"IDR","name":"Indonesian Rupiah"},{"id":"ILS","name":"Israeli New Sheqel"},{"id":"INR","name":"Indian Rupee"},{"id":"IRR","name":"Iranian Rial"},{"id":"ISK","name":"Icelandic Krona"},{"id":"JMD","name":"Jamaican Dollar"},{"id":"JOD","name":"Jordanian Dinar"},{"id":"KES","name":"Kenyan Shilling"},{"id":"KGS","name":"Kyrgyzstani Som"},{"id":"KMF","name":"Comoro Franc"},{"id":"KRW","name":"South Korean Won"},{"id":"KWD","name":"Kuwaiti Dinar"},{"id":"KYD","name":"Cayman Islands Dollar"},{"id":"KZT","name":"Kazakhstani Tenge"},{"id":"LBP","name":"Lebanese Pound"},{"id":"LKR","name":"Sri Lanka Rupee"},{"id":"LSL","name":"Lesotho Loti"},{"id":"LTL","name":"Lithuanian Litas"},{"id":"LVL","name":"Latvian Lats"},{"id":"MAD","name":"Moroccan Dirham"},{"id":"MDL","name":"Moldovan Leu"},{"id":"MGA","name":"Malagasy Ariary"},{"id":"MKD","name":"Macedonian Denar"},{"id":"MMK","name":"Myanma Kyat"},{"id":"MNT","name":"Mongolian Tugrik"},{"id":"MOP","name":"Macanese Pataca"},{"id":"MUR","name":"Mauritian Rupee"},{"id":"MVR","name":"Maldivian Rufiyaa"},{"id":"MWK","name":"Malawian Kwacha"},{"id":"MXN","name":"Mexican Peso"},{"id":"MXV","name":"Mexican Unidad De Inversion"},{"id":"MYR","name":"Malaysian Ringgit"},{"id":"MZN","name":"Mozambican Metical"},{"id":"NAD","name":"Namibian Dollar"},{"id":"NGN","name":"Nigerian Naira"},{"id":"NIO","name":"Cordoba Oro"},{"id":"NOK","name":"Norwegian Krone"},{"id":"NPR","name":"Nepalese Rupee"},{"id":"NZD","name":"New Zealand Dollar"},{"id":"OMR","name":"Omani Rial"},{"id":"PAB","name":"Panamanian Balboa"},{"id":"PEN","name":"Peruvian Nuevo Sol"},{"id":"PGK","name":"Papua New Guinean Kina"},{"id":"PHP","name":"Philippine Peso"},{"id":"PKR","name":"Pakistani Rupee"},{"id":"PLN","name":"Polish Zloty"},{"id":"PYG","name":"Paraguayan Guaran"},{"id":"QAR","name":"Qatari Rial"},{"id":"RON","name":"Romanian New Leu"},{"id":"RSD","name":"Serbian Dinar"},{"id":"RUB","name":"Russian Rouble"},{"id":"RWF","name":"Rwandan Franc"},{"id":"SAR","name":"Saudi Riyal"},{"id":"SEK","name":"Swedish Krona"},{"id":"SGD","name":"Singapore Dollar"},{"id":"SLL","name":"Sierra Leonean Leone"},{"id":"SZL","name":"Lilangeni"},{"id":"THB","name":"Thai Baht"},{"id":"TJS","name":"Tajikistani Somoni"},{"id":"TND","name":"Tunisian Dinar"},{"id":"TRY","name":"Turkish Lira"},{"id":"TTD","name":"Trinidad And Tobago Dollar"},{"id":"TWD","name":"New Taiwan Dollar"},{"id":"TZS","name":"Tanzanian Shilling"},{"id":"UAH","name":"Ukrainian Hryvnia"},{"id":"UGX","name":"Ugandan Shilling"},{"id":"UYU","name":"Uruguayan Peso"},{"id":"UZS","name":"Uzbekistan Som"},{"id":"VEF","name":"Venezuelan Bolivar Fuerte"},{"id":"VND","name":"Vietnamese Dong"},{"id":"XAF","name":"CFA Franc BEAC"},{"id":"XAG","name":"Silver (one Troy Ounce)"},{"id":"XAU","name":"Gold (one Troy Ounce)"},{"id":"XBB","name":"European Monetary Unit"},{"id":"XCD","name":"East Caribbean Dollar"},{"id":"XOF","name":"CFA Franc BCEAO"},{"id":"XPD","name":"Palladium"},{"id":"XPF","name":"CFP Franc"},{"id":"XPT","name":"Platinum"},{"id":"ZAR","name":"South African Rand"},{"id":"ZMK","name":"Zambian Kwacha"},{"id":"ZMW","name":"Zambian Kwacha"},{"id":"ZWL","name":"Zimbabwe Dollar"}]};
+    })
+</script>
+    <footer class="clearfix hidden-print">
+        <div class="row">
+            <div class="col-sm-12">
+                        		    <a href="/">Home</a> |
+                                <a href="https://www.theice.com">Company</a> |
+                <a href="https://www.theice.com/market-data">Products &amp; Services</a> |
+                <a href="https://www.intercontinentalexchange.com/careers">Careers</a> |
+                <a href="https://www.theice.com/contact">Contact Us</a>
+        	</div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <a href="https://www.intercontinentalexchange.com/terms-of-use">Terms &amp; Conditions, Privacy Policy and Trademarks</a> |
+                <a data-toggle="modal" href="#modalThirdPartyDisclaimer">3rd Party Disclaimers and Attribution</a> |
+                <a href="https://www.theice.com/registered-investment-adviser-notice">Registered Investment Advisor Notice</a>
+            </div>
+        </div>
+                <div class="row">
+            <div class="col-sm-12">
+                Build 8.3.14.1.20240521&nbsp;&nbsp;&nbsp;&copy; 2024 Intercontinental Exchange, Inc. All Rights Reserved.
+            </div>
+        </div>
+
+<!-- begin modalThirdPartyDisclaimer -->
+<div class="modal fade" id="modalThirdPartyDisclaimer" tabindex="-1" role="dialog" aria-labelledby="modalThirdPartyDisclaimer" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Third Party Disclaimers and Attribution</h4>
+            </div>
+            <div class="modal-body">
+                <p>The Global Industry Classification (GICS) was developed by and is the exclusive property of Morgan Stanley Capital International Inc.
+                and Standard &amp; Poor's. GICS is service mark of MSCI and S&amp;P and has been licensed for use by Intercontinental Exchange, Inc.</p>
+                <p>Copyright 2024, S&amp;P Global Market Intelligence. Reproduction of any information, data or material, 
+                including ratings ("Content") in any form is prohibited except with the prior written permission of the relevant party. 
+                Such party, its affiliates and suppliers ("Content Providers") do not guarantee the accuracy, adequacy, completeness, 
+                timeliness or availability of any Content and are not responsible for any errors or omissions (negligent or otherwise), 
+                regardless of the cause, or for the results obtained from the use of such Content. In no event shall Content Providers 
+                be liable for any damages, costs, expenses, legal fees, or losses (including lost income or lost profit and opportunity costs) 
+                in connection with any use of the Content. A reference to a particular investment or security, a rating or any observation 
+                concerning an investment that is part of the Content is not a recommendation to buy, sell or hold such investment or security, 
+                does not address the suitability of an investment or security and should not be relied on as investment advice. 
+                Credit ratings are statements of opinions and are not statements of fact.</p>
+                <p>FINRA TRACE Data: Contains trade details as reported to FINRA's Trade Reporting and Compliance Engine (TRACE).</p>
+                <p>As of April 12, 2021 Canadian dollar-denominated securities pricing is provided by CanDeal Data and Analytics. 
+                Prior to April 12, 2021 such information was provided by SVC<sup>TM</sup>, a service of SS&amp;C Technologies, Inc. 
+                Canadian fixed income securities data may not be downloaded from the service.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Done</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- end modalThirdPartyDisclaimer -->
+
+<!-- begin modalCEPTimeRanges -->
+<div class="modal modal-wide fade" id="modalCEPTimeRanges" tabindex="-1" role="dialog" aria-labelledby="modalCEPTimeRanges" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Continuous Evaluated Pricing Schedule</h4>
+            </div>
+            <div class="modal-body">
+                <p>For each region, the evaluation system is operational during the Extended Hours.
+                In addition, the evaluation desks are staffed during the Core Hours providing further
+                 system inputs and oversight.</p>
+                <table class="table table-styled table-no-hand-on-row-hover">
+                    <thead>
+                        <tr>
+                            <th class="ctr">&nbsp;</th>
+                            <th class="ctr">Core Hours</th>
+                            <th class="ctr">Extended Hours</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                                                    <tr>
+                                <td>ASIA Corps & Sovs (AU)</td>
+                                <td class="ctr">
+                                    8:30 AM AEDT                                    – 6:00 PM AEDT                                </td>
+                                <td class="ctr">
+                                    3:00 AM AEDT                                    – 12:00 AM AEDT                                </td>
+                            </tr>
+                                                        <tr>
+                                <td>ASIA Corps & Sovs (JP)</td>
+                                <td class="ctr">
+                                    8:30 AM AEDT                                    – 6:00 PM AEDT                                </td>
+                                <td class="ctr">
+                                    3:00 AM AEDT                                    – 12:00 AM AEDT                                </td>
+                            </tr>
+                                                        <tr>
+                                <td>ASIA Corps & Sovs (NZ)</td>
+                                <td class="ctr">
+                                    8:30 AM AEDT                                    – 6:00 PM AEDT                                </td>
+                                <td class="ctr">
+                                    3:00 AM AEDT                                    – 12:00 AM AEDT                                </td>
+                            </tr>
+                                                        <tr>
+                                <td>ASIA Corps & Sovs (Other Currencies)</td>
+                                <td class="ctr">
+                                    9:00 AM HKT                                    – 6:00 PM HKT                                </td>
+                                <td class="ctr">
+                                    3:00 AM HKT                                    – 12:00 AM HKT                                </td>
+                            </tr>
+                                                        <tr>
+                                <td>ASIA Money Markets (AU)</td>
+                                <td class="ctr">
+                                    8:30 AM AEDT                                    – 6:00 PM AEDT                                </td>
+                                <td class="ctr">
+                                    3:00 AM AEDT                                    – 12:00 AM AEDT                                </td>
+                            </tr>
+                                                        <tr>
+                                <td>ASIA Money Markets (JP)</td>
+                                <td class="ctr">
+                                    8:30 AM AEDT                                    – 6:00 PM AEDT                                </td>
+                                <td class="ctr">
+                                    3:00 AM AEDT                                    – 12:00 AM AEDT                                </td>
+                            </tr>
+                                                        <tr>
+                                <td>ASIA Money Markets (NZ)</td>
+                                <td class="ctr">
+                                    8:30 AM AEDT                                    – 6:00 PM AEDT                                </td>
+                                <td class="ctr">
+                                    3:00 AM AEDT                                    – 12:00 AM AEDT                                </td>
+                            </tr>
+                                                        <tr>
+                                <td>ASIA Money Markets (Other Currencies)</td>
+                                <td class="ctr">
+                                    9:00 AM HKT                                    – 6:00 PM HKT                                </td>
+                                <td class="ctr">
+                                    3:00 AM HKT                                    – 12:00 AM HKT                                </td>
+                            </tr>
+                                                        <tr>
+                                <td>EMEA Corps & Sovs</td>
+                                <td class="ctr">
+                                    8:00 AM GMT/BST                                    – 6:00 PM GMT/BST                                </td>
+                                <td class="ctr">
+                                    3:00 AM GMT/BST                                    – 12:00 AM GMT/BST                                </td>
+                            </tr>
+                                                        <tr>
+                                <td>EMEA Money Markets</td>
+                                <td class="ctr">
+                                    8:00 AM GMT/BST                                    – 6:00 PM GMT/BST                                </td>
+                                <td class="ctr">
+                                    3:00 AM GMT/BST                                    – 12:00 AM GMT/BST                                </td>
+                            </tr>
+                                                        <tr>
+                                <td>US Agencies</td>
+                                <td class="ctr">
+                                    8:00 AM ET                                    – 5:30 PM ET                                </td>
+                                <td class="ctr">
+                                    3:00 AM ET                                    – 12:00 AM ET                                </td>
+                            </tr>
+                                                        <tr>
+                                <td>US Corporate HY</td>
+                                <td class="ctr">
+                                    8:00 AM ET                                    – 5:30 PM ET                                </td>
+                                <td class="ctr">
+                                    3:00 AM ET                                    – 12:00 AM ET                                </td>
+                            </tr>
+                                                        <tr>
+                                <td>US Corporate IG</td>
+                                <td class="ctr">
+                                    8:00 AM ET                                    – 5:30 PM ET                                </td>
+                                <td class="ctr">
+                                    3:00 AM ET                                    – 12:00 AM ET                                </td>
+                            </tr>
+                                                        <tr>
+                                <td>US MBS (TBA & Pass-through)</td>
+                                <td class="ctr">
+                                    8:00 AM ET                                    – 5:30 PM ET                                </td>
+                                <td class="ctr">
+                                    3:00 AM ET                                    – 12:00 AM ET                                </td>
+                            </tr>
+                                                        <tr>
+                                <td>US Municipals</td>
+                                <td class="ctr">
+                                    8:00 AM ET                                    – 5:30 PM ET                                </td>
+                                <td class="ctr">
+                                    3:00 AM ET                                    – 12:00 AM ET                                </td>
+                            </tr>
+                                                        <tr>
+                                <td>US Treasuries & Strips</td>
+                                <td class="ctr">
+                                    8:00 AM ET                                    – 5:30 PM ET                                </td>
+                                <td class="ctr">
+                                    3:00 AM ET                                    – 12:00 AM ET                                </td>
+                            </tr>
+                                                        <tr>
+                                <td>Leveraged Loan</td>
+                                <td class="ctr">
+                                    8:00 AM ET                                    – 5:30 PM ET                                </td>
+                                <td class="ctr">
+                                    3:00 AM ET                                    – 12:00 AM ET                                </td>
+                            </tr>
+                                                </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Done</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- end modalCEPTimeRanges -->
+
+<!-- begin modalFeedback -->
+<div class="modal fade" id="modalFeedback" tabindex="-1" role="dialog" aria-labelledby="modalFeedback" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Send Feedback to the Vantage Team</h4>
+            </div>
+            <div class="modal-body">
+                <div id="feedbackInvalid" class="alert alert-danger" style="display: none;">
+                    <i class="fa fa-exclamation-triangle"></i> The fields highlighted below must be at least 3 characters long.
+                </div>
+                <div id="feedbackInvalidCUSIP" class="alert alert-danger" style="display: none;">
+                    <i class="fa fa-exclamation-triangle"></i> Please supply an identifier below.
+                </div>
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label for="feedback_subject" class="col-sm-3 control-label">Topic</label>
+                        <div class="col-sm-9">
+                            <select id="feedbackTopic" class="form-control">
+                                <option value="thisBond" selected>Feedback about this bond *</option>
+                                <option value="otherBond">Feedback about a different bond *</option>
+                                <option value="other">Other Vantage feedback</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group thisBond">
+                        <label class="col-sm-3 control-label">Identifier</label>
+                        <div class="col-sm-9">
+                            <p class="form-control-static thisBondCUSIP"></p>
+                        </div>
+                    </div>
+                    <div class="form-group otherBond">
+                        <label for="" class="col-sm-3 control-label">Identifier</label>
+                        <div class="col-sm-9">
+                            <input id="feedback_cusip" name="feedback_cusip" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="feedback_subject" class="col-sm-3 control-label">Subject</label>
+                        <div class="col-sm-9">
+                            <input id="feedback_subject" name="feedback_subject" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="feedback_text" class="col-sm-3 control-label">Feedback</label>
+                        <div class="col-sm-9">
+                            <textarea class="form-control" rows="3" id="feedback_text" name="feedback_text"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-3 col-sm-9">
+                            <div class="checkbox">
+                                <label>
+                                    <input id="feedback_cc" name="feedback_cc" type="checkbox"> Send me a copy of this feedback
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <input id="feedback_referer_url" type="hidden" value="%2Fmovers">
+                </form>
+                <div class="alert alert-warning thisBond otherBond" role="alert">
+                    * If this is an evaluation challenge, unchanged evaluation or vendor comparison, please use <a href="https://challengeportal-ppe.interactivedata.com/clients/overview" target="_blank">Challenge Portal</a> instead.
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cancel</button>
+                <button type="button" id="sendFeedback" class="btn btn-primary btn-sm">Send Feedback</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- end modalFeedback -->
+
+        <div id="faTest" style="display: inline-block; font-size: 100px;">
+            <!-- used for determining whether IE has prohibited download of icon font -->
+            <i class="fa fa-times"></i>
+        </div>
+    </footer>
+</div><!-- end page-level wrapper -->
+
+
+
+<div class="modal fade" id="vals_quicklist" tabindex="-1" role="dialog" aria-labelledby="add_portfolio_form" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Reference Data for Multiple Securities</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row form-horizontal">
+                    <div class="col-md-12">
+                        <form action="/batchreferencedata/" method="post">
+                        <div class="form-group">
+                            <span class="col-sm-3 control-label">
+                                <label for="fileDataSubform-securities_list" class="optional">
+                                    CUSIPs<br />
+                                    <span class="text-light" style="font-size: .85em;">Enter a list of up to 40 securities.</span>
+                                </label>
+                            </span>
+                            <dd class="col-sm-9 control-label">
+                                <textarea name="securities_list" id="fileDataSubform-securities_list" rows="3" cols="50" class="form-control" placeholder="We support comma separated, line separated, and tab separated CUSIPs for batch reference data requests."></textarea>
+                            </dd>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary btn-sm">Generate</a>
+            </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<div class="modal fade" id="vals_save" tabindex="-1" role="dialog" aria-labelledby="vals_save" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">Save QuickList</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Save this list so you can access it in the future from the Portfolio section.</p>
+                    <div class="row form-horizontal">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <span class="col-sm-3 control-label">
+                                    <label for="fileDataSubform-securities_list">Portfolio Title</label>
+                                </span>
+                                <dd class="col-sm-9">
+                                    <input class="input-sm form-control">
+                                </dd>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-9 col-sm-offset-3">
+                            <ul>
+                                <li>Portfolio name cannot exceed 40 characters</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">Save</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+
+    <script type="text/javascript" src="/min/f=/js/angular/vantage.directives.js"></script>    
+<script type="text/javascript">
+    Obj_VTG_Config.as_of_date["hasLinkdate"] = false;
+    Obj_VTG_Config.setObjVTGConfigDates = function (curDate, timeZone){
+        if(!curDate && Obj_VTG_Config.as_of_date.prefDateVal.length > 0){
+            curDate = Obj_VTG_Config.as_of_date.prefDateVal;
+        }
+        if (!timeZone) {
+            Obj_VTG_Config.as_of_date["today"] =  moment().startOf('day').format(Obj_VTG_Config.format.date.momentUrl);
+            Obj_VTG_Config.as_of_date["carDate"] = moment(curDate).startOf('day').format(Obj_VTG_Config.format.date.momentUrl);
+            Obj_VTG_Config.as_of_date["diff"] =  (Obj_VTG_Config.as_of_date.today === Obj_VTG_Config.as_of_date.carDate) 
+                                                    ? "Today" 
+                                                    : ( moment(Obj_VTG_Config.as_of_date.carDate,Obj_VTG_Config.format.date.momentUrl).from(moment().startOf('day').format(Obj_VTG_Config.format.date.momentUrl)) === "a day ago"
+                                                        ? "Yesterday"
+                                                        : moment(Obj_VTG_Config.as_of_date.carDate,Obj_VTG_Config.format.date.momentUrl).from(moment().startOf('day').format(Obj_VTG_Config.format.date.momentUrl)) );
+        } else {
+            Obj_VTG_Config.as_of_date["today"] =  moment().tz(timeZone).startOf('day').format(Obj_VTG_Config.format.date.momentUrl);
+            Obj_VTG_Config.as_of_date["carDate"] = moment.tz(curDate, 'YYYY-MM-DD', timeZone).startOf('day').format(Obj_VTG_Config.format.date.momentUrl);
+            Obj_VTG_Config.as_of_date["diff"] =  (Obj_VTG_Config.as_of_date.today === Obj_VTG_Config.as_of_date.carDate) 
+                                                    ? "Today" 
+                                                    : ( moment(Obj_VTG_Config.as_of_date.carDate,Obj_VTG_Config.format.date.momentUrl).from(moment().tz(timeZone).startOf('day').format(Obj_VTG_Config.format.date.momentUrl)) === "a day ago"
+                                                        ? "Yesterday"
+                                                        : moment(Obj_VTG_Config.as_of_date.carDate,Obj_VTG_Config.format.date.momentUrl).from(moment().tz(timeZone).startOf('day').format(Obj_VTG_Config.format.date.momentUrl)) );
+        }
+        Obj_VTG_Config.updateDateDisplay();
+    }                  
+    Obj_VTG_Config.updateDateDisplay = function () {
+        if(Obj_VTG_Config.as_of_date.diff !== "Today"){
+            if(!Obj_VTG_Config.as_of_date["hasLinkdate"]){
+                $(".linkToday").attr("title", 'Go to the current date');
+                $(".linkToday").attr("href", $(".linkToday").attr("href")+Obj_VTG_Config.as_of_date.today);
+                Obj_VTG_Config.as_of_date["hasLinkdate"] = true;
+            }
+            $(".linkToday").show();
+        } else {
+            $(".linkToday").hide();
+        }
+        if(Obj_VTG_Config.as_of_date.diff === "Today"){
+            $(".dateInfo").html(Obj_VTG_Config.as_of_date.diff).show().css('background-color', '#5cb85c');
+        } else if(Obj_VTG_Config.as_of_date.diff === "Yesterday"){
+            $(".dateInfo").html(Obj_VTG_Config.as_of_date.diff).show().css('background-color', '#ec971f');
+        } else {
+            $(".dateInfo").html(Obj_VTG_Config.as_of_date.diff).show().css('background-color', '#FF8800');
+        }
+    }
+    Obj_VTG_Config.setObjVTGConfigDates();
+
+    // generate time zone list for preferences
+        Obj_VTG_Config.timeZoneList = [{"id":"Africa\/Abidjan","abbr":"GMT","name":"Africa\/Abidjan GMT (UTC +00:00)","offset":"+00:00"},{"id":"Africa\/Accra","abbr":"GMT","name":"Africa\/Accra GMT (UTC +00:00)","offset":"+00:00"},{"id":"Africa\/Addis_Ababa","abbr":"EAT","name":"Africa\/Addis_Ababa EAT (UTC +03:00)","offset":"+03:00"},{"id":"Africa\/Algiers","abbr":"CET","name":"Africa\/Algiers CET (UTC +01:00)","offset":"+01:00"},{"id":"Africa\/Asmara","abbr":"EAT","name":"Africa\/Asmara EAT (UTC +03:00)","offset":"+03:00"},{"id":"Africa\/Bamako","abbr":"GMT","name":"Africa\/Bamako GMT (UTC +00:00)","offset":"+00:00"},{"id":"Africa\/Bangui","abbr":"WAT","name":"Africa\/Bangui WAT (UTC +01:00)","offset":"+01:00"},{"id":"Africa\/Banjul","abbr":"GMT","name":"Africa\/Banjul GMT (UTC +00:00)","offset":"+00:00"},{"id":"Africa\/Bissau","abbr":"GMT","name":"Africa\/Bissau GMT (UTC +00:00)","offset":"+00:00"},{"id":"Africa\/Blantyre","abbr":"CAT","name":"Africa\/Blantyre CAT (UTC +02:00)","offset":"+02:00"},{"id":"Africa\/Brazzaville","abbr":"WAT","name":"Africa\/Brazzaville WAT (UTC +01:00)","offset":"+01:00"},{"id":"Africa\/Bujumbura","abbr":"CAT","name":"Africa\/Bujumbura CAT (UTC +02:00)","offset":"+02:00"},{"id":"Africa\/Cairo","abbr":"EET","name":"Africa\/Cairo EET (UTC +02:00)","offset":"+02:00"},{"id":"Africa\/Casablanca","abbr":"+01","name":"Africa\/Casablanca +01 (UTC +01:00)","offset":"+01:00"},{"id":"Africa\/Ceuta","abbr":"CEST","name":"Africa\/Ceuta CEST (UTC +02:00)","offset":"+02:00"},{"id":"Africa\/Conakry","abbr":"GMT","name":"Africa\/Conakry GMT (UTC +00:00)","offset":"+00:00"},{"id":"Africa\/Dakar","abbr":"GMT","name":"Africa\/Dakar GMT (UTC +00:00)","offset":"+00:00"},{"id":"Africa\/Dar_es_Salaam","abbr":"EAT","name":"Africa\/Dar_es_Salaam EAT (UTC +03:00)","offset":"+03:00"},{"id":"Africa\/Djibouti","abbr":"EAT","name":"Africa\/Djibouti EAT (UTC +03:00)","offset":"+03:00"},{"id":"Africa\/Douala","abbr":"WAT","name":"Africa\/Douala WAT (UTC +01:00)","offset":"+01:00"},{"id":"Africa\/El_Aaiun","abbr":"+01","name":"Africa\/El_Aaiun +01 (UTC +01:00)","offset":"+01:00"},{"id":"Africa\/Freetown","abbr":"GMT","name":"Africa\/Freetown GMT (UTC +00:00)","offset":"+00:00"},{"id":"Africa\/Gaborone","abbr":"CAT","name":"Africa\/Gaborone CAT (UTC +02:00)","offset":"+02:00"},{"id":"Africa\/Harare","abbr":"CAT","name":"Africa\/Harare CAT (UTC +02:00)","offset":"+02:00"},{"id":"Africa\/Johannesburg","abbr":"SAST","name":"Africa\/Johannesburg SAST (UTC +02:00)","offset":"+02:00"},{"id":"Africa\/Juba","abbr":"EAT","name":"Africa\/Juba EAT (UTC +03:00)","offset":"+03:00"},{"id":"Africa\/Kampala","abbr":"EAT","name":"Africa\/Kampala EAT (UTC +03:00)","offset":"+03:00"},{"id":"Africa\/Khartoum","abbr":"CAT","name":"Africa\/Khartoum CAT (UTC +02:00)","offset":"+02:00"},{"id":"Africa\/Kigali","abbr":"CAT","name":"Africa\/Kigali CAT (UTC +02:00)","offset":"+02:00"},{"id":"Africa\/Kinshasa","abbr":"WAT","name":"Africa\/Kinshasa WAT (UTC +01:00)","offset":"+01:00"},{"id":"Africa\/Lagos","abbr":"WAT","name":"Africa\/Lagos WAT (UTC +01:00)","offset":"+01:00"},{"id":"Africa\/Libreville","abbr":"WAT","name":"Africa\/Libreville WAT (UTC +01:00)","offset":"+01:00"},{"id":"Africa\/Lome","abbr":"GMT","name":"Africa\/Lome GMT (UTC +00:00)","offset":"+00:00"},{"id":"Africa\/Luanda","abbr":"WAT","name":"Africa\/Luanda WAT (UTC +01:00)","offset":"+01:00"},{"id":"Africa\/Lubumbashi","abbr":"CAT","name":"Africa\/Lubumbashi CAT (UTC +02:00)","offset":"+02:00"},{"id":"Africa\/Lusaka","abbr":"CAT","name":"Africa\/Lusaka CAT (UTC +02:00)","offset":"+02:00"},{"id":"Africa\/Malabo","abbr":"WAT","name":"Africa\/Malabo WAT (UTC +01:00)","offset":"+01:00"},{"id":"Africa\/Maputo","abbr":"CAT","name":"Africa\/Maputo CAT (UTC +02:00)","offset":"+02:00"},{"id":"Africa\/Maseru","abbr":"SAST","name":"Africa\/Maseru SAST (UTC +02:00)","offset":"+02:00"},{"id":"Africa\/Mbabane","abbr":"SAST","name":"Africa\/Mbabane SAST (UTC +02:00)","offset":"+02:00"},{"id":"Africa\/Mogadishu","abbr":"EAT","name":"Africa\/Mogadishu EAT (UTC +03:00)","offset":"+03:00"},{"id":"Africa\/Monrovia","abbr":"GMT","name":"Africa\/Monrovia GMT (UTC +00:00)","offset":"+00:00"},{"id":"Africa\/Nairobi","abbr":"EAT","name":"Africa\/Nairobi EAT (UTC +03:00)","offset":"+03:00"},{"id":"Africa\/Ndjamena","abbr":"WAT","name":"Africa\/Ndjamena WAT (UTC +01:00)","offset":"+01:00"},{"id":"Africa\/Niamey","abbr":"WAT","name":"Africa\/Niamey WAT (UTC +01:00)","offset":"+01:00"},{"id":"Africa\/Nouakchott","abbr":"GMT","name":"Africa\/Nouakchott GMT (UTC +00:00)","offset":"+00:00"},{"id":"Africa\/Ouagadougou","abbr":"GMT","name":"Africa\/Ouagadougou GMT (UTC +00:00)","offset":"+00:00"},{"id":"Africa\/Porto-Novo","abbr":"WAT","name":"Africa\/Porto-Novo WAT (UTC +01:00)","offset":"+01:00"},{"id":"Africa\/Sao_Tome","abbr":"WAT","name":"Africa\/Sao_Tome WAT (UTC +01:00)","offset":"+01:00"},{"id":"Africa\/Tripoli","abbr":"EET","name":"Africa\/Tripoli EET (UTC +02:00)","offset":"+02:00"},{"id":"Africa\/Tunis","abbr":"CET","name":"Africa\/Tunis CET (UTC +01:00)","offset":"+01:00"},{"id":"Africa\/Windhoek","abbr":"CAT","name":"Africa\/Windhoek CAT (UTC +02:00)","offset":"+02:00"},{"id":"America\/Adak","abbr":"HDT","name":"America\/Adak HDT (UTC -09:00)","offset":"-09:00"},{"id":"America\/Anchorage","abbr":"AKDT","name":"America\/Anchorage AKDT (UTC -08:00)","offset":"-08:00"},{"id":"America\/Anguilla","abbr":"AST","name":"America\/Anguilla AST (UTC -04:00)","offset":"-04:00"},{"id":"America\/Antigua","abbr":"AST","name":"America\/Antigua AST (UTC -04:00)","offset":"-04:00"},{"id":"America\/Araguaina","abbr":"-03","name":"America\/Araguaina -03 (UTC -03:00)","offset":"-03:00"},{"id":"America\/Argentina\/Buenos_Aires","abbr":"-03","name":"America\/Argentina\/Buenos_Aires -03 (UTC -03:00)","offset":"-03:00"},{"id":"America\/Argentina\/Catamarca","abbr":"-03","name":"America\/Argentina\/Catamarca -03 (UTC -03:00)","offset":"-03:00"},{"id":"America\/Argentina\/Cordoba","abbr":"-03","name":"America\/Argentina\/Cordoba -03 (UTC -03:00)","offset":"-03:00"},{"id":"America\/Argentina\/Jujuy","abbr":"-03","name":"America\/Argentina\/Jujuy -03 (UTC -03:00)","offset":"-03:00"},{"id":"America\/Argentina\/La_Rioja","abbr":"-03","name":"America\/Argentina\/La_Rioja -03 (UTC -03:00)","offset":"-03:00"},{"id":"America\/Argentina\/Mendoza","abbr":"-03","name":"America\/Argentina\/Mendoza -03 (UTC -03:00)","offset":"-03:00"},{"id":"America\/Argentina\/Rio_Gallegos","abbr":"-03","name":"America\/Argentina\/Rio_Gallegos -03 (UTC -03:00)","offset":"-03:00"},{"id":"America\/Argentina\/Salta","abbr":"-03","name":"America\/Argentina\/Salta -03 (UTC -03:00)","offset":"-03:00"},{"id":"America\/Argentina\/San_Juan","abbr":"-03","name":"America\/Argentina\/San_Juan -03 (UTC -03:00)","offset":"-03:00"},{"id":"America\/Argentina\/San_Luis","abbr":"-03","name":"America\/Argentina\/San_Luis -03 (UTC -03:00)","offset":"-03:00"},{"id":"America\/Argentina\/Tucuman","abbr":"-03","name":"America\/Argentina\/Tucuman -03 (UTC -03:00)","offset":"-03:00"},{"id":"America\/Argentina\/Ushuaia","abbr":"-03","name":"America\/Argentina\/Ushuaia -03 (UTC -03:00)","offset":"-03:00"},{"id":"America\/Aruba","abbr":"AST","name":"America\/Aruba AST (UTC -04:00)","offset":"-04:00"},{"id":"America\/Asuncion","abbr":"-04","name":"America\/Asuncion -04 (UTC -04:00)","offset":"-04:00"},{"id":"America\/Atikokan","abbr":"EST","name":"America\/Atikokan EST (UTC -05:00)","offset":"-05:00"},{"id":"America\/Bahia","abbr":"-03","name":"America\/Bahia -03 (UTC -03:00)","offset":"-03:00"},{"id":"America\/Bahia_Banderas","abbr":"CDT","name":"America\/Bahia_Banderas CDT (UTC -05:00)","offset":"-05:00"},{"id":"America\/Barbados","abbr":"AST","name":"America\/Barbados AST (UTC -04:00)","offset":"-04:00"},{"id":"America\/Belem","abbr":"-03","name":"America\/Belem -03 (UTC -03:00)","offset":"-03:00"},{"id":"America\/Belize","abbr":"CST","name":"America\/Belize CST (UTC -06:00)","offset":"-06:00"},{"id":"America\/Blanc-Sablon","abbr":"AST","name":"America\/Blanc-Sablon AST (UTC -04:00)","offset":"-04:00"},{"id":"America\/Boa_Vista","abbr":"-04","name":"America\/Boa_Vista -04 (UTC -04:00)","offset":"-04:00"},{"id":"America\/Bogota","abbr":"-05","name":"America\/Bogota -05 (UTC -05:00)","offset":"-05:00"},{"id":"America\/Boise","abbr":"MDT","name":"America\/Boise MDT (UTC -06:00)","offset":"-06:00"},{"id":"America\/Cambridge_Bay","abbr":"MDT","name":"America\/Cambridge_Bay MDT (UTC -06:00)","offset":"-06:00"},{"id":"America\/Campo_Grande","abbr":"-04","name":"America\/Campo_Grande -04 (UTC -04:00)","offset":"-04:00"},{"id":"America\/Cancun","abbr":"EST","name":"America\/Cancun EST (UTC -05:00)","offset":"-05:00"},{"id":"America\/Caracas","abbr":"-04","name":"America\/Caracas -04 (UTC -04:00)","offset":"-04:00"},{"id":"America\/Cayenne","abbr":"-03","name":"America\/Cayenne -03 (UTC -03:00)","offset":"-03:00"},{"id":"America\/Cayman","abbr":"EST","name":"America\/Cayman EST (UTC -05:00)","offset":"-05:00"},{"id":"America\/Chicago","abbr":"CDT","name":"America\/Chicago CDT (UTC -05:00)","offset":"-05:00"},{"id":"America\/Chihuahua","abbr":"MDT","name":"America\/Chihuahua MDT (UTC -06:00)","offset":"-06:00"},{"id":"America\/Costa_Rica","abbr":"CST","name":"America\/Costa_Rica CST (UTC -06:00)","offset":"-06:00"},{"id":"America\/Creston","abbr":"MST","name":"America\/Creston MST (UTC -07:00)","offset":"-07:00"},{"id":"America\/Cuiaba","abbr":"-04","name":"America\/Cuiaba -04 (UTC -04:00)","offset":"-04:00"},{"id":"America\/Curacao","abbr":"AST","name":"America\/Curacao AST (UTC -04:00)","offset":"-04:00"},{"id":"America\/Danmarkshavn","abbr":"GMT","name":"America\/Danmarkshavn GMT (UTC +00:00)","offset":"+00:00"},{"id":"America\/Dawson","abbr":"PDT","name":"America\/Dawson PDT (UTC -07:00)","offset":"-07:00"},{"id":"America\/Dawson_Creek","abbr":"MST","name":"America\/Dawson_Creek MST (UTC -07:00)","offset":"-07:00"},{"id":"America\/Denver","abbr":"MDT","name":"America\/Denver MDT (UTC -06:00)","offset":"-06:00"},{"id":"America\/Detroit","abbr":"EDT","name":"America\/Detroit EDT (UTC -04:00)","offset":"-04:00"},{"id":"America\/Dominica","abbr":"AST","name":"America\/Dominica AST (UTC -04:00)","offset":"-04:00"},{"id":"America\/Edmonton","abbr":"MDT","name":"America\/Edmonton MDT (UTC -06:00)","offset":"-06:00"},{"id":"America\/Eirunepe","abbr":"-05","name":"America\/Eirunepe -05 (UTC -05:00)","offset":"-05:00"},{"id":"America\/El_Salvador","abbr":"CST","name":"America\/El_Salvador CST (UTC -06:00)","offset":"-06:00"},{"id":"America\/Fort_Nelson","abbr":"MST","name":"America\/Fort_Nelson MST (UTC -07:00)","offset":"-07:00"},{"id":"America\/Fortaleza","abbr":"-03","name":"America\/Fortaleza -03 (UTC -03:00)","offset":"-03:00"},{"id":"America\/Glace_Bay","abbr":"ADT","name":"America\/Glace_Bay ADT (UTC -03:00)","offset":"-03:00"},{"id":"America\/Godthab","abbr":"-02","name":"America\/Godthab -02 (UTC -02:00)","offset":"-02:00"},{"id":"America\/Goose_Bay","abbr":"ADT","name":"America\/Goose_Bay ADT (UTC -03:00)","offset":"-03:00"},{"id":"America\/Grand_Turk","abbr":"EDT","name":"America\/Grand_Turk EDT (UTC -04:00)","offset":"-04:00"},{"id":"America\/Grenada","abbr":"AST","name":"America\/Grenada AST (UTC -04:00)","offset":"-04:00"},{"id":"America\/Guadeloupe","abbr":"AST","name":"America\/Guadeloupe AST (UTC -04:00)","offset":"-04:00"},{"id":"America\/Guatemala","abbr":"CST","name":"America\/Guatemala CST (UTC -06:00)","offset":"-06:00"},{"id":"America\/Guayaquil","abbr":"-05","name":"America\/Guayaquil -05 (UTC -05:00)","offset":"-05:00"},{"id":"America\/Guyana","abbr":"-04","name":"America\/Guyana -04 (UTC -04:00)","offset":"-04:00"},{"id":"America\/Halifax","abbr":"ADT","name":"America\/Halifax ADT (UTC -03:00)","offset":"-03:00"},{"id":"America\/Havana","abbr":"CDT","name":"America\/Havana CDT (UTC -04:00)","offset":"-04:00"},{"id":"America\/Hermosillo","abbr":"MST","name":"America\/Hermosillo MST (UTC -07:00)","offset":"-07:00"},{"id":"America\/Indiana\/Indianapolis","abbr":"EDT","name":"America\/Indiana\/Indianapolis EDT (UTC -04:00)","offset":"-04:00"},{"id":"America\/Indiana\/Knox","abbr":"CDT","name":"America\/Indiana\/Knox CDT (UTC -05:00)","offset":"-05:00"},{"id":"America\/Indiana\/Marengo","abbr":"EDT","name":"America\/Indiana\/Marengo EDT (UTC -04:00)","offset":"-04:00"},{"id":"America\/Indiana\/Petersburg","abbr":"EDT","name":"America\/Indiana\/Petersburg EDT (UTC -04:00)","offset":"-04:00"},{"id":"America\/Indiana\/Tell_City","abbr":"CDT","name":"America\/Indiana\/Tell_City CDT (UTC -05:00)","offset":"-05:00"},{"id":"America\/Indiana\/Vevay","abbr":"EDT","name":"America\/Indiana\/Vevay EDT (UTC -04:00)","offset":"-04:00"},{"id":"America\/Indiana\/Vincennes","abbr":"EDT","name":"America\/Indiana\/Vincennes EDT (UTC -04:00)","offset":"-04:00"},{"id":"America\/Indiana\/Winamac","abbr":"EDT","name":"America\/Indiana\/Winamac EDT (UTC -04:00)","offset":"-04:00"},{"id":"America\/Inuvik","abbr":"MDT","name":"America\/Inuvik MDT (UTC -06:00)","offset":"-06:00"},{"id":"America\/Iqaluit","abbr":"EDT","name":"America\/Iqaluit EDT (UTC -04:00)","offset":"-04:00"},{"id":"America\/Jamaica","abbr":"EST","name":"America\/Jamaica EST (UTC -05:00)","offset":"-05:00"},{"id":"America\/Juneau","abbr":"AKDT","name":"America\/Juneau AKDT (UTC -08:00)","offset":"-08:00"},{"id":"America\/Kentucky\/Louisville","abbr":"EDT","name":"America\/Kentucky\/Louisville EDT (UTC -04:00)","offset":"-04:00"},{"id":"America\/Kentucky\/Monticello","abbr":"EDT","name":"America\/Kentucky\/Monticello EDT (UTC -04:00)","offset":"-04:00"},{"id":"America\/Kralendijk","abbr":"AST","name":"America\/Kralendijk AST (UTC -04:00)","offset":"-04:00"},{"id":"America\/La_Paz","abbr":"-04","name":"America\/La_Paz -04 (UTC -04:00)","offset":"-04:00"},{"id":"America\/Lima","abbr":"-05","name":"America\/Lima -05 (UTC -05:00)","offset":"-05:00"},{"id":"America\/Los_Angeles","abbr":"PDT","name":"America\/Los_Angeles PDT (UTC -07:00)","offset":"-07:00"},{"id":"America\/Lower_Princes","abbr":"AST","name":"America\/Lower_Princes AST (UTC -04:00)","offset":"-04:00"},{"id":"America\/Maceio","abbr":"-03","name":"America\/Maceio -03 (UTC -03:00)","offset":"-03:00"},{"id":"America\/Managua","abbr":"CST","name":"America\/Managua CST (UTC -06:00)","offset":"-06:00"},{"id":"America\/Manaus","abbr":"-04","name":"America\/Manaus -04 (UTC -04:00)","offset":"-04:00"},{"id":"America\/Marigot","abbr":"AST","name":"America\/Marigot AST (UTC -04:00)","offset":"-04:00"},{"id":"America\/Martinique","abbr":"AST","name":"America\/Martinique AST (UTC -04:00)","offset":"-04:00"},{"id":"America\/Matamoros","abbr":"CDT","name":"America\/Matamoros CDT (UTC -05:00)","offset":"-05:00"},{"id":"America\/Mazatlan","abbr":"MDT","name":"America\/Mazatlan MDT (UTC -06:00)","offset":"-06:00"},{"id":"America\/Menominee","abbr":"CDT","name":"America\/Menominee CDT (UTC -05:00)","offset":"-05:00"},{"id":"America\/Merida","abbr":"CDT","name":"America\/Merida CDT (UTC -05:00)","offset":"-05:00"},{"id":"America\/Metlakatla","abbr":"AKDT","name":"America\/Metlakatla AKDT (UTC -08:00)","offset":"-08:00"},{"id":"America\/Mexico_City","abbr":"CDT","name":"America\/Mexico_City CDT (UTC -05:00)","offset":"-05:00"},{"id":"America\/Miquelon","abbr":"-02","name":"America\/Miquelon -02 (UTC -02:00)","offset":"-02:00"},{"id":"America\/Moncton","abbr":"ADT","name":"America\/Moncton ADT (UTC -03:00)","offset":"-03:00"},{"id":"America\/Monterrey","abbr":"CDT","name":"America\/Monterrey CDT (UTC -05:00)","offset":"-05:00"},{"id":"America\/Montevideo","abbr":"-03","name":"America\/Montevideo -03 (UTC -03:00)","offset":"-03:00"},{"id":"America\/Montserrat","abbr":"AST","name":"America\/Montserrat AST (UTC -04:00)","offset":"-04:00"},{"id":"America\/Nassau","abbr":"EDT","name":"America\/Nassau EDT (UTC -04:00)","offset":"-04:00"},{"id":"America\/New_York","abbr":"EDT","name":"America\/New_York EDT (UTC -04:00)","offset":"-04:00"},{"id":"America\/Nipigon","abbr":"EDT","name":"America\/Nipigon EDT (UTC -04:00)","offset":"-04:00"},{"id":"America\/Nome","abbr":"AKDT","name":"America\/Nome AKDT (UTC -08:00)","offset":"-08:00"},{"id":"America\/Noronha","abbr":"-02","name":"America\/Noronha -02 (UTC -02:00)","offset":"-02:00"},{"id":"America\/North_Dakota\/Beulah","abbr":"CDT","name":"America\/North_Dakota\/Beulah CDT (UTC -05:00)","offset":"-05:00"},{"id":"America\/North_Dakota\/Center","abbr":"CDT","name":"America\/North_Dakota\/Center CDT (UTC -05:00)","offset":"-05:00"},{"id":"America\/North_Dakota\/New_Salem","abbr":"CDT","name":"America\/North_Dakota\/New_Salem CDT (UTC -05:00)","offset":"-05:00"},{"id":"America\/Ojinaga","abbr":"MDT","name":"America\/Ojinaga MDT (UTC -06:00)","offset":"-06:00"},{"id":"America\/Panama","abbr":"EST","name":"America\/Panama EST (UTC -05:00)","offset":"-05:00"},{"id":"America\/Pangnirtung","abbr":"EDT","name":"America\/Pangnirtung EDT (UTC -04:00)","offset":"-04:00"},{"id":"America\/Paramaribo","abbr":"-03","name":"America\/Paramaribo -03 (UTC -03:00)","offset":"-03:00"},{"id":"America\/Phoenix","abbr":"MST","name":"America\/Phoenix MST (UTC -07:00)","offset":"-07:00"},{"id":"America\/Port-au-Prince","abbr":"EDT","name":"America\/Port-au-Prince EDT (UTC -04:00)","offset":"-04:00"},{"id":"America\/Port_of_Spain","abbr":"AST","name":"America\/Port_of_Spain AST (UTC -04:00)","offset":"-04:00"},{"id":"America\/Porto_Velho","abbr":"-04","name":"America\/Porto_Velho -04 (UTC -04:00)","offset":"-04:00"},{"id":"America\/Puerto_Rico","abbr":"AST","name":"America\/Puerto_Rico AST (UTC -04:00)","offset":"-04:00"},{"id":"America\/Punta_Arenas","abbr":"-03","name":"America\/Punta_Arenas -03 (UTC -03:00)","offset":"-03:00"},{"id":"America\/Rainy_River","abbr":"CDT","name":"America\/Rainy_River CDT (UTC -05:00)","offset":"-05:00"},{"id":"America\/Rankin_Inlet","abbr":"CDT","name":"America\/Rankin_Inlet CDT (UTC -05:00)","offset":"-05:00"},{"id":"America\/Recife","abbr":"-03","name":"America\/Recife -03 (UTC -03:00)","offset":"-03:00"},{"id":"America\/Regina","abbr":"CST","name":"America\/Regina CST (UTC -06:00)","offset":"-06:00"},{"id":"America\/Resolute","abbr":"CDT","name":"America\/Resolute CDT (UTC -05:00)","offset":"-05:00"},{"id":"America\/Rio_Branco","abbr":"-05","name":"America\/Rio_Branco -05 (UTC -05:00)","offset":"-05:00"},{"id":"America\/Santarem","abbr":"-03","name":"America\/Santarem -03 (UTC -03:00)","offset":"-03:00"},{"id":"America\/Santiago","abbr":"-04","name":"America\/Santiago -04 (UTC -04:00)","offset":"-04:00"},{"id":"America\/Santo_Domingo","abbr":"AST","name":"America\/Santo_Domingo AST (UTC -04:00)","offset":"-04:00"},{"id":"America\/Sao_Paulo","abbr":"-03","name":"America\/Sao_Paulo -03 (UTC -03:00)","offset":"-03:00"},{"id":"America\/Scoresbysund","abbr":"+00","name":"America\/Scoresbysund +00 (UTC +00:00)","offset":"+00:00"},{"id":"America\/Sitka","abbr":"AKDT","name":"America\/Sitka AKDT (UTC -08:00)","offset":"-08:00"},{"id":"America\/St_Barthelemy","abbr":"AST","name":"America\/St_Barthelemy AST (UTC -04:00)","offset":"-04:00"},{"id":"America\/St_Johns","abbr":"NDT","name":"America\/St_Johns NDT (UTC -03:30)","offset":"-03:30"},{"id":"America\/St_Kitts","abbr":"AST","name":"America\/St_Kitts AST (UTC -04:00)","offset":"-04:00"},{"id":"America\/St_Lucia","abbr":"AST","name":"America\/St_Lucia AST (UTC -04:00)","offset":"-04:00"},{"id":"America\/St_Thomas","abbr":"AST","name":"America\/St_Thomas AST (UTC -04:00)","offset":"-04:00"},{"id":"America\/St_Vincent","abbr":"AST","name":"America\/St_Vincent AST (UTC -04:00)","offset":"-04:00"},{"id":"America\/Swift_Current","abbr":"CST","name":"America\/Swift_Current CST (UTC -06:00)","offset":"-06:00"},{"id":"America\/Tegucigalpa","abbr":"CST","name":"America\/Tegucigalpa CST (UTC -06:00)","offset":"-06:00"},{"id":"America\/Thule","abbr":"ADT","name":"America\/Thule ADT (UTC -03:00)","offset":"-03:00"},{"id":"America\/Thunder_Bay","abbr":"EDT","name":"America\/Thunder_Bay EDT (UTC -04:00)","offset":"-04:00"},{"id":"America\/Tijuana","abbr":"PDT","name":"America\/Tijuana PDT (UTC -07:00)","offset":"-07:00"},{"id":"America\/Toronto","abbr":"EDT","name":"America\/Toronto EDT (UTC -04:00)","offset":"-04:00"},{"id":"America\/Tortola","abbr":"AST","name":"America\/Tortola AST (UTC -04:00)","offset":"-04:00"},{"id":"America\/Vancouver","abbr":"PDT","name":"America\/Vancouver PDT (UTC -07:00)","offset":"-07:00"},{"id":"America\/Whitehorse","abbr":"PDT","name":"America\/Whitehorse PDT (UTC -07:00)","offset":"-07:00"},{"id":"America\/Winnipeg","abbr":"CDT","name":"America\/Winnipeg CDT (UTC -05:00)","offset":"-05:00"},{"id":"America\/Yakutat","abbr":"AKDT","name":"America\/Yakutat AKDT (UTC -08:00)","offset":"-08:00"},{"id":"America\/Yellowknife","abbr":"MDT","name":"America\/Yellowknife MDT (UTC -06:00)","offset":"-06:00"},{"id":"Antarctica\/Casey","abbr":"+08","name":"Antarctica\/Casey +08 (UTC +08:00)","offset":"+08:00"},{"id":"Antarctica\/Davis","abbr":"+07","name":"Antarctica\/Davis +07 (UTC +07:00)","offset":"+07:00"},{"id":"Antarctica\/DumontDUrville","abbr":"+10","name":"Antarctica\/DumontDUrville +10 (UTC +10:00)","offset":"+10:00"},{"id":"Antarctica\/Macquarie","abbr":"+11","name":"Antarctica\/Macquarie +11 (UTC +11:00)","offset":"+11:00"},{"id":"Antarctica\/Mawson","abbr":"+05","name":"Antarctica\/Mawson +05 (UTC +05:00)","offset":"+05:00"},{"id":"Antarctica\/McMurdo","abbr":"NZST","name":"Antarctica\/McMurdo NZST (UTC +12:00)","offset":"+12:00"},{"id":"Antarctica\/Palmer","abbr":"-03","name":"Antarctica\/Palmer -03 (UTC -03:00)","offset":"-03:00"},{"id":"Antarctica\/Rothera","abbr":"-03","name":"Antarctica\/Rothera -03 (UTC -03:00)","offset":"-03:00"},{"id":"Antarctica\/Syowa","abbr":"+03","name":"Antarctica\/Syowa +03 (UTC +03:00)","offset":"+03:00"},{"id":"Antarctica\/Troll","abbr":"+02","name":"Antarctica\/Troll +02 (UTC +02:00)","offset":"+02:00"},{"id":"Antarctica\/Vostok","abbr":"+06","name":"Antarctica\/Vostok +06 (UTC +06:00)","offset":"+06:00"},{"id":"Arctic\/Longyearbyen","abbr":"CEST","name":"Arctic\/Longyearbyen CEST (UTC +02:00)","offset":"+02:00"},{"id":"Asia\/Aden","abbr":"+03","name":"Asia\/Aden +03 (UTC +03:00)","offset":"+03:00"},{"id":"Asia\/Almaty","abbr":"+06","name":"Asia\/Almaty +06 (UTC +06:00)","offset":"+06:00"},{"id":"Asia\/Amman","abbr":"EEST","name":"Asia\/Amman EEST (UTC +03:00)","offset":"+03:00"},{"id":"Asia\/Anadyr","abbr":"+12","name":"Asia\/Anadyr +12 (UTC +12:00)","offset":"+12:00"},{"id":"Asia\/Aqtau","abbr":"+05","name":"Asia\/Aqtau +05 (UTC +05:00)","offset":"+05:00"},{"id":"Asia\/Aqtobe","abbr":"+05","name":"Asia\/Aqtobe +05 (UTC +05:00)","offset":"+05:00"},{"id":"Asia\/Ashgabat","abbr":"+05","name":"Asia\/Ashgabat +05 (UTC +05:00)","offset":"+05:00"},{"id":"Asia\/Atyrau","abbr":"+05","name":"Asia\/Atyrau +05 (UTC +05:00)","offset":"+05:00"},{"id":"Asia\/Baghdad","abbr":"+03","name":"Asia\/Baghdad +03 (UTC +03:00)","offset":"+03:00"},{"id":"Asia\/Bahrain","abbr":"+03","name":"Asia\/Bahrain +03 (UTC +03:00)","offset":"+03:00"},{"id":"Asia\/Baku","abbr":"+04","name":"Asia\/Baku +04 (UTC +04:00)","offset":"+04:00"},{"id":"Asia\/Bangkok","abbr":"+07","name":"Asia\/Bangkok +07 (UTC +07:00)","offset":"+07:00"},{"id":"Asia\/Barnaul","abbr":"+07","name":"Asia\/Barnaul +07 (UTC +07:00)","offset":"+07:00"},{"id":"Asia\/Beirut","abbr":"EEST","name":"Asia\/Beirut EEST (UTC +03:00)","offset":"+03:00"},{"id":"Asia\/Bishkek","abbr":"+06","name":"Asia\/Bishkek +06 (UTC +06:00)","offset":"+06:00"},{"id":"Asia\/Brunei","abbr":"+08","name":"Asia\/Brunei +08 (UTC +08:00)","offset":"+08:00"},{"id":"Asia\/Chita","abbr":"+09","name":"Asia\/Chita +09 (UTC +09:00)","offset":"+09:00"},{"id":"Asia\/Choibalsan","abbr":"+08","name":"Asia\/Choibalsan +08 (UTC +08:00)","offset":"+08:00"},{"id":"Asia\/Colombo","abbr":"+0530","name":"Asia\/Colombo +0530 (UTC +05:30)","offset":"+05:30"},{"id":"Asia\/Damascus","abbr":"EEST","name":"Asia\/Damascus EEST (UTC +03:00)","offset":"+03:00"},{"id":"Asia\/Dhaka","abbr":"+06","name":"Asia\/Dhaka +06 (UTC +06:00)","offset":"+06:00"},{"id":"Asia\/Dili","abbr":"+09","name":"Asia\/Dili +09 (UTC +09:00)","offset":"+09:00"},{"id":"Asia\/Dubai","abbr":"+04","name":"Asia\/Dubai +04 (UTC +04:00)","offset":"+04:00"},{"id":"Asia\/Dushanbe","abbr":"+05","name":"Asia\/Dushanbe +05 (UTC +05:00)","offset":"+05:00"},{"id":"Asia\/Famagusta","abbr":"EEST","name":"Asia\/Famagusta EEST (UTC +03:00)","offset":"+03:00"},{"id":"Asia\/Gaza","abbr":"EEST","name":"Asia\/Gaza EEST (UTC +03:00)","offset":"+03:00"},{"id":"Asia\/Hebron","abbr":"EEST","name":"Asia\/Hebron EEST (UTC +03:00)","offset":"+03:00"},{"id":"Asia\/Ho_Chi_Minh","abbr":"+07","name":"Asia\/Ho_Chi_Minh +07 (UTC +07:00)","offset":"+07:00"},{"id":"Asia\/Hong_Kong","abbr":"HKT","name":"Asia\/Hong_Kong HKT (UTC +08:00)","offset":"+08:00"},{"id":"Asia\/Hovd","abbr":"+07","name":"Asia\/Hovd +07 (UTC +07:00)","offset":"+07:00"},{"id":"Asia\/Irkutsk","abbr":"+08","name":"Asia\/Irkutsk +08 (UTC +08:00)","offset":"+08:00"},{"id":"Asia\/Jakarta","abbr":"WIB","name":"Asia\/Jakarta WIB (UTC +07:00)","offset":"+07:00"},{"id":"Asia\/Jayapura","abbr":"WIT","name":"Asia\/Jayapura WIT (UTC +09:00)","offset":"+09:00"},{"id":"Asia\/Jerusalem","abbr":"IDT","name":"Asia\/Jerusalem IDT (UTC +03:00)","offset":"+03:00"},{"id":"Asia\/Kabul","abbr":"+0430","name":"Asia\/Kabul +0430 (UTC +04:30)","offset":"+04:30"},{"id":"Asia\/Kamchatka","abbr":"+12","name":"Asia\/Kamchatka +12 (UTC +12:00)","offset":"+12:00"},{"id":"Asia\/Karachi","abbr":"PKT","name":"Asia\/Karachi PKT (UTC +05:00)","offset":"+05:00"},{"id":"Asia\/Kathmandu","abbr":"+0545","name":"Asia\/Kathmandu +0545 (UTC +05:45)","offset":"+05:45"},{"id":"Asia\/Khandyga","abbr":"+09","name":"Asia\/Khandyga +09 (UTC +09:00)","offset":"+09:00"},{"id":"Asia\/Kolkata","abbr":"IST","name":"Asia\/Kolkata IST (UTC +05:30)","offset":"+05:30"},{"id":"Asia\/Krasnoyarsk","abbr":"+07","name":"Asia\/Krasnoyarsk +07 (UTC +07:00)","offset":"+07:00"},{"id":"Asia\/Kuala_Lumpur","abbr":"+08","name":"Asia\/Kuala_Lumpur +08 (UTC +08:00)","offset":"+08:00"},{"id":"Asia\/Kuching","abbr":"+08","name":"Asia\/Kuching +08 (UTC +08:00)","offset":"+08:00"},{"id":"Asia\/Kuwait","abbr":"+03","name":"Asia\/Kuwait +03 (UTC +03:00)","offset":"+03:00"},{"id":"Asia\/Macau","abbr":"CST","name":"Asia\/Macau CST (UTC +08:00)","offset":"+08:00"},{"id":"Asia\/Magadan","abbr":"+11","name":"Asia\/Magadan +11 (UTC +11:00)","offset":"+11:00"},{"id":"Asia\/Makassar","abbr":"WITA","name":"Asia\/Makassar WITA (UTC +08:00)","offset":"+08:00"},{"id":"Asia\/Manila","abbr":"PST","name":"Asia\/Manila PST (UTC +08:00)","offset":"+08:00"},{"id":"Asia\/Muscat","abbr":"+04","name":"Asia\/Muscat +04 (UTC +04:00)","offset":"+04:00"},{"id":"Asia\/Nicosia","abbr":"EEST","name":"Asia\/Nicosia EEST (UTC +03:00)","offset":"+03:00"},{"id":"Asia\/Novokuznetsk","abbr":"+07","name":"Asia\/Novokuznetsk +07 (UTC +07:00)","offset":"+07:00"},{"id":"Asia\/Novosibirsk","abbr":"+07","name":"Asia\/Novosibirsk +07 (UTC +07:00)","offset":"+07:00"},{"id":"Asia\/Omsk","abbr":"+06","name":"Asia\/Omsk +06 (UTC +06:00)","offset":"+06:00"},{"id":"Asia\/Oral","abbr":"+05","name":"Asia\/Oral +05 (UTC +05:00)","offset":"+05:00"},{"id":"Asia\/Phnom_Penh","abbr":"+07","name":"Asia\/Phnom_Penh +07 (UTC +07:00)","offset":"+07:00"},{"id":"Asia\/Pontianak","abbr":"WIB","name":"Asia\/Pontianak WIB (UTC +07:00)","offset":"+07:00"},{"id":"Asia\/Pyongyang","abbr":"KST","name":"Asia\/Pyongyang KST (UTC +09:00)","offset":"+09:00"},{"id":"Asia\/Qatar","abbr":"+03","name":"Asia\/Qatar +03 (UTC +03:00)","offset":"+03:00"},{"id":"Asia\/Qyzylorda","abbr":"+06","name":"Asia\/Qyzylorda +06 (UTC +06:00)","offset":"+06:00"},{"id":"Asia\/Riyadh","abbr":"+03","name":"Asia\/Riyadh +03 (UTC +03:00)","offset":"+03:00"},{"id":"Asia\/Sakhalin","abbr":"+11","name":"Asia\/Sakhalin +11 (UTC +11:00)","offset":"+11:00"},{"id":"Asia\/Samarkand","abbr":"+05","name":"Asia\/Samarkand +05 (UTC +05:00)","offset":"+05:00"},{"id":"Asia\/Seoul","abbr":"KST","name":"Asia\/Seoul KST (UTC +09:00)","offset":"+09:00"},{"id":"Asia\/Shanghai","abbr":"CST","name":"Asia\/Shanghai CST (UTC +08:00)","offset":"+08:00"},{"id":"Asia\/Singapore","abbr":"+08","name":"Asia\/Singapore +08 (UTC +08:00)","offset":"+08:00"},{"id":"Asia\/Srednekolymsk","abbr":"+11","name":"Asia\/Srednekolymsk +11 (UTC +11:00)","offset":"+11:00"},{"id":"Asia\/Taipei","abbr":"CST","name":"Asia\/Taipei CST (UTC +08:00)","offset":"+08:00"},{"id":"Asia\/Tashkent","abbr":"+05","name":"Asia\/Tashkent +05 (UTC +05:00)","offset":"+05:00"},{"id":"Asia\/Tbilisi","abbr":"+04","name":"Asia\/Tbilisi +04 (UTC +04:00)","offset":"+04:00"},{"id":"Asia\/Tehran","abbr":"+0430","name":"Asia\/Tehran +0430 (UTC +04:30)","offset":"+04:30"},{"id":"Asia\/Thimphu","abbr":"+06","name":"Asia\/Thimphu +06 (UTC +06:00)","offset":"+06:00"},{"id":"Asia\/Tokyo","abbr":"JST","name":"Asia\/Tokyo JST (UTC +09:00)","offset":"+09:00"},{"id":"Asia\/Tomsk","abbr":"+07","name":"Asia\/Tomsk +07 (UTC +07:00)","offset":"+07:00"},{"id":"Asia\/Ulaanbaatar","abbr":"+08","name":"Asia\/Ulaanbaatar +08 (UTC +08:00)","offset":"+08:00"},{"id":"Asia\/Urumqi","abbr":"+06","name":"Asia\/Urumqi +06 (UTC +06:00)","offset":"+06:00"},{"id":"Asia\/Ust-Nera","abbr":"+10","name":"Asia\/Ust-Nera +10 (UTC +10:00)","offset":"+10:00"},{"id":"Asia\/Vientiane","abbr":"+07","name":"Asia\/Vientiane +07 (UTC +07:00)","offset":"+07:00"},{"id":"Asia\/Vladivostok","abbr":"+10","name":"Asia\/Vladivostok +10 (UTC +10:00)","offset":"+10:00"},{"id":"Asia\/Yakutsk","abbr":"+09","name":"Asia\/Yakutsk +09 (UTC +09:00)","offset":"+09:00"},{"id":"Asia\/Yangon","abbr":"+0630","name":"Asia\/Yangon +0630 (UTC +06:30)","offset":"+06:30"},{"id":"Asia\/Yekaterinburg","abbr":"+05","name":"Asia\/Yekaterinburg +05 (UTC +05:00)","offset":"+05:00"},{"id":"Asia\/Yerevan","abbr":"+04","name":"Asia\/Yerevan +04 (UTC +04:00)","offset":"+04:00"},{"id":"Atlantic\/Azores","abbr":"+00","name":"Atlantic\/Azores +00 (UTC +00:00)","offset":"+00:00"},{"id":"Atlantic\/Bermuda","abbr":"ADT","name":"Atlantic\/Bermuda ADT (UTC -03:00)","offset":"-03:00"},{"id":"Atlantic\/Canary","abbr":"WEST","name":"Atlantic\/Canary WEST (UTC +01:00)","offset":"+01:00"},{"id":"Atlantic\/Cape_Verde","abbr":"-01","name":"Atlantic\/Cape_Verde -01 (UTC -01:00)","offset":"-01:00"},{"id":"Atlantic\/Faroe","abbr":"WEST","name":"Atlantic\/Faroe WEST (UTC +01:00)","offset":"+01:00"},{"id":"Atlantic\/Madeira","abbr":"WEST","name":"Atlantic\/Madeira WEST (UTC +01:00)","offset":"+01:00"},{"id":"Atlantic\/Reykjavik","abbr":"GMT","name":"Atlantic\/Reykjavik GMT (UTC +00:00)","offset":"+00:00"},{"id":"Atlantic\/South_Georgia","abbr":"-02","name":"Atlantic\/South_Georgia -02 (UTC -02:00)","offset":"-02:00"},{"id":"Atlantic\/St_Helena","abbr":"GMT","name":"Atlantic\/St_Helena GMT (UTC +00:00)","offset":"+00:00"},{"id":"Atlantic\/Stanley","abbr":"-03","name":"Atlantic\/Stanley -03 (UTC -03:00)","offset":"-03:00"},{"id":"Australia\/Adelaide","abbr":"ACST","name":"Australia\/Adelaide ACST (UTC +09:30)","offset":"+09:30"},{"id":"Australia\/Brisbane","abbr":"AEST","name":"Australia\/Brisbane AEST (UTC +10:00)","offset":"+10:00"},{"id":"Australia\/Broken_Hill","abbr":"ACST","name":"Australia\/Broken_Hill ACST (UTC +09:30)","offset":"+09:30"},{"id":"Australia\/Currie","abbr":"AEST","name":"Australia\/Currie AEST (UTC +10:00)","offset":"+10:00"},{"id":"Australia\/Darwin","abbr":"ACST","name":"Australia\/Darwin ACST (UTC +09:30)","offset":"+09:30"},{"id":"Australia\/Eucla","abbr":"+0845","name":"Australia\/Eucla +0845 (UTC +08:45)","offset":"+08:45"},{"id":"Australia\/Hobart","abbr":"AEST","name":"Australia\/Hobart AEST (UTC +10:00)","offset":"+10:00"},{"id":"Australia\/Lindeman","abbr":"AEST","name":"Australia\/Lindeman AEST (UTC +10:00)","offset":"+10:00"},{"id":"Australia\/Lord_Howe","abbr":"+1030","name":"Australia\/Lord_Howe +1030 (UTC +10:30)","offset":"+10:30"},{"id":"Australia\/Melbourne","abbr":"AEST","name":"Australia\/Melbourne AEST (UTC +10:00)","offset":"+10:00"},{"id":"Australia\/Perth","abbr":"AWST","name":"Australia\/Perth AWST (UTC +08:00)","offset":"+08:00"},{"id":"Australia\/Sydney","abbr":"AEST","name":"Australia\/Sydney AEST (UTC +10:00)","offset":"+10:00"},{"id":"Europe\/Amsterdam","abbr":"CEST","name":"Europe\/Amsterdam CEST (UTC +02:00)","offset":"+02:00"},{"id":"Europe\/Andorra","abbr":"CEST","name":"Europe\/Andorra CEST (UTC +02:00)","offset":"+02:00"},{"id":"Europe\/Astrakhan","abbr":"+04","name":"Europe\/Astrakhan +04 (UTC +04:00)","offset":"+04:00"},{"id":"Europe\/Athens","abbr":"EEST","name":"Europe\/Athens EEST (UTC +03:00)","offset":"+03:00"},{"id":"Europe\/Belgrade","abbr":"CEST","name":"Europe\/Belgrade CEST (UTC +02:00)","offset":"+02:00"},{"id":"Europe\/Berlin","abbr":"CEST","name":"Europe\/Berlin CEST (UTC +02:00)","offset":"+02:00"},{"id":"Europe\/Bratislava","abbr":"CEST","name":"Europe\/Bratislava CEST (UTC +02:00)","offset":"+02:00"},{"id":"Europe\/Brussels","abbr":"CEST","name":"Europe\/Brussels CEST (UTC +02:00)","offset":"+02:00"},{"id":"Europe\/Bucharest","abbr":"EEST","name":"Europe\/Bucharest EEST (UTC +03:00)","offset":"+03:00"},{"id":"Europe\/Budapest","abbr":"CEST","name":"Europe\/Budapest CEST (UTC +02:00)","offset":"+02:00"},{"id":"Europe\/Busingen","abbr":"CEST","name":"Europe\/Busingen CEST (UTC +02:00)","offset":"+02:00"},{"id":"Europe\/Chisinau","abbr":"EEST","name":"Europe\/Chisinau EEST (UTC +03:00)","offset":"+03:00"},{"id":"Europe\/Copenhagen","abbr":"CEST","name":"Europe\/Copenhagen CEST (UTC +02:00)","offset":"+02:00"},{"id":"Europe\/Dublin","abbr":"IST","name":"Europe\/Dublin IST (UTC +01:00)","offset":"+01:00"},{"id":"Europe\/Gibraltar","abbr":"CEST","name":"Europe\/Gibraltar CEST (UTC +02:00)","offset":"+02:00"},{"id":"Europe\/Guernsey","abbr":"BST","name":"Europe\/Guernsey BST (UTC +01:00)","offset":"+01:00"},{"id":"Europe\/Helsinki","abbr":"EEST","name":"Europe\/Helsinki EEST (UTC +03:00)","offset":"+03:00"},{"id":"Europe\/Isle_of_Man","abbr":"BST","name":"Europe\/Isle_of_Man BST (UTC +01:00)","offset":"+01:00"},{"id":"Europe\/Istanbul","abbr":"+03","name":"Europe\/Istanbul +03 (UTC +03:00)","offset":"+03:00"},{"id":"Europe\/Jersey","abbr":"BST","name":"Europe\/Jersey BST (UTC +01:00)","offset":"+01:00"},{"id":"Europe\/Kaliningrad","abbr":"EET","name":"Europe\/Kaliningrad EET (UTC +02:00)","offset":"+02:00"},{"id":"Europe\/Kiev","abbr":"EEST","name":"Europe\/Kiev EEST (UTC +03:00)","offset":"+03:00"},{"id":"Europe\/Kirov","abbr":"+03","name":"Europe\/Kirov +03 (UTC +03:00)","offset":"+03:00"},{"id":"Europe\/Lisbon","abbr":"WEST","name":"Europe\/Lisbon WEST (UTC +01:00)","offset":"+01:00"},{"id":"Europe\/Ljubljana","abbr":"CEST","name":"Europe\/Ljubljana CEST (UTC +02:00)","offset":"+02:00"},{"id":"Europe\/London","abbr":"BST","name":"Europe\/London BST (UTC +01:00)","offset":"+01:00"},{"id":"Europe\/Luxembourg","abbr":"CEST","name":"Europe\/Luxembourg CEST (UTC +02:00)","offset":"+02:00"},{"id":"Europe\/Madrid","abbr":"CEST","name":"Europe\/Madrid CEST (UTC +02:00)","offset":"+02:00"},{"id":"Europe\/Malta","abbr":"CEST","name":"Europe\/Malta CEST (UTC +02:00)","offset":"+02:00"},{"id":"Europe\/Mariehamn","abbr":"EEST","name":"Europe\/Mariehamn EEST (UTC +03:00)","offset":"+03:00"},{"id":"Europe\/Minsk","abbr":"+03","name":"Europe\/Minsk +03 (UTC +03:00)","offset":"+03:00"},{"id":"Europe\/Monaco","abbr":"CEST","name":"Europe\/Monaco CEST (UTC +02:00)","offset":"+02:00"},{"id":"Europe\/Moscow","abbr":"MSK","name":"Europe\/Moscow MSK (UTC +03:00)","offset":"+03:00"},{"id":"Europe\/Oslo","abbr":"CEST","name":"Europe\/Oslo CEST (UTC +02:00)","offset":"+02:00"},{"id":"Europe\/Paris","abbr":"CEST","name":"Europe\/Paris CEST (UTC +02:00)","offset":"+02:00"},{"id":"Europe\/Podgorica","abbr":"CEST","name":"Europe\/Podgorica CEST (UTC +02:00)","offset":"+02:00"},{"id":"Europe\/Prague","abbr":"CEST","name":"Europe\/Prague CEST (UTC +02:00)","offset":"+02:00"},{"id":"Europe\/Riga","abbr":"EEST","name":"Europe\/Riga EEST (UTC +03:00)","offset":"+03:00"},{"id":"Europe\/Rome","abbr":"CEST","name":"Europe\/Rome CEST (UTC +02:00)","offset":"+02:00"},{"id":"Europe\/Samara","abbr":"+04","name":"Europe\/Samara +04 (UTC +04:00)","offset":"+04:00"},{"id":"Europe\/San_Marino","abbr":"CEST","name":"Europe\/San_Marino CEST (UTC +02:00)","offset":"+02:00"},{"id":"Europe\/Sarajevo","abbr":"CEST","name":"Europe\/Sarajevo CEST (UTC +02:00)","offset":"+02:00"},{"id":"Europe\/Saratov","abbr":"+04","name":"Europe\/Saratov +04 (UTC +04:00)","offset":"+04:00"},{"id":"Europe\/Simferopol","abbr":"MSK","name":"Europe\/Simferopol MSK (UTC +03:00)","offset":"+03:00"},{"id":"Europe\/Skopje","abbr":"CEST","name":"Europe\/Skopje CEST (UTC +02:00)","offset":"+02:00"},{"id":"Europe\/Sofia","abbr":"EEST","name":"Europe\/Sofia EEST (UTC +03:00)","offset":"+03:00"},{"id":"Europe\/Stockholm","abbr":"CEST","name":"Europe\/Stockholm CEST (UTC +02:00)","offset":"+02:00"},{"id":"Europe\/Tallinn","abbr":"EEST","name":"Europe\/Tallinn EEST (UTC +03:00)","offset":"+03:00"},{"id":"Europe\/Tirane","abbr":"CEST","name":"Europe\/Tirane CEST (UTC +02:00)","offset":"+02:00"},{"id":"Europe\/Ulyanovsk","abbr":"+04","name":"Europe\/Ulyanovsk +04 (UTC +04:00)","offset":"+04:00"},{"id":"Europe\/Uzhgorod","abbr":"EEST","name":"Europe\/Uzhgorod EEST (UTC +03:00)","offset":"+03:00"},{"id":"Europe\/Vaduz","abbr":"CEST","name":"Europe\/Vaduz CEST (UTC +02:00)","offset":"+02:00"},{"id":"Europe\/Vatican","abbr":"CEST","name":"Europe\/Vatican CEST (UTC +02:00)","offset":"+02:00"},{"id":"Europe\/Vienna","abbr":"CEST","name":"Europe\/Vienna CEST (UTC +02:00)","offset":"+02:00"},{"id":"Europe\/Vilnius","abbr":"EEST","name":"Europe\/Vilnius EEST (UTC +03:00)","offset":"+03:00"},{"id":"Europe\/Volgograd","abbr":"+04","name":"Europe\/Volgograd +04 (UTC +04:00)","offset":"+04:00"},{"id":"Europe\/Warsaw","abbr":"CEST","name":"Europe\/Warsaw CEST (UTC +02:00)","offset":"+02:00"},{"id":"Europe\/Zagreb","abbr":"CEST","name":"Europe\/Zagreb CEST (UTC +02:00)","offset":"+02:00"},{"id":"Europe\/Zaporozhye","abbr":"EEST","name":"Europe\/Zaporozhye EEST (UTC +03:00)","offset":"+03:00"},{"id":"Europe\/Zurich","abbr":"CEST","name":"Europe\/Zurich CEST (UTC +02:00)","offset":"+02:00"},{"id":"Indian\/Antananarivo","abbr":"EAT","name":"Indian\/Antananarivo EAT (UTC +03:00)","offset":"+03:00"},{"id":"Indian\/Chagos","abbr":"+06","name":"Indian\/Chagos +06 (UTC +06:00)","offset":"+06:00"},{"id":"Indian\/Christmas","abbr":"+07","name":"Indian\/Christmas +07 (UTC +07:00)","offset":"+07:00"},{"id":"Indian\/Cocos","abbr":"+0630","name":"Indian\/Cocos +0630 (UTC +06:30)","offset":"+06:30"},{"id":"Indian\/Comoro","abbr":"EAT","name":"Indian\/Comoro EAT (UTC +03:00)","offset":"+03:00"},{"id":"Indian\/Kerguelen","abbr":"+05","name":"Indian\/Kerguelen +05 (UTC +05:00)","offset":"+05:00"},{"id":"Indian\/Mahe","abbr":"+04","name":"Indian\/Mahe +04 (UTC +04:00)","offset":"+04:00"},{"id":"Indian\/Maldives","abbr":"+05","name":"Indian\/Maldives +05 (UTC +05:00)","offset":"+05:00"},{"id":"Indian\/Mauritius","abbr":"+04","name":"Indian\/Mauritius +04 (UTC +04:00)","offset":"+04:00"},{"id":"Indian\/Mayotte","abbr":"EAT","name":"Indian\/Mayotte EAT (UTC +03:00)","offset":"+03:00"},{"id":"Indian\/Reunion","abbr":"+04","name":"Indian\/Reunion +04 (UTC +04:00)","offset":"+04:00"},{"id":"Pacific\/Apia","abbr":"+13","name":"Pacific\/Apia +13 (UTC +13:00)","offset":"+13:00"},{"id":"Pacific\/Auckland","abbr":"NZST","name":"Pacific\/Auckland NZST (UTC +12:00)","offset":"+12:00"},{"id":"Pacific\/Bougainville","abbr":"+11","name":"Pacific\/Bougainville +11 (UTC +11:00)","offset":"+11:00"},{"id":"Pacific\/Chatham","abbr":"+1245","name":"Pacific\/Chatham +1245 (UTC +12:45)","offset":"+12:45"},{"id":"Pacific\/Chuuk","abbr":"+10","name":"Pacific\/Chuuk +10 (UTC +10:00)","offset":"+10:00"},{"id":"Pacific\/Easter","abbr":"-06","name":"Pacific\/Easter -06 (UTC -06:00)","offset":"-06:00"},{"id":"Pacific\/Efate","abbr":"+11","name":"Pacific\/Efate +11 (UTC +11:00)","offset":"+11:00"},{"id":"Pacific\/Enderbury","abbr":"+13","name":"Pacific\/Enderbury +13 (UTC +13:00)","offset":"+13:00"},{"id":"Pacific\/Fakaofo","abbr":"+13","name":"Pacific\/Fakaofo +13 (UTC +13:00)","offset":"+13:00"},{"id":"Pacific\/Fiji","abbr":"+12","name":"Pacific\/Fiji +12 (UTC +12:00)","offset":"+12:00"},{"id":"Pacific\/Funafuti","abbr":"+12","name":"Pacific\/Funafuti +12 (UTC +12:00)","offset":"+12:00"},{"id":"Pacific\/Galapagos","abbr":"-06","name":"Pacific\/Galapagos -06 (UTC -06:00)","offset":"-06:00"},{"id":"Pacific\/Gambier","abbr":"-09","name":"Pacific\/Gambier -09 (UTC -09:00)","offset":"-09:00"},{"id":"Pacific\/Guadalcanal","abbr":"+11","name":"Pacific\/Guadalcanal +11 (UTC +11:00)","offset":"+11:00"},{"id":"Pacific\/Guam","abbr":"ChST","name":"Pacific\/Guam ChST (UTC +10:00)","offset":"+10:00"},{"id":"Pacific\/Honolulu","abbr":"HST","name":"Pacific\/Honolulu HST (UTC -10:00)","offset":"-10:00"},{"id":"Pacific\/Kiritimati","abbr":"+14","name":"Pacific\/Kiritimati +14 (UTC +14:00)","offset":"+14:00"},{"id":"Pacific\/Kosrae","abbr":"+11","name":"Pacific\/Kosrae +11 (UTC +11:00)","offset":"+11:00"},{"id":"Pacific\/Kwajalein","abbr":"+12","name":"Pacific\/Kwajalein +12 (UTC +12:00)","offset":"+12:00"},{"id":"Pacific\/Majuro","abbr":"+12","name":"Pacific\/Majuro +12 (UTC +12:00)","offset":"+12:00"},{"id":"Pacific\/Marquesas","abbr":"-0930","name":"Pacific\/Marquesas -0930 (UTC -10:30)","offset":"-10:30"},{"id":"Pacific\/Midway","abbr":"SST","name":"Pacific\/Midway SST (UTC -11:00)","offset":"-11:00"},{"id":"Pacific\/Nauru","abbr":"+12","name":"Pacific\/Nauru +12 (UTC +12:00)","offset":"+12:00"},{"id":"Pacific\/Niue","abbr":"-11","name":"Pacific\/Niue -11 (UTC -11:00)","offset":"-11:00"},{"id":"Pacific\/Norfolk","abbr":"+11","name":"Pacific\/Norfolk +11 (UTC +11:00)","offset":"+11:00"},{"id":"Pacific\/Noumea","abbr":"+11","name":"Pacific\/Noumea +11 (UTC +11:00)","offset":"+11:00"},{"id":"Pacific\/Pago_Pago","abbr":"SST","name":"Pacific\/Pago_Pago SST (UTC -11:00)","offset":"-11:00"},{"id":"Pacific\/Palau","abbr":"+09","name":"Pacific\/Palau +09 (UTC +09:00)","offset":"+09:00"},{"id":"Pacific\/Pitcairn","abbr":"-08","name":"Pacific\/Pitcairn -08 (UTC -08:00)","offset":"-08:00"},{"id":"Pacific\/Pohnpei","abbr":"+11","name":"Pacific\/Pohnpei +11 (UTC +11:00)","offset":"+11:00"},{"id":"Pacific\/Port_Moresby","abbr":"+10","name":"Pacific\/Port_Moresby +10 (UTC +10:00)","offset":"+10:00"},{"id":"Pacific\/Rarotonga","abbr":"-10","name":"Pacific\/Rarotonga -10 (UTC -10:00)","offset":"-10:00"},{"id":"Pacific\/Saipan","abbr":"ChST","name":"Pacific\/Saipan ChST (UTC +10:00)","offset":"+10:00"},{"id":"Pacific\/Tahiti","abbr":"-10","name":"Pacific\/Tahiti -10 (UTC -10:00)","offset":"-10:00"},{"id":"Pacific\/Tarawa","abbr":"+12","name":"Pacific\/Tarawa +12 (UTC +12:00)","offset":"+12:00"},{"id":"Pacific\/Tongatapu","abbr":"+13","name":"Pacific\/Tongatapu +13 (UTC +13:00)","offset":"+13:00"},{"id":"Pacific\/Wake","abbr":"+12","name":"Pacific\/Wake +12 (UTC +12:00)","offset":"+12:00"},{"id":"Pacific\/Wallis","abbr":"+12","name":"Pacific\/Wallis +12 (UTC +12:00)","offset":"+12:00"},{"id":"UTC","abbr":"UTC","name":"UTC UTC (UTC +00:00)","offset":"+00:00"}];
+    if(typeof(Obj_Vtg_Realtime) != 'undefined') {
+                Obj_Vtg_Realtime.chartFilters = {"size":{"lt25k":{"label":"< 25k","min":0,"max":"24999"},"25kTo100k":{"label":"25k-100k","min":25000,"max":"99999"},"100kTo250k":{"label":"100k-250k","min":100000,"max":"249999"},"250kTo500k":{"label":"250k-500k","min":250000,"max":"499999"},"500kTo1mm":{"label":"500k-1mm","min":500000,"max":"999999"},"1mmTo5mm":{"label":"1mm-5mm","min":1000000,"max":"4999999"},"gt5mm":{"min":5000000,"label":"5mm+"}},"side":{"B":{"label":"Dealer Buy","color":{"normal":{"inner":"#00B22D","outer":"#009726"},"cancel":{"inner":"#0f5621","outer":"#FF0000"},"correct":{"inner":"#0f5621","outer":"#0f5621"}}},"S":{"label":"Dealer Sell","color":{"normal":{"inner":"#FF0000","outer":"#D90000"},"cancel":{"inner":"#750f0f","outer":"#FF0000"},"correct":{"inner":"#750f0f","outer":"#750f0f"}}},"D":{"label":"Interdealer Trade","color":{"normal":{"inner":"#FFFF00","outer":"#D9D900"},"cancel":{"inner":"#75750f","outer":"#FF0000"},"correct":{"inner":"#75750f","outer":"#75750f"}}},"U":{"label":"Side Undisclosed Trade","color":{"normal":{"inner":"#aaa","outer":"white"}}}}};
+    }
+</script></body>
+</html>
