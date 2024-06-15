@@ -1,0 +1,2975 @@
+<!doctype html>
+<!--[if lt IE 7 ]> <html lang="en" class="no-js ie6"> <![endif]-->
+<!--[if IE 7 ]>    <html lang="en" class="no-js ie7"> <![endif]-->
+<!--[if IE 8 ]>    <html lang="en" class="no-js ie8"> <![endif]-->
+<!--[if IE 9 ]>    <html lang="en" class="no-js ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html lang="en"> <!--<![endif]-->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+    <!-- Always force latest IE rendering engine & Chrome Frame -->
+    
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-PWL6G5M');</script>
+    <!-- End Google Tag Manager -->
+    
+	<meta charset="UTF-8">
+
+	<!-- Consider taking all following comments for performance / deployment -->
+ 
+	<title>Structured Aggregates Report | ICE: Vantage</title>	<!--<title>Transparency</title>-->
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<!-- Mobile viewport optimized: j.mp/bplateviewport -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<!-- Styles -->
+    <style>
+    @font-face {
+        font-family: 'Glyphicons Halflings';
+        src: url('/fonts/glyphicons-halflings-regular.eot');
+        src: url('/fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('/fonts/glyphicons-halflings-regular.woff') format('woff'), url('/fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('/fonts/glyphicons-halflings-regular.svg#glyphicons-halflingsregular') format('svg');
+    }
+
+    @media print {
+        /* make sure charts can print */
+        .flot-overlay {
+            display: none;
+        }
+    }
+
+    </style>
+	<link type="text/css" rel="stylesheet" href="/min/f=/css/fa/css/all.css,/css/fa/css/v4-shims.css,/css/bootstrap_fa.css,/css/styles.css,/css/sections/table-striping.css,/css/vantage-ui/jquery-ui.custom.css" />	<!--[if lte IE 8 ]><script type="text/javascript" src="/js/libs/excanvas.min.js"></script><![endif]-->
+    <!--[if lte IE 9 ]>
+        <script type="text/javascript" src="/js/html5.js"></script>
+        <script type="text/javascript" src="/js/selectivizr-min.js"></script>
+    <![endif]-->
+	<script type="text/javascript" src="/min/f=/js/respond.min.js,/js/libs/jquery-1.8.3.js,/js/jquery-ui-1.9.2.custom.js,/js/libs/awesomplete.js,/js/placeholder.js,/js/jqDatepicker_todaypatch.js,/js/libs/webtoolkit.base64.js,/js/jquery.mousewheel.js,/js/vantage.util.js,/js/vantage.historyPlugin.js,/js/bootstrap.js,/js/utils/bootstrap.modal.fixes.js,/js/moment.js,/js/moment-timezone.js,/js/jstz.min.js,/js/common.js,/js/angular.js,/js/angular-cookies.js,/js/highstock.js,/js/highcharts-more.js,/js/highcharts-export-csv.js,/js/modules/exporting.js,/js/vantage.jqGridWrapper.js,/js/grid.locale-en_us.js,/js/jquery.jqGrid.min.js,/js/vantage.module.preferences.js,/js/vantage.module.preferences.filters.js,/js/vantage.module.preferences.directives.js,/js/vantage.module.realtime.js,/js/vantage.module.realtime.securitytradehistory.js,/js/vantage.module.realtime.filters.js,/js/vantage.module.realtime.directives.js,/js/vantage.module.realtime.directive.chart.js,/js/vantage.module.realtime.directive.cepconditiontoggle.js,/js/vantage.module.realtime.directive.teaser.chart.js,/js/vantage.module.realtime.directive.tradetoggles.js,/js/vantage.module.realtime.directive.grid.js,/js/vantage.module.hepler.serives.js,/js/utils/notifier.js,/js/vantage.module.socket.io.js,/js/vantage.module.http.js,/js/vantage.module.directives.js,/js/vantage.module.filters.js,/js/angular/ng-grid.debug.js,/js/ajaxfileupload.js,/js/angular-resource.min.js,/js/vantage.userPreferences.js"></script>    <script>
+        onAngularReady(function(Auth) {
+            Auth.addInfo("canViewTRACE",false); // Corporates
+            Auth.addInfo("canViewTbaTrace",false); // TBAs
+            Auth.addInfo("canViewAgcyTrace",false); // Agencies
+            Auth.addInfo("canView144aTrace",false); // 144a
+            Auth.setLoggedIn(false)
+        });
+    </script>
+    
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+	<!-- DOCUMENT READY JAVASCRIPT -->
+	<script>
+        VntgApp = angular.module('VntgApp', [
+                        'ModuleDirectives',
+            'ModuleFilters',
+            'ModuleWebsocket',
+            'ModuleHttp',
+            'ModuleRealtime',
+            'ModuleHelperServices',
+            'ngGrid',
+            'ngResource',
+            'ngCookies',
+            'ModulePreferences'
+        ])
+        
+        /* Localized date formats for formatting date on fornt end */
+        Obj_VTG_Config = {
+                        format : {
+                date :{ 
+                    php : "m/d/Y",
+                    js : "mm/dd/yy",
+                    momentUrl: "YYYY-MM-DD"
+                }
+            },
+            as_of_date :{
+                prefDateVal : "2024-06-14"
+            }
+        };
+        /* some formatter needs PHP format */
+		var Vantage_Date_Format_Php = "m/d/Y";
+        /* some formatter needs Javascript format */
+		var Vantage_Date_Format = "mm/dd/yy";
+        var Obj_VTG_CEP = [{"assetType":"Strips","micCode":"","timeZone":"America\/New_York","coreStartTime":"12:00:00","coreEndTime":"21:30:00","extStartTime":"07:00:00","extEndTime":"03:59:00","dispCoreStartTime":"8:00 AM ET","dispCoreEndTime":"5:30 PM ET","dispExtStartTime":"3:00 AM ET","dispExtEndTime":"12:00 AM ET","assetClassName":null,"displayFlag":0},{"assetType":"Default","micCode":"","timeZone":"America\/New_York","coreStartTime":"12:00:00","coreEndTime":"21:30:00","extStartTime":"07:00:00","extEndTime":"03:59:00","dispCoreStartTime":"8:00 AM ET","dispCoreEndTime":"5:30 PM ET","dispExtStartTime":"3:00 AM ET","dispExtEndTime":"12:00 AM ET","assetClassName":null,"displayFlag":0},{"assetType":"APACCorpSov","micCode":"_333","timeZone":"Australia\/Melbourne","coreStartTime":"22:30:00","coreEndTime":"08:00:00","extStartTime":"17:00:00","extEndTime":"13:59:00","dispCoreStartTime":"8:30 AM AEDT","dispCoreEndTime":"6:00 PM AEDT","dispExtStartTime":"3:00 AM AEDT","dispExtEndTime":"12:00 AM AEDT","assetClassName":"ASIA Corps & Sovs (AU)","displayFlag":1},{"assetType":"APACCorpSov","micCode":"_335","timeZone":"Australia\/Melbourne","coreStartTime":"22:30:00","coreEndTime":"08:00:00","extStartTime":"17:00:00","extEndTime":"13:59:00","dispCoreStartTime":"8:30 AM AEDT","dispCoreEndTime":"6:00 PM AEDT","dispExtStartTime":"3:00 AM AEDT","dispExtEndTime":"12:00 AM AEDT","assetClassName":"ASIA Corps & Sovs (JP)","displayFlag":1},{"assetType":"APACCorpSov","micCode":"_334","timeZone":"Australia\/Melbourne","coreStartTime":"22:30:00","coreEndTime":"08:00:00","extStartTime":"17:00:00","extEndTime":"13:59:00","dispCoreStartTime":"8:30 AM AEDT","dispCoreEndTime":"6:00 PM AEDT","dispExtStartTime":"3:00 AM AEDT","dispExtEndTime":"12:00 AM AEDT","assetClassName":"ASIA Corps & Sovs (NZ)","displayFlag":1},{"assetType":"APACCorpSov","micCode":"_223","timeZone":"Asia\/Hong_Kong","coreStartTime":"01:00:00","coreEndTime":"10:00:00","extStartTime":"19:00:00","extEndTime":"15:59:00","dispCoreStartTime":"9:00 AM HKT","dispCoreEndTime":"6:00 PM HKT","dispExtStartTime":"3:00 AM HKT","dispExtEndTime":"12:00 AM HKT","assetClassName":"ASIA Corps & Sovs (Other Currencies)","displayFlag":1},{"assetType":"APACMM","micCode":"_333","timeZone":"Australia\/Melbourne","coreStartTime":"22:30:00","coreEndTime":"08:00:00","extStartTime":"17:00:00","extEndTime":"13:59:00","dispCoreStartTime":"8:30 AM AEDT","dispCoreEndTime":"6:00 PM AEDT","dispExtStartTime":"3:00 AM AEDT","dispExtEndTime":"12:00 AM AEDT","assetClassName":"ASIA Money Markets (AU)","displayFlag":1},{"assetType":"APACMM","micCode":"_335","timeZone":"Australia\/Melbourne","coreStartTime":"22:30:00","coreEndTime":"08:00:00","extStartTime":"17:00:00","extEndTime":"13:59:00","dispCoreStartTime":"8:30 AM AEDT","dispCoreEndTime":"6:00 PM AEDT","dispExtStartTime":"3:00 AM AEDT","dispExtEndTime":"12:00 AM AEDT","assetClassName":"ASIA Money Markets (JP)","displayFlag":1},{"assetType":"APACMM","micCode":"_334","timeZone":"Australia\/Melbourne","coreStartTime":"22:30:00","coreEndTime":"08:00:00","extStartTime":"17:00:00","extEndTime":"13:59:00","dispCoreStartTime":"8:30 AM AEDT","dispCoreEndTime":"6:00 PM AEDT","dispExtStartTime":"3:00 AM AEDT","dispExtEndTime":"12:00 AM AEDT","assetClassName":"ASIA Money Markets (NZ)","displayFlag":1},{"assetType":"APACMM","micCode":"_223","timeZone":"Asia\/Hong_Kong","coreStartTime":"01:00:00","coreEndTime":"10:00:00","extStartTime":"19:00:00","extEndTime":"15:59:00","dispCoreStartTime":"9:00 AM HKT","dispCoreEndTime":"6:00 PM HKT","dispExtStartTime":"3:00 AM HKT","dispExtEndTime":"12:00 AM HKT","assetClassName":"ASIA Money Markets (Other Currencies)","displayFlag":1},{"assetType":"EMEACorpSov","micCode":"","timeZone":"Europe\/London","coreStartTime":"07:00:00","coreEndTime":"17:00:00","extStartTime":"02:00:00","extEndTime":"22:59:00","dispCoreStartTime":"8:00 AM GMT\/BST","dispCoreEndTime":"6:00 PM GMT\/BST","dispExtStartTime":"3:00 AM GMT\/BST","dispExtEndTime":"12:00 AM GMT\/BST","assetClassName":"EMEA Corps & Sovs","displayFlag":1},{"assetType":"EMEAMM","micCode":"","timeZone":"Europe\/London","coreStartTime":"07:00:00","coreEndTime":"17:00:00","extStartTime":"02:00:00","extEndTime":"22:59:00","dispCoreStartTime":"8:00 AM GMT\/BST","dispCoreEndTime":"6:00 PM GMT\/BST","dispExtStartTime":"3:00 AM GMT\/BST","dispExtEndTime":"12:00 AM GMT\/BST","assetClassName":"EMEA Money Markets","displayFlag":1},{"assetType":"Agencies","micCode":"","timeZone":"America\/New_York","coreStartTime":"12:00:00","coreEndTime":"21:30:00","extStartTime":"07:00:00","extEndTime":"03:59:00","dispCoreStartTime":"8:00 AM ET","dispCoreEndTime":"5:30 PM ET","dispExtStartTime":"3:00 AM ET","dispExtEndTime":"12:00 AM ET","assetClassName":"US Agencies","displayFlag":1},{"assetType":"USHY","micCode":"","timeZone":"America\/New_York","coreStartTime":"12:00:00","coreEndTime":"21:30:00","extStartTime":"07:00:00","extEndTime":"03:59:00","dispCoreStartTime":"8:00 AM ET","dispCoreEndTime":"5:30 PM ET","dispExtStartTime":"3:00 AM ET","dispExtEndTime":"12:00 AM ET","assetClassName":"US Corporate HY","displayFlag":1},{"assetType":"USIG","micCode":"","timeZone":"America\/New_York","coreStartTime":"12:00:00","coreEndTime":"21:30:00","extStartTime":"07:00:00","extEndTime":"03:59:00","dispCoreStartTime":"8:00 AM ET","dispCoreEndTime":"5:30 PM ET","dispExtStartTime":"3:00 AM ET","dispExtEndTime":"12:00 AM ET","assetClassName":"US Corporate IG","displayFlag":1},{"assetType":"MBS","micCode":"","timeZone":"America\/New_York","coreStartTime":"12:00:00","coreEndTime":"21:30:00","extStartTime":"07:00:00","extEndTime":"03:59:00","dispCoreStartTime":"8:00 AM ET","dispCoreEndTime":"5:30 PM ET","dispExtStartTime":"3:00 AM ET","dispExtEndTime":"12:00 AM ET","assetClassName":"US MBS (TBA & Pass-through)","displayFlag":1},{"assetType":"Muni","micCode":"_223","timeZone":"America\/New_York","coreStartTime":"12:00:00","coreEndTime":"21:30:00","extStartTime":"07:00:00","extEndTime":"03:59:00","dispCoreStartTime":"8:00 AM ET","dispCoreEndTime":"5:30 PM ET","dispExtStartTime":"3:00 AM ET","dispExtEndTime":"12:00 AM ET","assetClassName":"US Municipals","displayFlag":1},{"assetType":"Treasuries","micCode":"","timeZone":"America\/New_York","coreStartTime":"12:00:00","coreEndTime":"21:30:00","extStartTime":"07:00:00","extEndTime":"03:59:00","dispCoreStartTime":"8:00 AM ET","dispCoreEndTime":"5:30 PM ET","dispExtStartTime":"3:00 AM ET","dispExtEndTime":"12:00 AM ET","assetClassName":"US Treasuries & Strips","displayFlag":1},{"assetType":"LOAN","micCode":"","timeZone":"America\/New_York","coreStartTime":"12:00:00","coreEndTime":"21:30:00","extStartTime":"07:00:00","extEndTime":"03:59:00","dispCoreStartTime":"8:00 AM ET","dispCoreEndTime":"5:30 PM ET","dispExtStartTime":"3:00 AM ET","dispExtEndTime":"12:00 AM ET","assetClassName":"Leveraged Loan","displayFlag":1}]; 
+        var userPrefChartHour = 'core';
+                var Obj_VTG_UserPreferences = new Class_VTG_UserPreferences();
+
+		$(function() {
+
+			// ******************** PAGE SPECIFIC CODE ******************** //
+
+			$('.tooltip').click(function (event) {
+				event.preventDefault();
+			});
+			$('.tooltip').live('mouseenter',function () {
+				var helpTitle = true;
+				if($(this).hasClass('no-help'))
+					helpTitle = false;
+				var contentData = $(this).find("span:last").html();
+				var content = '';
+				if(contentData != "") {
+				    content = '<br /><p>' + contentData + '</p>';
+							    if(helpTitle){
+								    content =	'<div class="vtg-tooltip-title">Help</div>' + content;
+							    }
+				    if($(this).attr('tooltip-title')){
+				       content =	'<div class="vtg-tooltip-title">'+$(this).attr('tooltip-title')+'</div>' + content; 
+				    }
+
+				    var addtlClasses = '';
+				    var classArr = $(this).attr('class').split(" ");
+				    var re = "vtg-tooltip-[/\S]*";
+				    for (var i = 0; i < classArr.length; i++) {
+					if (classArr[i].match(re))
+					    addtlClasses += " " + classArr[i];
+				    }
+
+				    Vantage.tooltip.createPosition($(this));
+				    Vantage.tooltip.show(content, Vantage.tooltip.mouseXPos, Vantage.tooltip.mouseYPos, false, addtlClasses);
+			    }
+			});
+			$('.tooltip').live('mouseleave',  function () {
+				Vantage.tooltip.hide();
+			 });
+			initFeedback();
+		});
+	</script>
+</head>
+
+<body ng-app="VntgApp">
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PWL6G5M"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+        
+
+
+<script>
+$(function() {
+    $("i.fa-search").click(function() {
+        $(".navbar-right").toggleClass("expanded-search");
+        if ($(".navbar-right").hasClass("expanded-search")) {
+            $(".search-query").focus();
+        } else {
+            $(".search-query").blur();
+        }
+    });
+    var helpTTContent = "<p>Search is limited to 50 characters total and all valid search query types are listed below (returns only actively evaluated bonds):</b></p><ul><li>Security ID<span>(e.g. CUSIP 8 or 9, ISIN, SEDOL 6 or 7, or LCD ID)</span><li>Ticker <span>(e.g. GE)</span><li>Ticker + Coupon <span>(e.g. GE 8)</span><li>Ticker + Maturity Year <span>(e.g. GE 2039 returns all GE bonds maturing in 2039)</span><li>Ticker + Maturity Date (Month/Year) <span>(e.g. GE 01/39 or GE 01/2039)</span><li>Ticker + Maturity Date <span>(e.g. GE 01/14/39 or GE 01/14/2039)</span><li>Ticker + Coupon + Maturity Month/Year <span>(e.g. GE 8 01/39 or GE 8 01/2039)</span><li>Ticker + Coupon + Maturity Year <span>(e.g. GE 8 39 or GE 8 2039)</span><li>Ticker + Coupon + Maturity Date <span>(e.g. GE 8 01/14/39 or GE 8 01/14/2039)</span><li>Issuer Name <span>(e.g. e.g 'Home' returns securities where Issuer name begins with 'Home')</span></ul><a href='/advancedsearch' class='btn btn-primary'>Advanced Search</a>";
+    $(".search-help").popover({
+        trigger:'click',
+        html: true,
+        placement: 'bottom',
+        title: 'Search Help',
+        content: helpTTContent,
+        delay: { show: 0, hide: 100 }
+    });
+    // click anywhere else to dismiss popover
+    $('body').on('click', function (e) {
+        var clickedOutside = false;
+        $('.popover').each(function () {
+            //the 'is' for buttons that trigger popups
+            //the 'has' for icons within a button that triggers a popup
+            if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+                clickedOutside = true;
+            }
+        });
+        if (clickedOutside) {
+            $("#search_results").hide();
+            $("#Portfolio_results").hide();
+            $(".search-query").val("");
+            if ($(".search-help").next('div.popover:visible').length && !$(".search-help").is(e.target)) {
+                $(".search-help").popover('hide');
+            }
+        }
+    });
+});
+</script>
+<style>
+    #search_results {
+        padding: 10px;
+        min-width: 500px;
+        color: black;
+        width: auto;
+        top:40px;
+    }
+    #search_results .sr_paginate {
+        float: right;
+        margin-top: -3px;
+        font-size: .9em;
+    }
+    #search_results a {
+        color: #0071A7;
+    }
+    #search_results h3 { line-height: 1em; color: black; margin-top: 0px; font-size: 14px; font-weight: bold; }
+    #search_results td span {
+        display: block;
+        font-size: .9em;
+        color: #999;
+        line-height: .95em;
+    }
+    #search_results .fa { font-size: 14px; }
+    #search_results td:last-child,
+    #search_results th:last-child { text-align: right }
+    .smartSearchShow{
+        display:block;
+    }
+    .smartSearchHide{
+        display:none;
+    }
+    #vtg-header {
+        font-family: sans-serif;
+        font-size: 20px;
+        letter-spacing: 0.9px;
+        white-space: nowrap;
+        margin: 12px 5px 0 10px;
+        font-weight: bold;
+        display: inline-block
+         }
+    #ICE-logo-img{
+        width: 36px; 
+        float: left; 
+        margin: 8px 8px 8px; 
+        
+    }
+    #app-header {
+        width: 13em;
+        display: block;  
+         }
+    #ICE-print-logo
+    {
+        width: 5.4em;
+        height: 4.95em;
+
+    }
+    #vtg-header-click
+    {
+     text-decoration: none;
+      color: inherit;
+    }
+
+</style>
+<img class="print-logo visible-print" id="ICE-print-logo" src="/images/layout/ICE_logo_small_rev.png" />
+<nav class="navbar navbar-default" role="navigation" >
+    <div class="navbar-header hidden-print">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <span id="app-header">  <div> <a href=/><img id="ICE-logo-img"  src="/images/layout/ICE_logo_small.png" /></a></div>     
+        <a id="vtg-header-click" href=/> <div id="vtg-header">Vantage</div></a></span>
+       
+    </div>
+    <div class="collapse navbar-collapse navbar-ex1-collapse hidden-print">
+                    <ul class="nav navbar-nav">
+                <li><a href="/">Home</a></li>
+                
+                                                <li class="active"><a href="/movers">Markets</a></li>
+                            </ul>
+                <ul class="nav navbar-nav navbar-right">
+                                                <li><a class="btn btn-lnk join-vantage" target="_blank" href="http://e.theice.com/Vantage_TrialRequest"><em>Click here to submit feedback or join the Vantage Test Group</em></a></li>
+                                                                           <li><a href ="/login" class="btn btn-default"><i class="fa fa-sign-in"></i> Log In</a></li>
+                                    </ul>
+    </div><!-- /.navbar-collapse -->
+</nav>
+
+<div class="wrapper">
+
+
+    <ul class="nav nav-secondary nav-tabs">
+                                <li>
+                <a href="/movers">Gainers &amp; Decliners</a>
+            </li>
+                        <li class=active>
+                <a href="/aggregate">Structured Aggregates</a>
+            </li>
+            <li class=hide>
+                <a href="/cds">CDS</a>
+            </li>
+            <li class=hide>
+                <a href="/curves">Curves</a>
+            </li>
+            </ul>
+<script>
+    $(document).ready(function() {
+        var preferencesService = angular.element(document.body).injector().get('UserPreferencesService');
+                    preferencesService.assignPreferences({currentPriceFormatterId: '32nds'});
+            });
+</script>
+<style>
+    .ui-autocomplete { height: 200px; overflow-y: scroll; overflow-x: hidden;}
+</style>
+<div class="DirectivePreferencesDialog"></div>
+<!--[if lt IE 7 ]>
+<script src="/js/libs/dd_belatedpng.js"></script>
+<script> DD_belatedPNG.fix('img, .png_bg');</script>
+<![endif]-->
+    <input type="hidden" id="userServicesPageUrl" name="userServicesPageUrl" value="L2FnZ3JlZ2F0ZS9wYXNzdGhydT9kYXRlPTIwMjQtMDYtMTQ=" size="100" />
+    <script type="text/javascript">
+    var invalidDiv = '<div id="send_email_dialog_invalid" style="display: none;color: red;"><p><b>Please fill up all the fields.</b></p></div>';
+    var helperDiv = '<div><p><b>* Fields are required. Please separate each recipients email id with a comma(,).</b></p></div>';
+    var divTempHolder = "";
+    function validateEmail(elementValue){
+        var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+        return emailPattern.test(elementValue);
+    }
+    function validateBatchEmail(elementValue){
+        var emailPattern =/^[A-Z0-9\._%-]+@[A-Z0-9\.-]+\.[A-Z]{2,4}(?:[,][A-Z0-9\._%-]+@[A-Z0-9\.-]+\.[A-Z]{2,4})*$/i;
+        return emailPattern.test(elementValue);
+    }
+    var supportGroup='';
+    var subjectForNotPriced="New Evaluation Request";
+    $(function() {
+        divTempHolder = $("#send_email_dialog").html();
+        $('#vtg-pdf').click(function (event){
+            event.preventDefault();
+            var pdfUrlString = Base64.decode($("#userServicesPageUrl").val());
+            // append date to URL if doesn't exist and not from the workflow report page
+            if ( !pdfUrlString.match(/date\=\d\d\d\d\D?\d\d\D?\d\d/i) && pdfUrlString.indexOf('/workflowreport') != 0) {
+                var dpDate = $(".ptf-view-datepicker").datepicker('getDate');
+                // ensure we have a Date object
+                var dateObj = Object.prototype.toString.call(dpDate).toLowerCase().match(/date/) ? dpDate : new Date();
+                var dateStr = $.datepicker.formatDate('yy-mm-dd', dateObj);
+                pdfUrlString += '&date='+dateStr;
+            }
+            // anchor for muni tabs
+            if (window.location.href.split('#').length > 1) {
+                pdfUrlString += "#" + window.location.href.split('#')[1];
+            }
+            window.open('/Userservices/pdf?url='+Base64.encode(pdfUrlString));
+        });
+        $('#vtg-print').click(function (event){
+            event.preventDefault();
+            window.print();
+        });
+        $('#vtg-mail').click(function (event){
+            event.preventDefault();
+            var sendEmailBox = $("#send_email_dialog");		
+            sendEmailBox.html(divTempHolder);
+            var userServicesPageUrl = $("#userServicesPageUrl").val();
+            $("#page_url").val(userServicesPageUrl);
+            $("#generatePDFFile").val("true");
+            sendEmailBox.dialog('open');
+        });
+
+        var sendEmailBox = $("#send_email_dialog");
+        sendEmailBox.dialog({
+            title: 'Email Page',
+            autoOpen: false,
+            draggable: false,
+            modal: true,
+            resizable: false,
+            width : 500,
+            closeOnEscape: false,
+            buttons: {
+                "Send": function() {
+                    /*validate*/
+                    var userServicesPageUrl ="";
+                    if($("#generatePDFFile").val()=="true") {
+                        userServicesPageUrl = $("#userServicesPageUrl").val();
+                    }			
+                    var recipient_email = $.trim($('#recipient_email').val());
+                    var sender_name = $.trim($('#sender_name').val());
+                    var sender_email =$.trim( $('#sender_email').val());
+                    var sender_comment = $('#sender_comment').val();
+                    var subject = $.trim($('#email_subject').val());
+
+                    if(recipient_email == ''					
+                        || sender_email == '' ||sender_name=='' ){
+                            $('#send_email_dialog_invalid').html("Please fill up all required fields.");
+                            $('#send_email_dialog_invalid').show();
+                            return false;
+                    }
+
+                    if(!validateEmail(sender_email))
+                    {
+                        $('#send_email_dialog_invalid').html("Invalid Sender Email Address.");
+                        $('#send_email_dialog_invalid').show();
+                        return false;
+                    }
+                    if(!validateBatchEmail(recipient_email))
+                    {
+                        $('#send_email_dialog_invalid').html("Invalid Recipient Email Address.");
+                        $('#send_email_dialog_invalid').show();
+                        return false;
+                    }
+                    var urldata = {
+                        'recipient_email' : recipient_email,
+                        'sender_name' : sender_name,
+                        'sender_email' : sender_email,
+                        'sender_comment' : sender_comment,
+                        'subject' : subject,
+                        'page_url' : userServicesPageUrl
+                    }
+
+                    var currentDialog = $( this );
+                    currentDialog.prev().children('.ui-dialog-titlebar-close').hide();
+                    currentDialog.next().hide();
+                    currentDialog.html('<div class="ajax_loader"><img style="vertical-align: middle" src="/images/icon_wait.gif" /> <span style="display: inline-block; vertical-align: middle">Processing request...<span></div>');
+                    ajaxReq = $.ajax({
+                        type: "POST",
+                        url: '/Userservices/email',
+                        dataType: 'json',
+                        data: urldata,
+                        success: function(data) {
+                            if(data['status'] == 's'){
+                                currentDialog.dialog( "close" );
+                                update_success = $("#email_success");
+                                update_success.dialog('open');
+                            }
+                            else if(data['status'] == 'f'){
+                                currentDialog.dialog( "close" );
+                                update_error = $("#email_error ");
+                                update_error .dialog('open');
+                            }
+                            currentDialog.html( divTempHolder + helperDiv);
+                            currentDialog.prev().children('.ui-dialog-titlebar-close').show();
+                            currentDialog.next().show();
+                        },
+                        error : function(xhr, ajaxOptions, thrownError){
+                            if (xhr.status == 420) {
+                                currentDialog.dialog( "close" );
+                                Vantage.util.ajax.trapRedirect(xhr.responseText);
+                                return;
+                            }						
+                            currentDialog.prev().children('.ui-dialog-titlebar-close').show();
+                            currentDialog.next().show();
+                            $("#send_email_dialog").html( xhr.responseText + helperDiv);
+                        }
+                    });
+
+                },
+                Cancel: function() {
+                    $( this ).dialog( "close" );
+                }
+            }
+        });
+
+        var update_error = $("#email_error");
+        update_error.dialog({
+            title: 'Email Page', autoOpen: false, draggable: false, modal: true, resizable: false, width : 420,
+            buttons: {
+                "Ok": function() {
+                    $( this ).dialog( "close" );
+                }
+            }
+        });
+
+
+        var update_success = $("#email_success");
+        update_success.dialog({
+            title: 'Email Page', autoOpen: false, draggable: false, modal: true, resizable: false, width : 420,
+            buttons: {
+                "Ok": function() {
+                    $( this ).dialog( "close" );
+                }
+            }
+        });
+    });
+    </script>
+    <div id="email_error" style="display: none;">
+        <p>Your requested to send email failed.</p>
+    </div>
+    <div id="email_success" style="display: none">
+        <p><br/><br/>Email Sent</p>
+    </div>
+    <div id="send_email_dialog" style="display: none;">
+        <form enctype="application/x-www-form-urlencoded" method="post" action="">
+            <input type="hidden" name="page_url" id="page_url" value="" />
+            <table>
+                <tr class="fromDialogElementTr">
+                    <td id="subject_email-label"><label for="subject"
+                        class="fromDialogLabelTd required">Subject </label></td>
+                    <td class="fromDialogElementTd"><input type="text"
+                        name="email_subject" id="email_subject" value="Vantage message from " maxlength="128"
+                        size="40" /></td>
+                </tr>
+                <tr class="fromDialogElementTr">
+                    <td id="recipient_email-label"><label for="recipient_email"
+                        class="fromDialogLabelTd required">Recipient Email *</label></td>
+                    <td class="fromDialogElementTd"><input type="text"
+                        name="recipient_email" id="recipient_email" value="" size="40"
+                        maxlength="512" /> <input type="hidden" name="generatePDFFile"
+                        id="generatePDFFile" value="true" size="40" /></td>
+                </tr>
+                <tr class="fromDialogElementTr">
+                    <td id="sender_name-label"><label for="sender_name"
+                        class="fromDialogLabelTd required">Sender Name *</label></td>
+                    <td class="fromDialogElementTd"><input type="text" disabled="disabled" name="sender_name"
+                        id="sender_name" maxlength="50"
+                        value="" size="40" /></td>
+                </tr>
+                <tr class="fromDialogElementTr">
+                    <td id="sender_email-label"><label for="sender_email"
+                        class="fromDialogLabelTd required">Sender Email *</label></td>
+                    <td class="fromDialogElementTd"><input type="text" disabled="disabled" name="sender_email"
+                        id="sender_email" value=""
+                        maxlength="50" size="40" /></td>
+                </tr>
+                <tr class="fromDialogElementTr">
+                    <td id="sender_comment-label"><label for="sender_comment"
+                        class="fromDialogLabelTd optional">Comment</label></td>
+                    <td class="fromDialogElementTd"><textarea name="sender_comment"
+                        id="sender_comment" COLS="50" ROWS="4" maxlength="1000"></textarea></td>
+                </tr>
+                
+            </table>
+        </form>
+        <div id="send_email_dialog_invalid" style="display: none;color: red;">
+            <p><b>Please fill up all required fields.</b></p>
+        </div>
+    </div>
+
+		
+
+<div class="clearfix">
+	<!-------------------- PAGE HEADER -------------------->
+	<link type="text/css" rel="stylesheet" href="/min/f=/css/market-monitors.css" /><script type="text/javascript">
+	$(function(){
+		/* utility functions */
+		var missingDates = ['5-30-2011','7-4-2011','9-5-2011','11-24-2011','12-26-2011','1-2-2012','1-16-2012','2-20-2012','4-6-2012','5-28-2012','7-4-2012','9-3-2012','10-30-2012','11-22-2012','12-25-2012','1-1-2013','1-21-2013','2-18-2013','3-29-2013','5-27-2013','7-4-2013','9-2-2013','11-28-2013','12-25-2013','1-1-2014','1-20-2014','2-17-2014','4-18-2014','5-26-2014','7-4-2014','9-1-2014','11-27-2014','12-25-2014','1-1-2015','1-19-2015','2-16-2015','4-3-2015','5-25-2015','7-3-2015','9-7-2015','11-26-2015','12-25-2015','1-1-2016','1-18-2016','2-15-2016','3-25-2016','5-30-2016','7-4-2016','9-5-2016','11-24-2016','12-26-2016','1-2-2017','1-16-2017','2-20-2017','4-14-2017','5-29-2017','7-4-2017','9-4-2017','11-23-2017','12-25-2017','1-1-2018','1-15-2018','2-19-2018','3-30-2018','5-28-2018','7-4-2018','9-3-2018','11-22-2018','12-5-2018','12-25-2018','1-1-2019','1-21-2019','2-18-2019','4-19-2019','5-27-2019','7-4-2019','9-2-2019','11-28-2019','12-25-2019','1-1-2020','1-20-2020','2-17-2020','4-10-2020','5-25-2020','7-3-2020','9-7-2020','11-26-2020','12-25-2020','1-1-2021','1-18-2021','2-15-2021','4-2-2021','5-31-2021','7-5-2021','9-6-2021','11-25-2021','12-24-2021','1-17-2022','2-21-2022','4-15-2022','5-30-2022','6-20-2022','7-4-2022','9-5-2022','11-24-2022','12-26-2022','1-2-2023','1-16-2023','2-20-2023','4-7-2023','5-29-2023','6-19-2023','7-4-2023','9-4-2023','11-23-2023','12-25-2023','1-1-2024','1-15-2024','2-19-2024','3-29-2024','5-27-2024'];
+		function nationalDays(date) {
+			for (i = 0; i < missingDates.length; i++) {
+			  if (missingDates[i] == $.datepicker.formatDate('m-d-yy',date)) {
+				return [false, ''];
+			  }
+			}
+		  return [true, ''];
+		}
+
+		function noWeekendsOrHolidays(date) {
+			var noWeekend = $.datepicker.noWeekends(date);
+			if (noWeekend[0]) {
+				return nationalDays(date);
+			} else {
+				return noWeekend;
+			}
+		}
+
+        function changeDate () {
+				frmDate = $(".mm-date-field").datepicker('getDate');
+				if(frmDate){
+					var day = frmDate.getDate();
+					var month = frmDate.getMonth() + 1;
+					var year = frmDate.getFullYear();
+					SelectedDate = year+"-"+ (month<10 ? "0"+month:month) +"-"+(day<10 ? "0"+day:day);
+                    window.location = '/aggregate/passthru/?date='+SelectedDate;
+                }
+			}
+
+		// styling date picker
+		$(".mm-date-field")
+        .datepicker({
+			showButtonPanel: true,
+			beforeShowDay: noWeekendsOrHolidays,
+			onSelect: changeDate,
+			changeMonth: true,
+			changeYear: true,
+			yearRange: "-5:+0",
+			maxDate: '-0d',
+			minDate: '-4778d',
+            dateFormat: Vantage_Date_Format
+		})
+        .keydown(function(event){
+            if (event.keyCode == 13) {
+                changeDate();
+                event.preventDefault();
+                event.stopPropagation();
+            }
+        });
+        $(".vtg-markets-datepicker-trigger").click(function() {
+	        // datepicker for this page
+	        $(".mm-date-field").datepicker("show");
+	    });
+
+		$('.lnk').click(function (event){
+			event.preventDefault();
+			$(this).blur();
+			var parentTD = $(this).parent();
+			var parentTR = parentTD.parent();
+
+			// change arrow icon in table cell
+			parentTD.toggleClass('cls');
+			parentTD.toggleClass('opn');
+			if($(parentTD).hasClass('opn')) {
+                parentTD.find("i.fa").removeClass("fa-caret-right").addClass("fa-caret-down");
+            } else {
+                parentTD.find("i.fa").removeClass("fa-caret-down").addClass("fa-caret-right");
+            }
+
+			// expand sibling rows
+			parentTR.children().toggleClass('bld');
+			parentTR.siblings().toggleClass('off');
+			parentTR.siblings().toggleClass('on');
+
+			//
+			parentTD.children('.ilk').toggleClass('cls');
+			parentTD.children('.ilk').toggleClass('opn');
+		});
+		$('.ui-datepicker-current').live('click', function(event) {
+			var currentDate = new Date();  
+			$('.mm-date-field').datepicker("setDate",currentDate);
+			positionDateChage();
+		});
+	})
+</script>
+<!-------------------- MARKET MONITORS PAGE -------------------->
+<div class="row row-utility" style="margin-bottom: 0px">
+	<!---------- OVERVIEW CLIP ---------->
+	<div class="col-xs-6">
+		As of <input type="text" class="mm-date-field form-control input-sm date-picker" value="06/14/2024" title="Select as of date" /><i class="fas fa-calendar-alt vtg-markets-datepicker-trigger"></i>
+	</div>
+	<div class="col-xs-6 text-right buttons-with-labels">
+					<a href="/aggregate/download?date=2024-06-14&vdl=aggregate_download" class="btn btn-default btn-xs vtg-link-excel" title="Download"><i class="fa fa-download icon-white"></i> <span>Download</span></a>
+					</div>
+</div>
+<div class="row">
+	<div class="col-md-12">
+		<h1>FINRA-ICE Data Services Structured Trading Activity Reports</h1>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-12 text-center">
+		<div class="btn-group">
+			<a class="btn btn-default btn-sm" href="/aggregate?date=2024-06-14">Structured Trading Activity Report</a>
+			<a class="btn btn-default btn-sm" href="/aggregate/tba?date=2024-06-14">TBA</a>
+			<a class="btn btn-default btn-sm active" href="/aggregate/passthru?date=2024-06-14">Pass-Thru</a>
+			<a class="btn btn-default btn-sm" href="/aggregate/agencycmo?date=2024-06-14">Agency CMO</a>
+							<a class="btn btn-default btn-sm" href="/aggregate/nonagencycmo?date=2024-06-14">Non-Agency CMO/ABS/CDO</a>
+										<a class="btn btn-default btn-sm" href="/aggregate/cmbsdaily?date=2024-06-14">Daily CMBS</a>
+										<a class="btn btn-default btn-sm" href="/aggregate/weeklycmbs?date=2024-06-14">Weekly CMBS</a>
+					</div>
+	</div>
+</div>	<div class="row" id="mm-table">
+		<div class="col-md-12 buffer_top">
+		<!---
+		SINGLE FAMILY Data
+		---->
+							<div class="panel panel-default panel-collapsible">
+					<div class="panel-heading">Pricing Table: Agency Pass-Thru (Specified) - Single Family 15Y</div>
+						<div class="panel-body">
+						<table class="vtg-tb vtg-tb-style1">
+															<thead>
+									<tr class="th-type">
+										<td class="mm-th-lf">METRIC</td>
+										<td class="mm-th-cn" colspan="7">COUPON</td>
+									</tr>
+									<tr class="th-range">
+										<td class="fst"></td>
+																		 <td><= 3.0</td> 
+																		 <td>3.5</td> 
+																		 <td>4</td> 
+																		 <td>4.5</td> 
+																		 <td>5</td> 
+																		 <td>5.5</td> 
+																		 <td>> 5.5</td> 
+																		</tr>
+								</thead>
+																											<tbody>
+											<tr>
+												<td class="fst grp" colspan="8">UMBS</td>
+											</tr>
+										</tbody>
+																				<tbody>
+																																						<tr><td class="fst mct">
+															<a href="javascript:void(0)" class="lnk ilk cls"><i class="fa fa-caret-right"></i></a>
+															<a  class="lnk" href="#">AVERAGE PRICE</a></td>
+																																																																		<td>
+															93.6</td>
+																												<td>
+															91.7</td>
+																												<td>
+															97.0</td>
+																												<td>
+															98.5</td>
+																												<td>
+															99.2</td>
+																												<td>
+															100.7</td>
+																												<td>
+															101.6</td>
+																									</tr>
+																									<tr class="off"><td class="fst sct">Weighted Avg. Price</td>
+																																																					<td>
+															91.0</td>
+																												<td>
+															96.2</td>
+																												<td>
+															97.0</td>
+																												<td>
+															98.6</td>
+																												<td>
+															99.7</td>
+																												<td>
+															100.7</td>
+																												<td>
+															101.6</td>
+																									</tr>
+																									<tr class="off"><td class="fst sct">Avg. Price Bottom 5 Trades</td>
+																																																					<td>
+															82.3</td>
+																												<td>
+															81.9</td>
+																												<td>
+															96.8</td>
+																												<td>
+															98.4</td>
+																												<td>
+															98.1</td>
+																												<td>
+															100.6</td>
+																												<td>
+															101.3</td>
+																									</tr>
+																									<tr class="off"><td class="fst sct">2nd Quartile Price</td>
+																																																					<td>
+															94.0</td>
+																												<td>
+															92.1</td>
+																												<td>
+															96.8</td>
+																												<td>
+															98.4</td>
+																												<td>
+															99.6</td>
+																												<td>
+															100.6</td>
+																												<td>
+															101.4</td>
+																									</tr>
+																									<tr class="off"><td class="fst sct">3rd Quartile Price</td>
+																																																					<td>
+															94.0</td>
+																												<td>
+															92.1</td>
+																												<td>
+															97.1</td>
+																												<td>
+															98.6</td>
+																												<td>
+															99.8</td>
+																												<td>
+															100.7</td>
+																												<td>
+															101.6</td>
+																									</tr>
+																									<tr class="off"><td class="fst sct">4th Quartile Price</td>
+																																																					<td>
+															94.0</td>
+																												<td>
+															94.3</td>
+																												<td>
+															97.2</td>
+																												<td>
+															98.6</td>
+																												<td>
+															99.9</td>
+																												<td>
+															100.9</td>
+																												<td>
+															101.6</td>
+																									</tr>
+																									<tr class="off"><td class="fst sct">Avg. Price Top 5 Trades</td>
+																																																					<td>
+															95.1</td>
+																												<td>
+															96.2</td>
+																												<td>
+															97.2</td>
+																												<td>
+															98.6</td>
+																												<td>
+															100.0</td>
+																												<td>
+															100.9</td>
+																												<td>
+															101.8</td>
+																									</tr>
+																									<tr class="off"><td class="fst sct">Standard Deviation</td>
+																																																					<td>
+															1.8</td>
+																												<td>
+															3.8</td>
+																												<td>
+															0.4</td>
+																												<td>
+															0.2</td>
+																												<td>
+															1.8</td>
+																												<td>
+															0.1</td>
+																												<td>
+															0.4</td>
+																									</tr>
+																					</tbody>
+																				<tbody>
+																																						<tr><td class="fst mct">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VOLUME OF TRADES (000'S)</td>	
+																																																																		<td>
+															375,694.8</td>
+																												<td>
+															3,666.1</td>
+																												<td>
+															1,999.1</td>
+																												<td>
+															8,226.3</td>
+																												<td>
+															25,777.8</td>
+																												<td>
+															53,209.6</td>
+																												<td>
+															246,270.8</td>
+																									</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																					</tbody>
+																				<tbody>
+																																						<tr><td class="fst mct">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NUMBER OF TRADES</td>	
+																																																																		<td>
+															1,361</td>
+																												<td>
+															96</td>
+																												<td>
+															12</td>
+																												<td>
+															14</td>
+																												<td>
+															22</td>
+																												<td>
+															20</td>
+																												<td>
+															16</td>
+																									</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																					</tbody>
+																													<tbody>
+											<tr>
+												<td class="fst grp" colspan="8">FNMA</td>
+											</tr>
+										</tbody>
+																				<tbody>
+																																						<tr><td class="fst mct">
+															<a href="javascript:void(0)" class="lnk ilk cls"><i class="fa fa-caret-right"></i></a>
+															<a  class="lnk" href="#">AVERAGE PRICE</a></td>
+																																																																		<td>
+															95.6</td>
+																												<td>
+															92.7</td>
+																												<td>
+															*</td>
+																												<td>
+															*</td>
+																												<td>
+															100.8</td>
+																												<td>
+															101.5</td>
+																												<td>
+															0.0</td>
+																									</tr>
+																									<tr class="off"><td class="fst sct">Weighted Avg. Price</td>
+																																																					<td>
+															95.1</td>
+																												<td>
+															93.3</td>
+																												<td>
+															*</td>
+																												<td>
+															*</td>
+																												<td>
+															100.2</td>
+																												<td>
+															101.6</td>
+																												<td>
+															0.0</td>
+																									</tr>
+																									<tr class="off"><td class="fst sct">Avg. Price Bottom 5 Trades</td>
+																																																					<td>
+															95.0</td>
+																												<td>
+															92.7</td>
+																												<td>
+															*</td>
+																												<td>
+															*</td>
+																												<td>
+															100.8</td>
+																												<td>
+															101.2</td>
+																												<td>
+															0.0</td>
+																									</tr>
+																									<tr class="off"><td class="fst sct">2nd Quartile Price</td>
+																																																					<td>
+															95.3</td>
+																												<td>
+															*</td>
+																												<td>
+															*</td>
+																												<td>
+															*</td>
+																												<td>
+															*</td>
+																												<td>
+															101.2</td>
+																												<td>
+															0.0</td>
+																									</tr>
+																									<tr class="off"><td class="fst sct">3rd Quartile Price</td>
+																																																					<td>
+															96.4</td>
+																												<td>
+															*</td>
+																												<td>
+															*</td>
+																												<td>
+															*</td>
+																												<td>
+															*</td>
+																												<td>
+															101.3</td>
+																												<td>
+															0.0</td>
+																									</tr>
+																									<tr class="off"><td class="fst sct">4th Quartile Price</td>
+																																																					<td>
+															97.5</td>
+																												<td>
+															*</td>
+																												<td>
+															*</td>
+																												<td>
+															*</td>
+																												<td>
+															*</td>
+																												<td>
+															102.4</td>
+																												<td>
+															0.0</td>
+																									</tr>
+																									<tr class="off"><td class="fst sct">Avg. Price Top 5 Trades</td>
+																																																					<td>
+															96.4</td>
+																												<td>
+															92.7</td>
+																												<td>
+															*</td>
+																												<td>
+															*</td>
+																												<td>
+															100.8</td>
+																												<td>
+															102.1</td>
+																												<td>
+															0.0</td>
+																									</tr>
+																									<tr class="off"><td class="fst sct">Standard Deviation</td>
+																																																					<td>
+															1.6</td>
+																												<td>
+															0.9</td>
+																												<td>
+															*</td>
+																												<td>
+															*</td>
+																												<td>
+															0.9</td>
+																												<td>
+															0.7</td>
+																												<td>
+															0.0</td>
+																									</tr>
+																					</tbody>
+																				<tbody>
+																																						<tr><td class="fst mct">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VOLUME OF TRADES (000'S)</td>	
+																																																																		<td>
+															52,777.4</td>
+																												<td>
+															52,827.6</td>
+																												<td>
+															*</td>
+																												<td>
+															*</td>
+																												<td>
+															115,508.2</td>
+																												<td>
+															7,530.0</td>
+																												<td>
+															0.0</td>
+																									</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																					</tbody>
+																				<tbody>
+																																						<tr><td class="fst mct">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NUMBER OF TRADES</td>	
+																																																																		<td>
+															7</td>
+																												<td>
+															7</td>
+																												<td>
+															*</td>
+																												<td>
+															*</td>
+																												<td>
+															8</td>
+																												<td>
+															11</td>
+																												<td>
+															0</td>
+																									</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																					</tbody>
+																													<tbody>
+											<tr>
+												<td class="fst grp" colspan="8">FHLMC</td>
+											</tr>
+										</tbody>
+																				<tbody>
+																																						<tr><td class="fst mct">
+															<a href="javascript:void(0)" class="lnk ilk cls"><i class="fa fa-caret-right"></i></a>
+															<a  class="lnk" href="#">AVERAGE PRICE</a></td>
+																																																																		<td>
+															94.7</td>
+																												<td>
+															91.4</td>
+																												<td>
+															*</td>
+																												<td>
+															*</td>
+																												<td>
+															0.0</td>
+																												<td>
+															0.0</td>
+																												<td>
+															0.0</td>
+																									</tr>
+																									<tr class="off"><td class="fst sct">Weighted Avg. Price</td>
+																																																					<td>
+															95.4</td>
+																												<td>
+															96.3</td>
+																												<td>
+															*</td>
+																												<td>
+															*</td>
+																												<td>
+															0.0</td>
+																												<td>
+															0.0</td>
+																												<td>
+															0.0</td>
+																									</tr>
+																									<tr class="off"><td class="fst sct">Avg. Price Bottom 5 Trades</td>
+																																																					<td>
+															91.8</td>
+																												<td>
+															91.0</td>
+																												<td>
+															*</td>
+																												<td>
+															*</td>
+																												<td>
+															0.0</td>
+																												<td>
+															0.0</td>
+																												<td>
+															0.0</td>
+																									</tr>
+																									<tr class="off"><td class="fst sct">2nd Quartile Price</td>
+																																																					<td>
+															95.4</td>
+																												<td>
+															86.0</td>
+																												<td>
+															*</td>
+																												<td>
+															*</td>
+																												<td>
+															0.0</td>
+																												<td>
+															0.0</td>
+																												<td>
+															0.0</td>
+																									</tr>
+																									<tr class="off"><td class="fst sct">3rd Quartile Price</td>
+																																																					<td>
+															95.8</td>
+																												<td>
+															95.0</td>
+																												<td>
+															*</td>
+																												<td>
+															*</td>
+																												<td>
+															0.0</td>
+																												<td>
+															0.0</td>
+																												<td>
+															0.0</td>
+																									</tr>
+																									<tr class="off"><td class="fst sct">4th Quartile Price</td>
+																																																					<td>
+															95.8</td>
+																												<td>
+															95.0</td>
+																												<td>
+															*</td>
+																												<td>
+															*</td>
+																												<td>
+															0.0</td>
+																												<td>
+															0.0</td>
+																												<td>
+															0.0</td>
+																									</tr>
+																									<tr class="off"><td class="fst sct">Avg. Price Top 5 Trades</td>
+																																																					<td>
+															95.9</td>
+																												<td>
+															92.0</td>
+																												<td>
+															*</td>
+																												<td>
+															*</td>
+																												<td>
+															0.0</td>
+																												<td>
+															0.0</td>
+																												<td>
+															0.0</td>
+																									</tr>
+																									<tr class="off"><td class="fst sct">Standard Deviation</td>
+																																																					<td>
+															2.7</td>
+																												<td>
+															5.0</td>
+																												<td>
+															*</td>
+																												<td>
+															*</td>
+																												<td>
+															0.0</td>
+																												<td>
+															0.0</td>
+																												<td>
+															0.0</td>
+																									</tr>
+																					</tbody>
+																				<tbody>
+																																						<tr><td class="fst mct">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VOLUME OF TRADES (000'S)</td>	
+																																																																		<td>
+															21,327.5</td>
+																												<td>
+															193.2</td>
+																												<td>
+															*</td>
+																												<td>
+															*</td>
+																												<td>
+															0.0</td>
+																												<td>
+															0.0</td>
+																												<td>
+															0.0</td>
+																									</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																					</tbody>
+																				<tbody>
+																																						<tr><td class="fst mct">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NUMBER OF TRADES</td>	
+																																																																		<td>
+															25</td>
+																												<td>
+															12</td>
+																												<td>
+															*</td>
+																												<td>
+															*</td>
+																												<td>
+															0</td>
+																												<td>
+															0</td>
+																												<td>
+															0</td>
+																									</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																					</tbody>
+																													<tbody>
+											<tr>
+												<td class="fst grp" colspan="8">GNMA</td>
+											</tr>
+										</tbody>
+																				<tbody>
+																																						<tr><td class="fst mct">
+															<a href="javascript:void(0)" class="lnk ilk cls"><i class="fa fa-caret-right"></i></a>
+															<a  class="lnk" href="#">AVERAGE PRICE</a></td>
+																																																																		<td>
+															*</td>
+																												<td>
+															0.0</td>
+																												<td>
+															*</td>
+																												<td>
+															0.0</td>
+																												<td>
+															0.0</td>
+																												<td>
+															*</td>
+																												<td>
+															*</td>
+																									</tr>
+																									<tr class="off"><td class="fst sct">Weighted Avg. Price</td>
+																																																					<td>
+															*</td>
+																												<td>
+															0.0</td>
+																												<td>
+															*</td>
+																												<td>
+															0.0</td>
+																												<td>
+															0.0</td>
+																												<td>
+															*</td>
+																												<td>
+															*</td>
+																									</tr>
+																									<tr class="off"><td class="fst sct">Avg. Price Bottom 5 Trades</td>
+																																																					<td>
+															*</td>
+																												<td>
+															0.0</td>
+																												<td>
+															*</td>
+																												<td>
+															0.0</td>
+																												<td>
+															0.0</td>
+																												<td>
+															*</td>
+																												<td>
+															*</td>
+																									</tr>
+																									<tr class="off"><td class="fst sct">2nd Quartile Price</td>
+																																																					<td>
+															*</td>
+																												<td>
+															0.0</td>
+																												<td>
+															*</td>
+																												<td>
+															0.0</td>
+																												<td>
+															0.0</td>
+																												<td>
+															*</td>
+																												<td>
+															*</td>
+																									</tr>
+																									<tr class="off"><td class="fst sct">3rd Quartile Price</td>
+																																																					<td>
+															*</td>
+																												<td>
+															0.0</td>
+																												<td>
+															*</td>
+																												<td>
+															0.0</td>
+																												<td>
+															0.0</td>
+																												<td>
+															*</td>
+																												<td>
+															*</td>
+																									</tr>
+																									<tr class="off"><td class="fst sct">4th Quartile Price</td>
+																																																					<td>
+															*</td>
+																												<td>
+															0.0</td>
+																												<td>
+															*</td>
+																												<td>
+															0.0</td>
+																												<td>
+															0.0</td>
+																												<td>
+															*</td>
+																												<td>
+															*</td>
+																									</tr>
+																									<tr class="off"><td class="fst sct">Avg. Price Top 5 Trades</td>
+																																																					<td>
+															*</td>
+																												<td>
+															0.0</td>
+																												<td>
+															*</td>
+																												<td>
+															0.0</td>
+																												<td>
+															0.0</td>
+																												<td>
+															*</td>
+																												<td>
+															*</td>
+																									</tr>
+																									<tr class="off"><td class="fst sct">Standard Deviation</td>
+																																																					<td>
+															*</td>
+																												<td>
+															0.0</td>
+																												<td>
+															*</td>
+																												<td>
+															0.0</td>
+																												<td>
+															0.0</td>
+																												<td>
+															*</td>
+																												<td>
+															*</td>
+																									</tr>
+																					</tbody>
+																				<tbody>
+																																						<tr><td class="fst mct">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VOLUME OF TRADES (000'S)</td>	
+																																																																		<td>
+															*</td>
+																												<td>
+															0.0</td>
+																												<td>
+															*</td>
+																												<td>
+															0.0</td>
+																												<td>
+															0.0</td>
+																												<td>
+															*</td>
+																												<td>
+															*</td>
+																									</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																					</tbody>
+																				<tbody>
+																																						<tr><td class="fst mct">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NUMBER OF TRADES</td>	
+																																																																		<td>
+															*</td>
+																												<td>
+															0</td>
+																												<td>
+															*</td>
+																												<td>
+															0</td>
+																												<td>
+															0</td>
+																												<td>
+															*</td>
+																												<td>
+															*</td>
+																									</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																					</tbody>
+																																								</table>
+					</div><!-- end content -->
+				</div><!-- end well -->
+							<div class="panel panel-default panel-collapsible">
+					<div class="panel-heading">Pricing Table: Agency Pass-Thru (Specified) - Single Family 30Y</div>
+						<div class="panel-body">
+						<table class="vtg-tb vtg-tb-style1">
+															<thead>
+									<tr class="th-type">
+										<td class="mm-th-lf">METRIC</td>
+										<td class="mm-th-cn" colspan="7">COUPON</td>
+									</tr>
+									<tr class="th-range">
+										<td class="fst"></td>
+																		 <td><= 3.0</td> 
+																		 <td>3.5</td> 
+																		 <td>4</td> 
+																		 <td>4.5</td> 
+																		 <td>5</td> 
+																		 <td>5.5</td> 
+																		 <td>> 5.5</td> 
+																		</tr>
+								</thead>
+																											<tbody>
+											<tr>
+												<td class="fst grp" colspan="8">UMBS</td>
+											</tr>
+										</tbody>
+																				<tbody>
+																																						<tr><td class="fst mct">
+															<a href="javascript:void(0)" class="lnk ilk cls"><i class="fa fa-caret-right"></i></a>
+															<a  class="lnk" href="#">AVERAGE PRICE</a></td>
+																																																																		<td>
+															83.9</td>
+																												<td>
+															88.6</td>
+																												<td>
+															90.9</td>
+																												<td>
+															94.7</td>
+																												<td>
+															97.5</td>
+																												<td>
+															99.4</td>
+																												<td>
+															101.9</td>
+																									</tr>
+																									<tr class="off"><td class="fst sct">Weighted Avg. Price</td>
+																																																					<td>
+															84.5</td>
+																												<td>
+															90.3</td>
+																												<td>
+															93.0</td>
+																												<td>
+															95.9</td>
+																												<td>
+															97.7</td>
+																												<td>
+															99.4</td>
+																												<td>
+															101.5</td>
+																									</tr>
+																									<tr class="off"><td class="fst sct">Avg. Price Bottom 5 Trades</td>
+																																																					<td>
+															77.0</td>
+																												<td>
+															78.7</td>
+																												<td>
+															77.3</td>
+																												<td>
+															85.1</td>
+																												<td>
+															86.6</td>
+																												<td>
+															97.2</td>
+																												<td>
+															86.7</td>
+																									</tr>
+																									<tr class="off"><td class="fst sct">2nd Quartile Price</td>
+																																																					<td>
+															82.7</td>
+																												<td>
+															89.0</td>
+																												<td>
+															91.7</td>
+																												<td>
+															94.7</td>
+																												<td>
+															97.6</td>
+																												<td>
+															99.3</td>
+																												<td>
+															100.7</td>
+																									</tr>
+																									<tr class="off"><td class="fst sct">3rd Quartile Price</td>
+																																																					<td>
+															82.8</td>
+																												<td>
+															89.5</td>
+																												<td>
+															92.3</td>
+																												<td>
+															95.1</td>
+																												<td>
+															97.7</td>
+																												<td>
+															99.3</td>
+																												<td>
+															102.4</td>
+																									</tr>
+																									<tr class="off"><td class="fst sct">4th Quartile Price</td>
+																																																					<td>
+															86.2</td>
+																												<td>
+															89.6</td>
+																												<td>
+															92.7</td>
+																												<td>
+															95.4</td>
+																												<td>
+															97.7</td>
+																												<td>
+															99.4</td>
+																												<td>
+															103.0</td>
+																									</tr>
+																									<tr class="off"><td class="fst sct">Avg. Price Top 5 Trades</td>
+																																																					<td>
+															92.9</td>
+																												<td>
+															93.4</td>
+																												<td>
+															95.7</td>
+																												<td>
+															97.7</td>
+																												<td>
+															99.5</td>
+																												<td>
+															101.0</td>
+																												<td>
+															104.4</td>
+																									</tr>
+																									<tr class="off"><td class="fst sct">Standard Deviation</td>
+																																																					<td>
+															2.5</td>
+																												<td>
+															3.0</td>
+																												<td>
+															4.1</td>
+																												<td>
+															2.7</td>
+																												<td>
+															1.4</td>
+																												<td>
+															0.5</td>
+																												<td>
+															2.4</td>
+																									</tr>
+																					</tbody>
+																				<tbody>
+																																						<tr><td class="fst mct">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VOLUME OF TRADES (000'S)</td>	
+																																																																		<td>
+															1,011,719.2</td>
+																												<td>
+															94,971.6</td>
+																												<td>
+															197,924.4</td>
+																												<td>
+															61,009.7</td>
+																												<td>
+															3,170,572.6</td>
+																												<td>
+															4,654,955.2</td>
+																												<td>
+															4,796,076.8</td>
+																									</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																					</tbody>
+																				<tbody>
+																																						<tr><td class="fst mct">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NUMBER OF TRADES</td>	
+																																																																		<td>
+															854</td>
+																												<td>
+															413</td>
+																												<td>
+															293</td>
+																												<td>
+															241</td>
+																												<td>
+															583</td>
+																												<td>
+															393</td>
+																												<td>
+															606</td>
+																									</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																					</tbody>
+																													<tbody>
+											<tr>
+												<td class="fst grp" colspan="8">FNMA</td>
+											</tr>
+										</tbody>
+																				<tbody>
+																																						<tr><td class="fst mct">
+															<a href="javascript:void(0)" class="lnk ilk cls"><i class="fa fa-caret-right"></i></a>
+															<a  class="lnk" href="#">AVERAGE PRICE</a></td>
+																																																																		<td>
+															*</td>
+																												<td>
+															0.0</td>
+																												<td>
+															0.0</td>
+																												<td>
+															*</td>
+																												<td>
+															0.0</td>
+																												<td>
+															0.0</td>
+																												<td>
+															*</td>
+																									</tr>
+																									<tr class="off"><td class="fst sct">Weighted Avg. Price</td>
+																																																					<td>
+															*</td>
+																												<td>
+															0.0</td>
+																												<td>
+															0.0</td>
+																												<td>
+															*</td>
+																												<td>
+															0.0</td>
+																												<td>
+															0.0</td>
+																												<td>
+															*</td>
+																									</tr>
+																									<tr class="off"><td class="fst sct">Avg. Price Bottom 5 Trades</td>
+																																																					<td>
+															*</td>
+																												<td>
+															0.0</td>
+																												<td>
+															0.0</td>
+																												<td>
+															*</td>
+																												<td>
+															0.0</td>
+																												<td>
+															0.0</td>
+																												<td>
+															*</td>
+																									</tr>
+																									<tr class="off"><td class="fst sct">2nd Quartile Price</td>
+																																																					<td>
+															*</td>
+																												<td>
+															0.0</td>
+																												<td>
+															0.0</td>
+																												<td>
+															*</td>
+																												<td>
+															0.0</td>
+																												<td>
+															0.0</td>
+																												<td>
+															*</td>
+																									</tr>
+																									<tr class="off"><td class="fst sct">3rd Quartile Price</td>
+																																																					<td>
+															*</td>
+																												<td>
+															0.0</td>
+																												<td>
+															0.0</td>
+																												<td>
+															*</td>
+																												<td>
+															0.0</td>
+																												<td>
+															0.0</td>
+																												<td>
+															*</td>
+																									</tr>
+																									<tr class="off"><td class="fst sct">4th Quartile Price</td>
+																																																					<td>
+															*</td>
+																												<td>
+															0.0</td>
+																												<td>
+															0.0</td>
+																												<td>
+															*</td>
+																												<td>
+															0.0</td>
+																												<td>
+															0.0</td>
+																												<td>
+															*</td>
+																									</tr>
+																									<tr class="off"><td class="fst sct">Avg. Price Top 5 Trades</td>
+																																																					<td>
+															*</td>
+																												<td>
+															0.0</td>
+																												<td>
+															0.0</td>
+																												<td>
+															*</td>
+																												<td>
+															0.0</td>
+																												<td>
+															0.0</td>
+																												<td>
+															*</td>
+																									</tr>
+																									<tr class="off"><td class="fst sct">Standard Deviation</td>
+																																																					<td>
+															*</td>
+																												<td>
+															0.0</td>
+																												<td>
+															0.0</td>
+																												<td>
+															*</td>
+																												<td>
+															0.0</td>
+																												<td>
+															0.0</td>
+																												<td>
+															*</td>
+																									</tr>
+																					</tbody>
+																				<tbody>
+																																						<tr><td class="fst mct">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VOLUME OF TRADES (000'S)</td>	
+																																																																		<td>
+															*</td>
+																												<td>
+															0.0</td>
+																												<td>
+															0.0</td>
+																												<td>
+															*</td>
+																												<td>
+															0.0</td>
+																												<td>
+															0.0</td>
+																												<td>
+															*</td>
+																									</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																					</tbody>
+																				<tbody>
+																																						<tr><td class="fst mct">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NUMBER OF TRADES</td>	
+																																																																		<td>
+															*</td>
+																												<td>
+															0</td>
+																												<td>
+															0</td>
+																												<td>
+															*</td>
+																												<td>
+															0</td>
+																												<td>
+															0</td>
+																												<td>
+															*</td>
+																									</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																					</tbody>
+																													<tbody>
+											<tr>
+												<td class="fst grp" colspan="8">FHLMC</td>
+											</tr>
+										</tbody>
+																				<tbody>
+																																						<tr><td class="fst mct">
+															<a href="javascript:void(0)" class="lnk ilk cls"><i class="fa fa-caret-right"></i></a>
+															<a  class="lnk" href="#">AVERAGE PRICE</a></td>
+																																																																		<td>
+															84.1</td>
+																												<td>
+															89.0</td>
+																												<td>
+															89.5</td>
+																												<td>
+															95.8</td>
+																												<td>
+															0.0</td>
+																												<td>
+															0.0</td>
+																												<td>
+															102.2</td>
+																									</tr>
+																									<tr class="off"><td class="fst sct">Weighted Avg. Price</td>
+																																																					<td>
+															79.3</td>
+																												<td>
+															91.3</td>
+																												<td>
+															92.6</td>
+																												<td>
+															98.5</td>
+																												<td>
+															0.0</td>
+																												<td>
+															0.0</td>
+																												<td>
+															102.3</td>
+																									</tr>
+																									<tr class="off"><td class="fst sct">Avg. Price Bottom 5 Trades</td>
+																																																					<td>
+															81.3</td>
+																												<td>
+															87.7</td>
+																												<td>
+															86.1</td>
+																												<td>
+															95.3</td>
+																												<td>
+															0.0</td>
+																												<td>
+															0.0</td>
+																												<td>
+															101.7</td>
+																									</tr>
+																									<tr class="off"><td class="fst sct">2nd Quartile Price</td>
+																																																					<td>
+															84.8</td>
+																												<td>
+															89.3</td>
+																												<td>
+															87.0</td>
+																												<td>
+															94.6</td>
+																												<td>
+															0.0</td>
+																												<td>
+															0.0</td>
+																												<td>
+															101.9</td>
+																									</tr>
+																									<tr class="off"><td class="fst sct">3rd Quartile Price</td>
+																																																					<td>
+															86.3</td>
+																												<td>
+															89.4</td>
+																												<td>
+															92.6</td>
+																												<td>
+															96.0</td>
+																												<td>
+															0.0</td>
+																												<td>
+															0.0</td>
+																												<td>
+															102.1</td>
+																									</tr>
+																									<tr class="off"><td class="fst sct">4th Quartile Price</td>
+																																																					<td>
+															86.3</td>
+																												<td>
+															91.1</td>
+																												<td>
+															92.7</td>
+																												<td>
+															97.7</td>
+																												<td>
+															0.0</td>
+																												<td>
+															0.0</td>
+																												<td>
+															103.9</td>
+																									</tr>
+																									<tr class="off"><td class="fst sct">Avg. Price Top 5 Trades</td>
+																																																					<td>
+															85.1</td>
+																												<td>
+															90.9</td>
+																												<td>
+															92.7</td>
+																												<td>
+															97.8</td>
+																												<td>
+															0.0</td>
+																												<td>
+															0.0</td>
+																												<td>
+															102.5</td>
+																									</tr>
+																									<tr class="off"><td class="fst sct">Standard Deviation</td>
+																																																					<td>
+															3.6</td>
+																												<td>
+															2.8</td>
+																												<td>
+															4.7</td>
+																												<td>
+															2.5</td>
+																												<td>
+															0.0</td>
+																												<td>
+															0.0</td>
+																												<td>
+															0.9</td>
+																									</tr>
+																					</tbody>
+																				<tbody>
+																																						<tr><td class="fst mct">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VOLUME OF TRADES (000'S)</td>	
+																																																																		<td>
+															3,017.1</td>
+																												<td>
+															4,432.1</td>
+																												<td>
+															41.2</td>
+																												<td>
+															2,660.2</td>
+																												<td>
+															0.0</td>
+																												<td>
+															0.0</td>
+																												<td>
+															1,499.4</td>
+																									</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																					</tbody>
+																				<tbody>
+																																						<tr><td class="fst mct">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NUMBER OF TRADES</td>	
+																																																																		<td>
+															16</td>
+																												<td>
+															28</td>
+																												<td>
+															24</td>
+																												<td>
+															16</td>
+																												<td>
+															0</td>
+																												<td>
+															0</td>
+																												<td>
+															7</td>
+																									</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																					</tbody>
+																													<tbody>
+											<tr>
+												<td class="fst grp" colspan="8">GNMA</td>
+											</tr>
+										</tbody>
+																				<tbody>
+																																						<tr><td class="fst mct">
+															<a href="javascript:void(0)" class="lnk ilk cls"><i class="fa fa-caret-right"></i></a>
+															<a  class="lnk" href="#">AVERAGE PRICE</a></td>
+																																																																		<td>
+															85.5</td>
+																												<td>
+															90.9</td>
+																												<td>
+															91.4</td>
+																												<td>
+															95.1</td>
+																												<td>
+															97.7</td>
+																												<td>
+															99.7</td>
+																												<td>
+															101.5</td>
+																									</tr>
+																									<tr class="off"><td class="fst sct">Weighted Avg. Price</td>
+																																																					<td>
+															85.4</td>
+																												<td>
+															91.4</td>
+																												<td>
+															93.4</td>
+																												<td>
+															95.9</td>
+																												<td>
+															98.1</td>
+																												<td>
+															99.9</td>
+																												<td>
+															101.5</td>
+																									</tr>
+																									<tr class="off"><td class="fst sct">Avg. Price Bottom 5 Trades</td>
+																																																					<td>
+															80.0</td>
+																												<td>
+															89.2</td>
+																												<td>
+															88.9</td>
+																												<td>
+															92.1</td>
+																												<td>
+															92.7</td>
+																												<td>
+															91.7</td>
+																												<td>
+															50.5</td>
+																									</tr>
+																									<tr class="off"><td class="fst sct">2nd Quartile Price</td>
+																																																					<td>
+															84.2</td>
+																												<td>
+															90.9</td>
+																												<td>
+															92.1</td>
+																												<td>
+															95.0</td>
+																												<td>
+															97.6</td>
+																												<td>
+															99.8</td>
+																												<td>
+															101.3</td>
+																									</tr>
+																									<tr class="off"><td class="fst sct">3rd Quartile Price</td>
+																																																					<td>
+															85.0</td>
+																												<td>
+															91.0</td>
+																												<td>
+															92.8</td>
+																												<td>
+															95.9</td>
+																												<td>
+															98.1</td>
+																												<td>
+															99.9</td>
+																												<td>
+															102.3</td>
+																									</tr>
+																									<tr class="off"><td class="fst sct">4th Quartile Price</td>
+																																																					<td>
+															88.2</td>
+																												<td>
+															91.6</td>
+																												<td>
+															93.4</td>
+																												<td>
+															96.2</td>
+																												<td>
+															98.2</td>
+																												<td>
+															100.1</td>
+																												<td>
+															103.4</td>
+																									</tr>
+																									<tr class="off"><td class="fst sct">Avg. Price Top 5 Trades</td>
+																																																					<td>
+															89.4</td>
+																												<td>
+															92.2</td>
+																												<td>
+															94.0</td>
+																												<td>
+															96.9</td>
+																												<td>
+															99.8</td>
+																												<td>
+															101.7</td>
+																												<td>
+															107.7</td>
+																									</tr>
+																									<tr class="off"><td class="fst sct">Standard Deviation</td>
+																																																					<td>
+															2.6</td>
+																												<td>
+															1.1</td>
+																												<td>
+															3.6</td>
+																												<td>
+															2.7</td>
+																												<td>
+															2.0</td>
+																												<td>
+															2.1</td>
+																												<td>
+															6.1</td>
+																									</tr>
+																					</tbody>
+																				<tbody>
+																																						<tr><td class="fst mct">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VOLUME OF TRADES (000'S)</td>	
+																																																																		<td>
+															706,338.6</td>
+																												<td>
+															67,791.2</td>
+																												<td>
+															82,437.5</td>
+																												<td>
+															541,028.1</td>
+																												<td>
+															279,099.2</td>
+																												<td>
+															534,227.1</td>
+																												<td>
+															4,673,576.7</td>
+																									</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																					</tbody>
+																				<tbody>
+																																						<tr><td class="fst mct">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NUMBER OF TRADES</td>	
+																																																																		<td>
+															123</td>
+																												<td>
+															32</td>
+																												<td>
+															24</td>
+																												<td>
+															39</td>
+																												<td>
+															87</td>
+																												<td>
+															117</td>
+																												<td>
+															655</td>
+																									</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																																			</tr>
+																					</tbody>
+																																								</table>
+					</div><!-- end content -->
+				</div><!-- end well -->
+						
+				<a name='Hybrid'></a>
+
+				<div class="panel panel-default panel-collapsible">
+					<div class="panel-heading">Pricing Table: Agency Pass-Thru (Specified) - Adjustable/Hybrid</div>
+					<div class="panel-body">
+
+					<table class="vtg-tb vtg-tb-style1">
+													<thead>
+								<tr class="th-type">
+									<td class="mm-th-lf">METRIC</td>
+									<td class="mm-th-cn" colspan="8">INITIAL FIXED RATE PERIOD</td>
+								</tr>
+								<tr class="th-range">
+									<td class="fst"></td>
+																	<td>ARM/SEASONED</td>
+																	<td>3/1</td>
+																	<td>5/1</td>
+																	<td>7/1</td>
+																	<td>10/1</td>
+																</tr>
+							</thead>
+																								<tbody>
+										<tr>
+											<td class="fst grp lst" colspan="9">FNMA</td>
+										</tr>
+									</tbody>
+																			<tbody>
+																																					<tr><td class="fst mct">
+															<a href="javascript:void(0)" class="lnk ilk cls"><i class="fa fa-caret-right"></i></a>
+															<a  class="lnk" href="#">AVERAGE PRICE</a></td>
+																																									
+																											<td>0.0</td>
+																										<td>0.0</td>
+																										<td>0.0</td>
+																										<td>*</td>
+																										<td>*</td>
+																							</tr>
+																								<tr class="off"><td class="fst sct">Weighted Avg. Price</td>
+																												
+																											<td>0.0</td>
+																										<td>0.0</td>
+																										<td>0.0</td>
+																										<td>*</td>
+																										<td>*</td>
+																							</tr>
+																								<tr class="off"><td class="fst sct">Avg. Price Bottom 5 Trades</td>
+																												
+																											<td>0.0</td>
+																										<td>0.0</td>
+																										<td>0.0</td>
+																										<td>*</td>
+																										<td>*</td>
+																							</tr>
+																								<tr class="off"><td class="fst sct">2nd Quartile Price</td>
+																												
+																											<td>0.0</td>
+																										<td>0.0</td>
+																										<td>0.0</td>
+																										<td>*</td>
+																										<td>*</td>
+																							</tr>
+																								<tr class="off"><td class="fst sct">3rd Quartile Price</td>
+																												
+																											<td>0.0</td>
+																										<td>0.0</td>
+																										<td>0.0</td>
+																										<td>*</td>
+																										<td>*</td>
+																							</tr>
+																								<tr class="off"><td class="fst sct">4th Quartile Price</td>
+																												
+																											<td>0.0</td>
+																										<td>0.0</td>
+																										<td>0.0</td>
+																										<td>*</td>
+																										<td>*</td>
+																							</tr>
+																								<tr class="off"><td class="fst sct">Avg. Price Top 5 Trades</td>
+																												
+																											<td>0.0</td>
+																										<td>0.0</td>
+																										<td>0.0</td>
+																										<td>*</td>
+																										<td>*</td>
+																							</tr>
+																								<tr class="off"><td class="fst sct">Standard Deviation</td>
+																												
+																											<td>0.0</td>
+																										<td>0.0</td>
+																										<td>0.0</td>
+																										<td>*</td>
+																										<td>*</td>
+																							</tr>
+																				</tbody>
+																			<tbody>
+																																					<tr><td class="fst mct">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VOLUME OF TRADES (000'S)</td>	
+																																									
+																											<td>0.0</td>
+																										<td>0.0</td>
+																										<td>0.0</td>
+																										<td>*</td>
+																										<td>*</td>
+																							</tr>
+																																	</tr>
+																																	</tr>
+																																	</tr>
+																																	</tr>
+																																	</tr>
+																																	</tr>
+																																	</tr>
+																				</tbody>
+																			<tbody>
+																																					<tr><td class="fst mct">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NUMBER OF TRADES</td>	
+																																									
+																											<td>0</td>
+																										<td>0</td>
+																										<td>0</td>
+																										<td>*</td>
+																										<td>*</td>
+																							</tr>
+																																	</tr>
+																																	</tr>
+																																	</tr>
+																																	</tr>
+																																	</tr>
+																																	</tr>
+																																	</tr>
+																				</tbody>
+																										<tbody>
+										<tr>
+											<td class="fst grp lst" colspan="9">FHLMC</td>
+										</tr>
+									</tbody>
+																			<tbody>
+																																					<tr><td class="fst mct">
+															<a href="javascript:void(0)" class="lnk ilk cls"><i class="fa fa-caret-right"></i></a>
+															<a  class="lnk" href="#">AVERAGE PRICE</a></td>
+																																									
+																											<td>0.0</td>
+																										<td>0.0</td>
+																										<td>*</td>
+																										<td>*</td>
+																										<td>0.0</td>
+																							</tr>
+																								<tr class="off"><td class="fst sct">Weighted Avg. Price</td>
+																												
+																											<td>0.0</td>
+																										<td>0.0</td>
+																										<td>*</td>
+																										<td>*</td>
+																										<td>0.0</td>
+																							</tr>
+																								<tr class="off"><td class="fst sct">Avg. Price Bottom 5 Trades</td>
+																												
+																											<td>0.0</td>
+																										<td>0.0</td>
+																										<td>*</td>
+																										<td>*</td>
+																										<td>0.0</td>
+																							</tr>
+																								<tr class="off"><td class="fst sct">2nd Quartile Price</td>
+																												
+																											<td>0.0</td>
+																										<td>0.0</td>
+																										<td>*</td>
+																										<td>*</td>
+																										<td>0.0</td>
+																							</tr>
+																								<tr class="off"><td class="fst sct">3rd Quartile Price</td>
+																												
+																											<td>0.0</td>
+																										<td>0.0</td>
+																										<td>*</td>
+																										<td>*</td>
+																										<td>0.0</td>
+																							</tr>
+																								<tr class="off"><td class="fst sct">4th Quartile Price</td>
+																												
+																											<td>0.0</td>
+																										<td>0.0</td>
+																										<td>*</td>
+																										<td>*</td>
+																										<td>0.0</td>
+																							</tr>
+																								<tr class="off"><td class="fst sct">Avg. Price Top 5 Trades</td>
+																												
+																											<td>0.0</td>
+																										<td>0.0</td>
+																										<td>*</td>
+																										<td>*</td>
+																										<td>0.0</td>
+																							</tr>
+																								<tr class="off"><td class="fst sct">Standard Deviation</td>
+																												
+																											<td>0.0</td>
+																										<td>0.0</td>
+																										<td>*</td>
+																										<td>*</td>
+																										<td>0.0</td>
+																							</tr>
+																				</tbody>
+																			<tbody>
+																																					<tr><td class="fst mct">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VOLUME OF TRADES (000'S)</td>	
+																																									
+																											<td>0.0</td>
+																										<td>0.0</td>
+																										<td>*</td>
+																										<td>*</td>
+																										<td>0.0</td>
+																							</tr>
+																																	</tr>
+																																	</tr>
+																																	</tr>
+																																	</tr>
+																																	</tr>
+																																	</tr>
+																																	</tr>
+																				</tbody>
+																			<tbody>
+																																					<tr><td class="fst mct">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NUMBER OF TRADES</td>	
+																																									
+																											<td>0</td>
+																										<td>0</td>
+																										<td>*</td>
+																										<td>*</td>
+																										<td>0</td>
+																							</tr>
+																																	</tr>
+																																	</tr>
+																																	</tr>
+																																	</tr>
+																																	</tr>
+																																	</tr>
+																																	</tr>
+																				</tbody>
+																										<tbody>
+										<tr>
+											<td class="fst grp lst" colspan="9">GNMA</td>
+										</tr>
+									</tbody>
+																			<tbody>
+																																					<tr><td class="fst mct">
+															<a href="javascript:void(0)" class="lnk ilk cls"><i class="fa fa-caret-right"></i></a>
+															<a  class="lnk" href="#">AVERAGE PRICE</a></td>
+																																									
+																											<td>0.0</td>
+																										<td>0.0</td>
+																										<td>98.4</td>
+																										<td>0.0</td>
+																										<td>0.0</td>
+																							</tr>
+																								<tr class="off"><td class="fst sct">Weighted Avg. Price</td>
+																												
+																											<td>0.0</td>
+																										<td>0.0</td>
+																										<td>98.6</td>
+																										<td>0.0</td>
+																										<td>0.0</td>
+																							</tr>
+																								<tr class="off"><td class="fst sct">Avg. Price Bottom 5 Trades</td>
+																												
+																											<td>0.0</td>
+																										<td>0.0</td>
+																										<td>97.4</td>
+																										<td>0.0</td>
+																										<td>0.0</td>
+																							</tr>
+																								<tr class="off"><td class="fst sct">2nd Quartile Price</td>
+																												
+																											<td>0.0</td>
+																										<td>0.0</td>
+																										<td>97.8</td>
+																										<td>0.0</td>
+																										<td>0.0</td>
+																							</tr>
+																								<tr class="off"><td class="fst sct">3rd Quartile Price</td>
+																												
+																											<td>0.0</td>
+																										<td>0.0</td>
+																										<td>99.1</td>
+																										<td>0.0</td>
+																										<td>0.0</td>
+																							</tr>
+																								<tr class="off"><td class="fst sct">4th Quartile Price</td>
+																												
+																											<td>0.0</td>
+																										<td>0.0</td>
+																										<td>99.9</td>
+																										<td>0.0</td>
+																										<td>0.0</td>
+																							</tr>
+																								<tr class="off"><td class="fst sct">Avg. Price Top 5 Trades</td>
+																												
+																											<td>0.0</td>
+																										<td>0.0</td>
+																										<td>99.4</td>
+																										<td>0.0</td>
+																										<td>0.0</td>
+																							</tr>
+																								<tr class="off"><td class="fst sct">Standard Deviation</td>
+																												
+																											<td>0.0</td>
+																										<td>0.0</td>
+																										<td>1.4</td>
+																										<td>0.0</td>
+																										<td>0.0</td>
+																							</tr>
+																				</tbody>
+																			<tbody>
+																																					<tr><td class="fst mct">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VOLUME OF TRADES (000'S)</td>	
+																																									
+																											<td>0.0</td>
+																										<td>0.0</td>
+																										<td>20,754.8</td>
+																										<td>0.0</td>
+																										<td>0.0</td>
+																							</tr>
+																																	</tr>
+																																	</tr>
+																																	</tr>
+																																	</tr>
+																																	</tr>
+																																	</tr>
+																																	</tr>
+																				</tbody>
+																			<tbody>
+																																					<tr><td class="fst mct">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NUMBER OF TRADES</td>	
+																																									
+																											<td>0</td>
+																										<td>0</td>
+																										<td>10</td>
+																										<td>0</td>
+																										<td>0</td>
+																							</tr>
+																																	</tr>
+																																	</tr>
+																																	</tr>
+																																	</tr>
+																																	</tr>
+																																	</tr>
+																																	</tr>
+																				</tbody>
+																																			</table>
+
+			</div>
+		</div>
+				<div class="sa-foot-note">* Indicates trade count is less than 5
+		<p/>
+		The pricing tables for Agency TBA and Agency Specified Pass-thrus do not contain certain transaction volume related items after December 14th, 2011.
+		<p/>
+		Data updated with current day's trades at approximately 8PM New York time
+		<p/>
+Effective June 1st, 2015 ABS Listor Fixed
+Offering Price and Takedown Transactions (as defined in FINRA Rule 6710), as
+well as CMO transactions in securities newly added to the system on the report
+day will be excluded from inclusion in the FINRA-ICE Data daily Securitized
+Product Report and Pricing Tables. Previously created reports will not be
+adjusted for the change.
+<br /><br />
+Should you have any questions, please call TRACE Data
+Services at 888-507-3665 or email <a href="/cdn-cgi/l/email-protection#55212734363031342134263027233c36302615333c3b27347b3a2732"><span class="__cf_email__" data-cfemail="f7838596949293968396849285819e949284b7919e998596d9988590">[email&#160;protected]</span></a>.
+		</div>
+	</div>
+	
+</div>
+
+
+    <footer class="clearfix hidden-print">
+        <div class="row">
+            <div class="col-sm-12">
+                        		    <a href="/">Home</a> |
+                                <a href="https://www.theice.com">Company</a> |
+                <a href="https://www.theice.com/market-data">Products &amp; Services</a> |
+                <a href="https://www.intercontinentalexchange.com/careers">Careers</a> |
+                <a href="https://www.theice.com/contact">Contact Us</a>
+        	</div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <a href="https://www.intercontinentalexchange.com/terms-of-use">Terms &amp; Conditions, Privacy Policy and Trademarks</a> |
+                <a data-toggle="modal" href="#modalThirdPartyDisclaimer">3rd Party Disclaimers and Attribution</a> |
+                <a href="https://www.theice.com/registered-investment-adviser-notice">Registered Investment Advisor Notice</a>
+            </div>
+        </div>
+                <div class="row">
+            <div class="col-sm-12">
+                Build 8.3.14.1.20240521&nbsp;&nbsp;&nbsp;&copy; 2024 Intercontinental Exchange, Inc. All Rights Reserved.
+            </div>
+        </div>
+
+<!-- begin modalThirdPartyDisclaimer -->
+<div class="modal fade" id="modalThirdPartyDisclaimer" tabindex="-1" role="dialog" aria-labelledby="modalThirdPartyDisclaimer" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Third Party Disclaimers and Attribution</h4>
+            </div>
+            <div class="modal-body">
+                <p>The Global Industry Classification (GICS) was developed by and is the exclusive property of Morgan Stanley Capital International Inc.
+                and Standard &amp; Poor's. GICS is service mark of MSCI and S&amp;P and has been licensed for use by Intercontinental Exchange, Inc.</p>
+                <p>Copyright 2024, S&amp;P Global Market Intelligence. Reproduction of any information, data or material, 
+                including ratings ("Content") in any form is prohibited except with the prior written permission of the relevant party. 
+                Such party, its affiliates and suppliers ("Content Providers") do not guarantee the accuracy, adequacy, completeness, 
+                timeliness or availability of any Content and are not responsible for any errors or omissions (negligent or otherwise), 
+                regardless of the cause, or for the results obtained from the use of such Content. In no event shall Content Providers 
+                be liable for any damages, costs, expenses, legal fees, or losses (including lost income or lost profit and opportunity costs) 
+                in connection with any use of the Content. A reference to a particular investment or security, a rating or any observation 
+                concerning an investment that is part of the Content is not a recommendation to buy, sell or hold such investment or security, 
+                does not address the suitability of an investment or security and should not be relied on as investment advice. 
+                Credit ratings are statements of opinions and are not statements of fact.</p>
+                <p>FINRA TRACE Data: Contains trade details as reported to FINRA's Trade Reporting and Compliance Engine (TRACE).</p>
+                <p>As of April 12, 2021 Canadian dollar-denominated securities pricing is provided by CanDeal Data and Analytics. 
+                Prior to April 12, 2021 such information was provided by SVC<sup>TM</sup>, a service of SS&amp;C Technologies, Inc. 
+                Canadian fixed income securities data may not be downloaded from the service.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Done</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- end modalThirdPartyDisclaimer -->
+
+<!-- begin modalCEPTimeRanges -->
+<div class="modal modal-wide fade" id="modalCEPTimeRanges" tabindex="-1" role="dialog" aria-labelledby="modalCEPTimeRanges" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Continuous Evaluated Pricing Schedule</h4>
+            </div>
+            <div class="modal-body">
+                <p>For each region, the evaluation system is operational during the Extended Hours.
+                In addition, the evaluation desks are staffed during the Core Hours providing further
+                 system inputs and oversight.</p>
+                <table class="table table-styled table-no-hand-on-row-hover">
+                    <thead>
+                        <tr>
+                            <th class="ctr">&nbsp;</th>
+                            <th class="ctr">Core Hours</th>
+                            <th class="ctr">Extended Hours</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                                                    <tr>
+                                <td>ASIA Corps & Sovs (AU)</td>
+                                <td class="ctr">
+                                    8:30 AM AEDT                                    – 6:00 PM AEDT                                </td>
+                                <td class="ctr">
+                                    3:00 AM AEDT                                    – 12:00 AM AEDT                                </td>
+                            </tr>
+                                                        <tr>
+                                <td>ASIA Corps & Sovs (JP)</td>
+                                <td class="ctr">
+                                    8:30 AM AEDT                                    – 6:00 PM AEDT                                </td>
+                                <td class="ctr">
+                                    3:00 AM AEDT                                    – 12:00 AM AEDT                                </td>
+                            </tr>
+                                                        <tr>
+                                <td>ASIA Corps & Sovs (NZ)</td>
+                                <td class="ctr">
+                                    8:30 AM AEDT                                    – 6:00 PM AEDT                                </td>
+                                <td class="ctr">
+                                    3:00 AM AEDT                                    – 12:00 AM AEDT                                </td>
+                            </tr>
+                                                        <tr>
+                                <td>ASIA Corps & Sovs (Other Currencies)</td>
+                                <td class="ctr">
+                                    9:00 AM HKT                                    – 6:00 PM HKT                                </td>
+                                <td class="ctr">
+                                    3:00 AM HKT                                    – 12:00 AM HKT                                </td>
+                            </tr>
+                                                        <tr>
+                                <td>ASIA Money Markets (AU)</td>
+                                <td class="ctr">
+                                    8:30 AM AEDT                                    – 6:00 PM AEDT                                </td>
+                                <td class="ctr">
+                                    3:00 AM AEDT                                    – 12:00 AM AEDT                                </td>
+                            </tr>
+                                                        <tr>
+                                <td>ASIA Money Markets (JP)</td>
+                                <td class="ctr">
+                                    8:30 AM AEDT                                    – 6:00 PM AEDT                                </td>
+                                <td class="ctr">
+                                    3:00 AM AEDT                                    – 12:00 AM AEDT                                </td>
+                            </tr>
+                                                        <tr>
+                                <td>ASIA Money Markets (NZ)</td>
+                                <td class="ctr">
+                                    8:30 AM AEDT                                    – 6:00 PM AEDT                                </td>
+                                <td class="ctr">
+                                    3:00 AM AEDT                                    – 12:00 AM AEDT                                </td>
+                            </tr>
+                                                        <tr>
+                                <td>ASIA Money Markets (Other Currencies)</td>
+                                <td class="ctr">
+                                    9:00 AM HKT                                    – 6:00 PM HKT                                </td>
+                                <td class="ctr">
+                                    3:00 AM HKT                                    – 12:00 AM HKT                                </td>
+                            </tr>
+                                                        <tr>
+                                <td>EMEA Corps & Sovs</td>
+                                <td class="ctr">
+                                    8:00 AM GMT/BST                                    – 6:00 PM GMT/BST                                </td>
+                                <td class="ctr">
+                                    3:00 AM GMT/BST                                    – 12:00 AM GMT/BST                                </td>
+                            </tr>
+                                                        <tr>
+                                <td>EMEA Money Markets</td>
+                                <td class="ctr">
+                                    8:00 AM GMT/BST                                    – 6:00 PM GMT/BST                                </td>
+                                <td class="ctr">
+                                    3:00 AM GMT/BST                                    – 12:00 AM GMT/BST                                </td>
+                            </tr>
+                                                        <tr>
+                                <td>US Agencies</td>
+                                <td class="ctr">
+                                    8:00 AM ET                                    – 5:30 PM ET                                </td>
+                                <td class="ctr">
+                                    3:00 AM ET                                    – 12:00 AM ET                                </td>
+                            </tr>
+                                                        <tr>
+                                <td>US Corporate HY</td>
+                                <td class="ctr">
+                                    8:00 AM ET                                    – 5:30 PM ET                                </td>
+                                <td class="ctr">
+                                    3:00 AM ET                                    – 12:00 AM ET                                </td>
+                            </tr>
+                                                        <tr>
+                                <td>US Corporate IG</td>
+                                <td class="ctr">
+                                    8:00 AM ET                                    – 5:30 PM ET                                </td>
+                                <td class="ctr">
+                                    3:00 AM ET                                    – 12:00 AM ET                                </td>
+                            </tr>
+                                                        <tr>
+                                <td>US MBS (TBA & Pass-through)</td>
+                                <td class="ctr">
+                                    8:00 AM ET                                    – 5:30 PM ET                                </td>
+                                <td class="ctr">
+                                    3:00 AM ET                                    – 12:00 AM ET                                </td>
+                            </tr>
+                                                        <tr>
+                                <td>US Municipals</td>
+                                <td class="ctr">
+                                    8:00 AM ET                                    – 5:30 PM ET                                </td>
+                                <td class="ctr">
+                                    3:00 AM ET                                    – 12:00 AM ET                                </td>
+                            </tr>
+                                                        <tr>
+                                <td>US Treasuries & Strips</td>
+                                <td class="ctr">
+                                    8:00 AM ET                                    – 5:30 PM ET                                </td>
+                                <td class="ctr">
+                                    3:00 AM ET                                    – 12:00 AM ET                                </td>
+                            </tr>
+                                                        <tr>
+                                <td>Leveraged Loan</td>
+                                <td class="ctr">
+                                    8:00 AM ET                                    – 5:30 PM ET                                </td>
+                                <td class="ctr">
+                                    3:00 AM ET                                    – 12:00 AM ET                                </td>
+                            </tr>
+                                                </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Done</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- end modalCEPTimeRanges -->
+
+<!-- begin modalFeedback -->
+<div class="modal fade" id="modalFeedback" tabindex="-1" role="dialog" aria-labelledby="modalFeedback" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Send Feedback to the Vantage Team</h4>
+            </div>
+            <div class="modal-body">
+                <div id="feedbackInvalid" class="alert alert-danger" style="display: none;">
+                    <i class="fa fa-exclamation-triangle"></i> The fields highlighted below must be at least 3 characters long.
+                </div>
+                <div id="feedbackInvalidCUSIP" class="alert alert-danger" style="display: none;">
+                    <i class="fa fa-exclamation-triangle"></i> Please supply an identifier below.
+                </div>
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label for="feedback_subject" class="col-sm-3 control-label">Topic</label>
+                        <div class="col-sm-9">
+                            <select id="feedbackTopic" class="form-control">
+                                <option value="thisBond" selected>Feedback about this bond *</option>
+                                <option value="otherBond">Feedback about a different bond *</option>
+                                <option value="other">Other Vantage feedback</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group thisBond">
+                        <label class="col-sm-3 control-label">Identifier</label>
+                        <div class="col-sm-9">
+                            <p class="form-control-static thisBondCUSIP"></p>
+                        </div>
+                    </div>
+                    <div class="form-group otherBond">
+                        <label for="" class="col-sm-3 control-label">Identifier</label>
+                        <div class="col-sm-9">
+                            <input id="feedback_cusip" name="feedback_cusip" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="feedback_subject" class="col-sm-3 control-label">Subject</label>
+                        <div class="col-sm-9">
+                            <input id="feedback_subject" name="feedback_subject" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="feedback_text" class="col-sm-3 control-label">Feedback</label>
+                        <div class="col-sm-9">
+                            <textarea class="form-control" rows="3" id="feedback_text" name="feedback_text"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-3 col-sm-9">
+                            <div class="checkbox">
+                                <label>
+                                    <input id="feedback_cc" name="feedback_cc" type="checkbox"> Send me a copy of this feedback
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <input id="feedback_referer_url" type="hidden" value="%2Faggregate%2Fpassthru%3Fdate%3D2024-06-14">
+                </form>
+                <div class="alert alert-warning thisBond otherBond" role="alert">
+                    * If this is an evaluation challenge, unchanged evaluation or vendor comparison, please use <a href="https://challengeportal-ppe.interactivedata.com/clients/overview" target="_blank">Challenge Portal</a> instead.
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cancel</button>
+                <button type="button" id="sendFeedback" class="btn btn-primary btn-sm">Send Feedback</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- end modalFeedback -->
+
+        <div id="faTest" style="display: inline-block; font-size: 100px;">
+            <!-- used for determining whether IE has prohibited download of icon font -->
+            <i class="fa fa-times"></i>
+        </div>
+    </footer>
+</div><!-- end page-level wrapper -->
+
+
+
+<div class="modal fade" id="vals_quicklist" tabindex="-1" role="dialog" aria-labelledby="add_portfolio_form" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Reference Data for Multiple Securities</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row form-horizontal">
+                    <div class="col-md-12">
+                        <form action="/batchreferencedata/" method="post">
+                        <div class="form-group">
+                            <span class="col-sm-3 control-label">
+                                <label for="fileDataSubform-securities_list" class="optional">
+                                    CUSIPs<br />
+                                    <span class="text-light" style="font-size: .85em;">Enter a list of up to 40 securities.</span>
+                                </label>
+                            </span>
+                            <dd class="col-sm-9 control-label">
+                                <textarea name="securities_list" id="fileDataSubform-securities_list" rows="3" cols="50" class="form-control" placeholder="We support comma separated, line separated, and tab separated CUSIPs for batch reference data requests."></textarea>
+                            </dd>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary btn-sm">Generate</a>
+            </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<div class="modal fade" id="vals_save" tabindex="-1" role="dialog" aria-labelledby="vals_save" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">Save QuickList</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Save this list so you can access it in the future from the Portfolio section.</p>
+                    <div class="row form-horizontal">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <span class="col-sm-3 control-label">
+                                    <label for="fileDataSubform-securities_list">Portfolio Title</label>
+                                </span>
+                                <dd class="col-sm-9">
+                                    <input class="input-sm form-control">
+                                </dd>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-9 col-sm-offset-3">
+                            <ul>
+                                <li>Portfolio name cannot exceed 40 characters</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">Save</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script type="text/javascript" src="/min/f=/js/angular/vantage.directives.js"></script>    
+<script type="text/javascript">
+    Obj_VTG_Config.as_of_date["hasLinkdate"] = false;
+    Obj_VTG_Config.setObjVTGConfigDates = function (curDate, timeZone){
+        if(!curDate && Obj_VTG_Config.as_of_date.prefDateVal.length > 0){
+            curDate = Obj_VTG_Config.as_of_date.prefDateVal;
+        }
+        if (!timeZone) {
+            Obj_VTG_Config.as_of_date["today"] =  moment().startOf('day').format(Obj_VTG_Config.format.date.momentUrl);
+            Obj_VTG_Config.as_of_date["carDate"] = moment(curDate).startOf('day').format(Obj_VTG_Config.format.date.momentUrl);
+            Obj_VTG_Config.as_of_date["diff"] =  (Obj_VTG_Config.as_of_date.today === Obj_VTG_Config.as_of_date.carDate) 
+                                                    ? "Today" 
+                                                    : ( moment(Obj_VTG_Config.as_of_date.carDate,Obj_VTG_Config.format.date.momentUrl).from(moment().startOf('day').format(Obj_VTG_Config.format.date.momentUrl)) === "a day ago"
+                                                        ? "Yesterday"
+                                                        : moment(Obj_VTG_Config.as_of_date.carDate,Obj_VTG_Config.format.date.momentUrl).from(moment().startOf('day').format(Obj_VTG_Config.format.date.momentUrl)) );
+        } else {
+            Obj_VTG_Config.as_of_date["today"] =  moment().tz(timeZone).startOf('day').format(Obj_VTG_Config.format.date.momentUrl);
+            Obj_VTG_Config.as_of_date["carDate"] = moment.tz(curDate, 'YYYY-MM-DD', timeZone).startOf('day').format(Obj_VTG_Config.format.date.momentUrl);
+            Obj_VTG_Config.as_of_date["diff"] =  (Obj_VTG_Config.as_of_date.today === Obj_VTG_Config.as_of_date.carDate) 
+                                                    ? "Today" 
+                                                    : ( moment(Obj_VTG_Config.as_of_date.carDate,Obj_VTG_Config.format.date.momentUrl).from(moment().tz(timeZone).startOf('day').format(Obj_VTG_Config.format.date.momentUrl)) === "a day ago"
+                                                        ? "Yesterday"
+                                                        : moment(Obj_VTG_Config.as_of_date.carDate,Obj_VTG_Config.format.date.momentUrl).from(moment().tz(timeZone).startOf('day').format(Obj_VTG_Config.format.date.momentUrl)) );
+        }
+        Obj_VTG_Config.updateDateDisplay();
+    }                  
+    Obj_VTG_Config.updateDateDisplay = function () {
+        if(Obj_VTG_Config.as_of_date.diff !== "Today"){
+            if(!Obj_VTG_Config.as_of_date["hasLinkdate"]){
+                $(".linkToday").attr("title", 'Go to the current date');
+                $(".linkToday").attr("href", $(".linkToday").attr("href")+Obj_VTG_Config.as_of_date.today);
+                Obj_VTG_Config.as_of_date["hasLinkdate"] = true;
+            }
+            $(".linkToday").show();
+        } else {
+            $(".linkToday").hide();
+        }
+        if(Obj_VTG_Config.as_of_date.diff === "Today"){
+            $(".dateInfo").html(Obj_VTG_Config.as_of_date.diff).show().css('background-color', '#5cb85c');
+        } else if(Obj_VTG_Config.as_of_date.diff === "Yesterday"){
+            $(".dateInfo").html(Obj_VTG_Config.as_of_date.diff).show().css('background-color', '#ec971f');
+        } else {
+            $(".dateInfo").html(Obj_VTG_Config.as_of_date.diff).show().css('background-color', '#FF8800');
+        }
+    }
+    Obj_VTG_Config.setObjVTGConfigDates();
+
+    // generate time zone list for preferences
+        Obj_VTG_Config.timeZoneList = [{"id":"Africa\/Abidjan","abbr":"GMT","name":"Africa\/Abidjan GMT (UTC +00:00)","offset":"+00:00"},{"id":"Africa\/Accra","abbr":"GMT","name":"Africa\/Accra GMT (UTC +00:00)","offset":"+00:00"},{"id":"Africa\/Addis_Ababa","abbr":"EAT","name":"Africa\/Addis_Ababa EAT (UTC +03:00)","offset":"+03:00"},{"id":"Africa\/Algiers","abbr":"CET","name":"Africa\/Algiers CET (UTC +01:00)","offset":"+01:00"},{"id":"Africa\/Asmara","abbr":"EAT","name":"Africa\/Asmara EAT (UTC +03:00)","offset":"+03:00"},{"id":"Africa\/Bamako","abbr":"GMT","name":"Africa\/Bamako GMT (UTC +00:00)","offset":"+00:00"},{"id":"Africa\/Bangui","abbr":"WAT","name":"Africa\/Bangui WAT (UTC +01:00)","offset":"+01:00"},{"id":"Africa\/Banjul","abbr":"GMT","name":"Africa\/Banjul GMT (UTC +00:00)","offset":"+00:00"},{"id":"Africa\/Bissau","abbr":"GMT","name":"Africa\/Bissau GMT (UTC +00:00)","offset":"+00:00"},{"id":"Africa\/Blantyre","abbr":"CAT","name":"Africa\/Blantyre CAT (UTC +02:00)","offset":"+02:00"},{"id":"Africa\/Brazzaville","abbr":"WAT","name":"Africa\/Brazzaville WAT (UTC +01:00)","offset":"+01:00"},{"id":"Africa\/Bujumbura","abbr":"CAT","name":"Africa\/Bujumbura CAT (UTC +02:00)","offset":"+02:00"},{"id":"Africa\/Cairo","abbr":"EET","name":"Africa\/Cairo EET (UTC +02:00)","offset":"+02:00"},{"id":"Africa\/Casablanca","abbr":"+01","name":"Africa\/Casablanca +01 (UTC +01:00)","offset":"+01:00"},{"id":"Africa\/Ceuta","abbr":"CEST","name":"Africa\/Ceuta CEST (UTC +02:00)","offset":"+02:00"},{"id":"Africa\/Conakry","abbr":"GMT","name":"Africa\/Conakry GMT (UTC +00:00)","offset":"+00:00"},{"id":"Africa\/Dakar","abbr":"GMT","name":"Africa\/Dakar GMT (UTC +00:00)","offset":"+00:00"},{"id":"Africa\/Dar_es_Salaam","abbr":"EAT","name":"Africa\/Dar_es_Salaam EAT (UTC +03:00)","offset":"+03:00"},{"id":"Africa\/Djibouti","abbr":"EAT","name":"Africa\/Djibouti EAT (UTC +03:00)","offset":"+03:00"},{"id":"Africa\/Douala","abbr":"WAT","name":"Africa\/Douala WAT (UTC +01:00)","offset":"+01:00"},{"id":"Africa\/El_Aaiun","abbr":"+01","name":"Africa\/El_Aaiun +01 (UTC +01:00)","offset":"+01:00"},{"id":"Africa\/Freetown","abbr":"GMT","name":"Africa\/Freetown GMT (UTC +00:00)","offset":"+00:00"},{"id":"Africa\/Gaborone","abbr":"CAT","name":"Africa\/Gaborone CAT (UTC +02:00)","offset":"+02:00"},{"id":"Africa\/Harare","abbr":"CAT","name":"Africa\/Harare CAT (UTC +02:00)","offset":"+02:00"},{"id":"Africa\/Johannesburg","abbr":"SAST","name":"Africa\/Johannesburg SAST (UTC +02:00)","offset":"+02:00"},{"id":"Africa\/Juba","abbr":"EAT","name":"Africa\/Juba EAT (UTC +03:00)","offset":"+03:00"},{"id":"Africa\/Kampala","abbr":"EAT","name":"Africa\/Kampala EAT (UTC +03:00)","offset":"+03:00"},{"id":"Africa\/Khartoum","abbr":"CAT","name":"Africa\/Khartoum CAT (UTC +02:00)","offset":"+02:00"},{"id":"Africa\/Kigali","abbr":"CAT","name":"Africa\/Kigali CAT (UTC +02:00)","offset":"+02:00"},{"id":"Africa\/Kinshasa","abbr":"WAT","name":"Africa\/Kinshasa WAT (UTC +01:00)","offset":"+01:00"},{"id":"Africa\/Lagos","abbr":"WAT","name":"Africa\/Lagos WAT (UTC +01:00)","offset":"+01:00"},{"id":"Africa\/Libreville","abbr":"WAT","name":"Africa\/Libreville WAT (UTC +01:00)","offset":"+01:00"},{"id":"Africa\/Lome","abbr":"GMT","name":"Africa\/Lome GMT (UTC +00:00)","offset":"+00:00"},{"id":"Africa\/Luanda","abbr":"WAT","name":"Africa\/Luanda WAT (UTC +01:00)","offset":"+01:00"},{"id":"Africa\/Lubumbashi","abbr":"CAT","name":"Africa\/Lubumbashi CAT (UTC +02:00)","offset":"+02:00"},{"id":"Africa\/Lusaka","abbr":"CAT","name":"Africa\/Lusaka CAT (UTC +02:00)","offset":"+02:00"},{"id":"Africa\/Malabo","abbr":"WAT","name":"Africa\/Malabo WAT (UTC +01:00)","offset":"+01:00"},{"id":"Africa\/Maputo","abbr":"CAT","name":"Africa\/Maputo CAT (UTC +02:00)","offset":"+02:00"},{"id":"Africa\/Maseru","abbr":"SAST","name":"Africa\/Maseru SAST (UTC +02:00)","offset":"+02:00"},{"id":"Africa\/Mbabane","abbr":"SAST","name":"Africa\/Mbabane SAST (UTC +02:00)","offset":"+02:00"},{"id":"Africa\/Mogadishu","abbr":"EAT","name":"Africa\/Mogadishu EAT (UTC +03:00)","offset":"+03:00"},{"id":"Africa\/Monrovia","abbr":"GMT","name":"Africa\/Monrovia GMT (UTC +00:00)","offset":"+00:00"},{"id":"Africa\/Nairobi","abbr":"EAT","name":"Africa\/Nairobi EAT (UTC +03:00)","offset":"+03:00"},{"id":"Africa\/Ndjamena","abbr":"WAT","name":"Africa\/Ndjamena WAT (UTC +01:00)","offset":"+01:00"},{"id":"Africa\/Niamey","abbr":"WAT","name":"Africa\/Niamey WAT (UTC +01:00)","offset":"+01:00"},{"id":"Africa\/Nouakchott","abbr":"GMT","name":"Africa\/Nouakchott GMT (UTC +00:00)","offset":"+00:00"},{"id":"Africa\/Ouagadougou","abbr":"GMT","name":"Africa\/Ouagadougou GMT (UTC +00:00)","offset":"+00:00"},{"id":"Africa\/Porto-Novo","abbr":"WAT","name":"Africa\/Porto-Novo WAT (UTC +01:00)","offset":"+01:00"},{"id":"Africa\/Sao_Tome","abbr":"WAT","name":"Africa\/Sao_Tome WAT (UTC +01:00)","offset":"+01:00"},{"id":"Africa\/Tripoli","abbr":"EET","name":"Africa\/Tripoli EET (UTC +02:00)","offset":"+02:00"},{"id":"Africa\/Tunis","abbr":"CET","name":"Africa\/Tunis CET (UTC +01:00)","offset":"+01:00"},{"id":"Africa\/Windhoek","abbr":"CAT","name":"Africa\/Windhoek CAT (UTC +02:00)","offset":"+02:00"},{"id":"America\/Adak","abbr":"HDT","name":"America\/Adak HDT (UTC -09:00)","offset":"-09:00"},{"id":"America\/Anchorage","abbr":"AKDT","name":"America\/Anchorage AKDT (UTC -08:00)","offset":"-08:00"},{"id":"America\/Anguilla","abbr":"AST","name":"America\/Anguilla AST (UTC -04:00)","offset":"-04:00"},{"id":"America\/Antigua","abbr":"AST","name":"America\/Antigua AST (UTC -04:00)","offset":"-04:00"},{"id":"America\/Araguaina","abbr":"-03","name":"America\/Araguaina -03 (UTC -03:00)","offset":"-03:00"},{"id":"America\/Argentina\/Buenos_Aires","abbr":"-03","name":"America\/Argentina\/Buenos_Aires -03 (UTC -03:00)","offset":"-03:00"},{"id":"America\/Argentina\/Catamarca","abbr":"-03","name":"America\/Argentina\/Catamarca -03 (UTC -03:00)","offset":"-03:00"},{"id":"America\/Argentina\/Cordoba","abbr":"-03","name":"America\/Argentina\/Cordoba -03 (UTC -03:00)","offset":"-03:00"},{"id":"America\/Argentina\/Jujuy","abbr":"-03","name":"America\/Argentina\/Jujuy -03 (UTC -03:00)","offset":"-03:00"},{"id":"America\/Argentina\/La_Rioja","abbr":"-03","name":"America\/Argentina\/La_Rioja -03 (UTC -03:00)","offset":"-03:00"},{"id":"America\/Argentina\/Mendoza","abbr":"-03","name":"America\/Argentina\/Mendoza -03 (UTC -03:00)","offset":"-03:00"},{"id":"America\/Argentina\/Rio_Gallegos","abbr":"-03","name":"America\/Argentina\/Rio_Gallegos -03 (UTC -03:00)","offset":"-03:00"},{"id":"America\/Argentina\/Salta","abbr":"-03","name":"America\/Argentina\/Salta -03 (UTC -03:00)","offset":"-03:00"},{"id":"America\/Argentina\/San_Juan","abbr":"-03","name":"America\/Argentina\/San_Juan -03 (UTC -03:00)","offset":"-03:00"},{"id":"America\/Argentina\/San_Luis","abbr":"-03","name":"America\/Argentina\/San_Luis -03 (UTC -03:00)","offset":"-03:00"},{"id":"America\/Argentina\/Tucuman","abbr":"-03","name":"America\/Argentina\/Tucuman -03 (UTC -03:00)","offset":"-03:00"},{"id":"America\/Argentina\/Ushuaia","abbr":"-03","name":"America\/Argentina\/Ushuaia -03 (UTC -03:00)","offset":"-03:00"},{"id":"America\/Aruba","abbr":"AST","name":"America\/Aruba AST (UTC -04:00)","offset":"-04:00"},{"id":"America\/Asuncion","abbr":"-04","name":"America\/Asuncion -04 (UTC -04:00)","offset":"-04:00"},{"id":"America\/Atikokan","abbr":"EST","name":"America\/Atikokan EST (UTC -05:00)","offset":"-05:00"},{"id":"America\/Bahia","abbr":"-03","name":"America\/Bahia -03 (UTC -03:00)","offset":"-03:00"},{"id":"America\/Bahia_Banderas","abbr":"CDT","name":"America\/Bahia_Banderas CDT (UTC -05:00)","offset":"-05:00"},{"id":"America\/Barbados","abbr":"AST","name":"America\/Barbados AST (UTC -04:00)","offset":"-04:00"},{"id":"America\/Belem","abbr":"-03","name":"America\/Belem -03 (UTC -03:00)","offset":"-03:00"},{"id":"America\/Belize","abbr":"CST","name":"America\/Belize CST (UTC -06:00)","offset":"-06:00"},{"id":"America\/Blanc-Sablon","abbr":"AST","name":"America\/Blanc-Sablon AST (UTC -04:00)","offset":"-04:00"},{"id":"America\/Boa_Vista","abbr":"-04","name":"America\/Boa_Vista -04 (UTC -04:00)","offset":"-04:00"},{"id":"America\/Bogota","abbr":"-05","name":"America\/Bogota -05 (UTC -05:00)","offset":"-05:00"},{"id":"America\/Boise","abbr":"MDT","name":"America\/Boise MDT (UTC -06:00)","offset":"-06:00"},{"id":"America\/Cambridge_Bay","abbr":"MDT","name":"America\/Cambridge_Bay MDT (UTC -06:00)","offset":"-06:00"},{"id":"America\/Campo_Grande","abbr":"-04","name":"America\/Campo_Grande -04 (UTC -04:00)","offset":"-04:00"},{"id":"America\/Cancun","abbr":"EST","name":"America\/Cancun EST (UTC -05:00)","offset":"-05:00"},{"id":"America\/Caracas","abbr":"-04","name":"America\/Caracas -04 (UTC -04:00)","offset":"-04:00"},{"id":"America\/Cayenne","abbr":"-03","name":"America\/Cayenne -03 (UTC -03:00)","offset":"-03:00"},{"id":"America\/Cayman","abbr":"EST","name":"America\/Cayman EST (UTC -05:00)","offset":"-05:00"},{"id":"America\/Chicago","abbr":"CDT","name":"America\/Chicago CDT (UTC -05:00)","offset":"-05:00"},{"id":"America\/Chihuahua","abbr":"MDT","name":"America\/Chihuahua MDT (UTC -06:00)","offset":"-06:00"},{"id":"America\/Costa_Rica","abbr":"CST","name":"America\/Costa_Rica CST (UTC -06:00)","offset":"-06:00"},{"id":"America\/Creston","abbr":"MST","name":"America\/Creston MST (UTC -07:00)","offset":"-07:00"},{"id":"America\/Cuiaba","abbr":"-04","name":"America\/Cuiaba -04 (UTC -04:00)","offset":"-04:00"},{"id":"America\/Curacao","abbr":"AST","name":"America\/Curacao AST (UTC -04:00)","offset":"-04:00"},{"id":"America\/Danmarkshavn","abbr":"GMT","name":"America\/Danmarkshavn GMT (UTC +00:00)","offset":"+00:00"},{"id":"America\/Dawson","abbr":"PDT","name":"America\/Dawson PDT (UTC -07:00)","offset":"-07:00"},{"id":"America\/Dawson_Creek","abbr":"MST","name":"America\/Dawson_Creek MST (UTC -07:00)","offset":"-07:00"},{"id":"America\/Denver","abbr":"MDT","name":"America\/Denver MDT (UTC -06:00)","offset":"-06:00"},{"id":"America\/Detroit","abbr":"EDT","name":"America\/Detroit EDT (UTC -04:00)","offset":"-04:00"},{"id":"America\/Dominica","abbr":"AST","name":"America\/Dominica AST (UTC -04:00)","offset":"-04:00"},{"id":"America\/Edmonton","abbr":"MDT","name":"America\/Edmonton MDT (UTC -06:00)","offset":"-06:00"},{"id":"America\/Eirunepe","abbr":"-05","name":"America\/Eirunepe -05 (UTC -05:00)","offset":"-05:00"},{"id":"America\/El_Salvador","abbr":"CST","name":"America\/El_Salvador CST (UTC -06:00)","offset":"-06:00"},{"id":"America\/Fort_Nelson","abbr":"MST","name":"America\/Fort_Nelson MST (UTC -07:00)","offset":"-07:00"},{"id":"America\/Fortaleza","abbr":"-03","name":"America\/Fortaleza -03 (UTC -03:00)","offset":"-03:00"},{"id":"America\/Glace_Bay","abbr":"ADT","name":"America\/Glace_Bay ADT (UTC -03:00)","offset":"-03:00"},{"id":"America\/Godthab","abbr":"-02","name":"America\/Godthab -02 (UTC -02:00)","offset":"-02:00"},{"id":"America\/Goose_Bay","abbr":"ADT","name":"America\/Goose_Bay ADT (UTC -03:00)","offset":"-03:00"},{"id":"America\/Grand_Turk","abbr":"EDT","name":"America\/Grand_Turk EDT (UTC -04:00)","offset":"-04:00"},{"id":"America\/Grenada","abbr":"AST","name":"America\/Grenada AST (UTC -04:00)","offset":"-04:00"},{"id":"America\/Guadeloupe","abbr":"AST","name":"America\/Guadeloupe AST (UTC -04:00)","offset":"-04:00"},{"id":"America\/Guatemala","abbr":"CST","name":"America\/Guatemala CST (UTC -06:00)","offset":"-06:00"},{"id":"America\/Guayaquil","abbr":"-05","name":"America\/Guayaquil -05 (UTC -05:00)","offset":"-05:00"},{"id":"America\/Guyana","abbr":"-04","name":"America\/Guyana -04 (UTC -04:00)","offset":"-04:00"},{"id":"America\/Halifax","abbr":"ADT","name":"America\/Halifax ADT (UTC -03:00)","offset":"-03:00"},{"id":"America\/Havana","abbr":"CDT","name":"America\/Havana CDT (UTC -04:00)","offset":"-04:00"},{"id":"America\/Hermosillo","abbr":"MST","name":"America\/Hermosillo MST (UTC -07:00)","offset":"-07:00"},{"id":"America\/Indiana\/Indianapolis","abbr":"EDT","name":"America\/Indiana\/Indianapolis EDT (UTC -04:00)","offset":"-04:00"},{"id":"America\/Indiana\/Knox","abbr":"CDT","name":"America\/Indiana\/Knox CDT (UTC -05:00)","offset":"-05:00"},{"id":"America\/Indiana\/Marengo","abbr":"EDT","name":"America\/Indiana\/Marengo EDT (UTC -04:00)","offset":"-04:00"},{"id":"America\/Indiana\/Petersburg","abbr":"EDT","name":"America\/Indiana\/Petersburg EDT (UTC -04:00)","offset":"-04:00"},{"id":"America\/Indiana\/Tell_City","abbr":"CDT","name":"America\/Indiana\/Tell_City CDT (UTC -05:00)","offset":"-05:00"},{"id":"America\/Indiana\/Vevay","abbr":"EDT","name":"America\/Indiana\/Vevay EDT (UTC -04:00)","offset":"-04:00"},{"id":"America\/Indiana\/Vincennes","abbr":"EDT","name":"America\/Indiana\/Vincennes EDT (UTC -04:00)","offset":"-04:00"},{"id":"America\/Indiana\/Winamac","abbr":"EDT","name":"America\/Indiana\/Winamac EDT (UTC -04:00)","offset":"-04:00"},{"id":"America\/Inuvik","abbr":"MDT","name":"America\/Inuvik MDT (UTC -06:00)","offset":"-06:00"},{"id":"America\/Iqaluit","abbr":"EDT","name":"America\/Iqaluit EDT (UTC -04:00)","offset":"-04:00"},{"id":"America\/Jamaica","abbr":"EST","name":"America\/Jamaica EST (UTC -05:00)","offset":"-05:00"},{"id":"America\/Juneau","abbr":"AKDT","name":"America\/Juneau AKDT (UTC -08:00)","offset":"-08:00"},{"id":"America\/Kentucky\/Louisville","abbr":"EDT","name":"America\/Kentucky\/Louisville EDT (UTC -04:00)","offset":"-04:00"},{"id":"America\/Kentucky\/Monticello","abbr":"EDT","name":"America\/Kentucky\/Monticello EDT (UTC -04:00)","offset":"-04:00"},{"id":"America\/Kralendijk","abbr":"AST","name":"America\/Kralendijk AST (UTC -04:00)","offset":"-04:00"},{"id":"America\/La_Paz","abbr":"-04","name":"America\/La_Paz -04 (UTC -04:00)","offset":"-04:00"},{"id":"America\/Lima","abbr":"-05","name":"America\/Lima -05 (UTC -05:00)","offset":"-05:00"},{"id":"America\/Los_Angeles","abbr":"PDT","name":"America\/Los_Angeles PDT (UTC -07:00)","offset":"-07:00"},{"id":"America\/Lower_Princes","abbr":"AST","name":"America\/Lower_Princes AST (UTC -04:00)","offset":"-04:00"},{"id":"America\/Maceio","abbr":"-03","name":"America\/Maceio -03 (UTC -03:00)","offset":"-03:00"},{"id":"America\/Managua","abbr":"CST","name":"America\/Managua CST (UTC -06:00)","offset":"-06:00"},{"id":"America\/Manaus","abbr":"-04","name":"America\/Manaus -04 (UTC -04:00)","offset":"-04:00"},{"id":"America\/Marigot","abbr":"AST","name":"America\/Marigot AST (UTC -04:00)","offset":"-04:00"},{"id":"America\/Martinique","abbr":"AST","name":"America\/Martinique AST (UTC -04:00)","offset":"-04:00"},{"id":"America\/Matamoros","abbr":"CDT","name":"America\/Matamoros CDT (UTC -05:00)","offset":"-05:00"},{"id":"America\/Mazatlan","abbr":"MDT","name":"America\/Mazatlan MDT (UTC -06:00)","offset":"-06:00"},{"id":"America\/Menominee","abbr":"CDT","name":"America\/Menominee CDT (UTC -05:00)","offset":"-05:00"},{"id":"America\/Merida","abbr":"CDT","name":"America\/Merida CDT (UTC -05:00)","offset":"-05:00"},{"id":"America\/Metlakatla","abbr":"AKDT","name":"America\/Metlakatla AKDT (UTC -08:00)","offset":"-08:00"},{"id":"America\/Mexico_City","abbr":"CDT","name":"America\/Mexico_City CDT (UTC -05:00)","offset":"-05:00"},{"id":"America\/Miquelon","abbr":"-02","name":"America\/Miquelon -02 (UTC -02:00)","offset":"-02:00"},{"id":"America\/Moncton","abbr":"ADT","name":"America\/Moncton ADT (UTC -03:00)","offset":"-03:00"},{"id":"America\/Monterrey","abbr":"CDT","name":"America\/Monterrey CDT (UTC -05:00)","offset":"-05:00"},{"id":"America\/Montevideo","abbr":"-03","name":"America\/Montevideo -03 (UTC -03:00)","offset":"-03:00"},{"id":"America\/Montserrat","abbr":"AST","name":"America\/Montserrat AST (UTC -04:00)","offset":"-04:00"},{"id":"America\/Nassau","abbr":"EDT","name":"America\/Nassau EDT (UTC -04:00)","offset":"-04:00"},{"id":"America\/New_York","abbr":"EDT","name":"America\/New_York EDT (UTC -04:00)","offset":"-04:00"},{"id":"America\/Nipigon","abbr":"EDT","name":"America\/Nipigon EDT (UTC -04:00)","offset":"-04:00"},{"id":"America\/Nome","abbr":"AKDT","name":"America\/Nome AKDT (UTC -08:00)","offset":"-08:00"},{"id":"America\/Noronha","abbr":"-02","name":"America\/Noronha -02 (UTC -02:00)","offset":"-02:00"},{"id":"America\/North_Dakota\/Beulah","abbr":"CDT","name":"America\/North_Dakota\/Beulah CDT (UTC -05:00)","offset":"-05:00"},{"id":"America\/North_Dakota\/Center","abbr":"CDT","name":"America\/North_Dakota\/Center CDT (UTC -05:00)","offset":"-05:00"},{"id":"America\/North_Dakota\/New_Salem","abbr":"CDT","name":"America\/North_Dakota\/New_Salem CDT (UTC -05:00)","offset":"-05:00"},{"id":"America\/Ojinaga","abbr":"MDT","name":"America\/Ojinaga MDT (UTC -06:00)","offset":"-06:00"},{"id":"America\/Panama","abbr":"EST","name":"America\/Panama EST (UTC -05:00)","offset":"-05:00"},{"id":"America\/Pangnirtung","abbr":"EDT","name":"America\/Pangnirtung EDT (UTC -04:00)","offset":"-04:00"},{"id":"America\/Paramaribo","abbr":"-03","name":"America\/Paramaribo -03 (UTC -03:00)","offset":"-03:00"},{"id":"America\/Phoenix","abbr":"MST","name":"America\/Phoenix MST (UTC -07:00)","offset":"-07:00"},{"id":"America\/Port-au-Prince","abbr":"EDT","name":"America\/Port-au-Prince EDT (UTC -04:00)","offset":"-04:00"},{"id":"America\/Port_of_Spain","abbr":"AST","name":"America\/Port_of_Spain AST (UTC -04:00)","offset":"-04:00"},{"id":"America\/Porto_Velho","abbr":"-04","name":"America\/Porto_Velho -04 (UTC -04:00)","offset":"-04:00"},{"id":"America\/Puerto_Rico","abbr":"AST","name":"America\/Puerto_Rico AST (UTC -04:00)","offset":"-04:00"},{"id":"America\/Punta_Arenas","abbr":"-03","name":"America\/Punta_Arenas -03 (UTC -03:00)","offset":"-03:00"},{"id":"America\/Rainy_River","abbr":"CDT","name":"America\/Rainy_River CDT (UTC -05:00)","offset":"-05:00"},{"id":"America\/Rankin_Inlet","abbr":"CDT","name":"America\/Rankin_Inlet CDT (UTC -05:00)","offset":"-05:00"},{"id":"America\/Recife","abbr":"-03","name":"America\/Recife -03 (UTC -03:00)","offset":"-03:00"},{"id":"America\/Regina","abbr":"CST","name":"America\/Regina CST (UTC -06:00)","offset":"-06:00"},{"id":"America\/Resolute","abbr":"CDT","name":"America\/Resolute CDT (UTC -05:00)","offset":"-05:00"},{"id":"America\/Rio_Branco","abbr":"-05","name":"America\/Rio_Branco -05 (UTC -05:00)","offset":"-05:00"},{"id":"America\/Santarem","abbr":"-03","name":"America\/Santarem -03 (UTC -03:00)","offset":"-03:00"},{"id":"America\/Santiago","abbr":"-04","name":"America\/Santiago -04 (UTC -04:00)","offset":"-04:00"},{"id":"America\/Santo_Domingo","abbr":"AST","name":"America\/Santo_Domingo AST (UTC -04:00)","offset":"-04:00"},{"id":"America\/Sao_Paulo","abbr":"-03","name":"America\/Sao_Paulo -03 (UTC -03:00)","offset":"-03:00"},{"id":"America\/Scoresbysund","abbr":"+00","name":"America\/Scoresbysund +00 (UTC +00:00)","offset":"+00:00"},{"id":"America\/Sitka","abbr":"AKDT","name":"America\/Sitka AKDT (UTC -08:00)","offset":"-08:00"},{"id":"America\/St_Barthelemy","abbr":"AST","name":"America\/St_Barthelemy AST (UTC -04:00)","offset":"-04:00"},{"id":"America\/St_Johns","abbr":"NDT","name":"America\/St_Johns NDT (UTC -03:30)","offset":"-03:30"},{"id":"America\/St_Kitts","abbr":"AST","name":"America\/St_Kitts AST (UTC -04:00)","offset":"-04:00"},{"id":"America\/St_Lucia","abbr":"AST","name":"America\/St_Lucia AST (UTC -04:00)","offset":"-04:00"},{"id":"America\/St_Thomas","abbr":"AST","name":"America\/St_Thomas AST (UTC -04:00)","offset":"-04:00"},{"id":"America\/St_Vincent","abbr":"AST","name":"America\/St_Vincent AST (UTC -04:00)","offset":"-04:00"},{"id":"America\/Swift_Current","abbr":"CST","name":"America\/Swift_Current CST (UTC -06:00)","offset":"-06:00"},{"id":"America\/Tegucigalpa","abbr":"CST","name":"America\/Tegucigalpa CST (UTC -06:00)","offset":"-06:00"},{"id":"America\/Thule","abbr":"ADT","name":"America\/Thule ADT (UTC -03:00)","offset":"-03:00"},{"id":"America\/Thunder_Bay","abbr":"EDT","name":"America\/Thunder_Bay EDT (UTC -04:00)","offset":"-04:00"},{"id":"America\/Tijuana","abbr":"PDT","name":"America\/Tijuana PDT (UTC -07:00)","offset":"-07:00"},{"id":"America\/Toronto","abbr":"EDT","name":"America\/Toronto EDT (UTC -04:00)","offset":"-04:00"},{"id":"America\/Tortola","abbr":"AST","name":"America\/Tortola AST (UTC -04:00)","offset":"-04:00"},{"id":"America\/Vancouver","abbr":"PDT","name":"America\/Vancouver PDT (UTC -07:00)","offset":"-07:00"},{"id":"America\/Whitehorse","abbr":"PDT","name":"America\/Whitehorse PDT (UTC -07:00)","offset":"-07:00"},{"id":"America\/Winnipeg","abbr":"CDT","name":"America\/Winnipeg CDT (UTC -05:00)","offset":"-05:00"},{"id":"America\/Yakutat","abbr":"AKDT","name":"America\/Yakutat AKDT (UTC -08:00)","offset":"-08:00"},{"id":"America\/Yellowknife","abbr":"MDT","name":"America\/Yellowknife MDT (UTC -06:00)","offset":"-06:00"},{"id":"Antarctica\/Casey","abbr":"+08","name":"Antarctica\/Casey +08 (UTC +08:00)","offset":"+08:00"},{"id":"Antarctica\/Davis","abbr":"+07","name":"Antarctica\/Davis +07 (UTC +07:00)","offset":"+07:00"},{"id":"Antarctica\/DumontDUrville","abbr":"+10","name":"Antarctica\/DumontDUrville +10 (UTC +10:00)","offset":"+10:00"},{"id":"Antarctica\/Macquarie","abbr":"+11","name":"Antarctica\/Macquarie +11 (UTC +11:00)","offset":"+11:00"},{"id":"Antarctica\/Mawson","abbr":"+05","name":"Antarctica\/Mawson +05 (UTC +05:00)","offset":"+05:00"},{"id":"Antarctica\/McMurdo","abbr":"NZST","name":"Antarctica\/McMurdo NZST (UTC +12:00)","offset":"+12:00"},{"id":"Antarctica\/Palmer","abbr":"-03","name":"Antarctica\/Palmer -03 (UTC -03:00)","offset":"-03:00"},{"id":"Antarctica\/Rothera","abbr":"-03","name":"Antarctica\/Rothera -03 (UTC -03:00)","offset":"-03:00"},{"id":"Antarctica\/Syowa","abbr":"+03","name":"Antarctica\/Syowa +03 (UTC +03:00)","offset":"+03:00"},{"id":"Antarctica\/Troll","abbr":"+02","name":"Antarctica\/Troll +02 (UTC +02:00)","offset":"+02:00"},{"id":"Antarctica\/Vostok","abbr":"+06","name":"Antarctica\/Vostok +06 (UTC +06:00)","offset":"+06:00"},{"id":"Arctic\/Longyearbyen","abbr":"CEST","name":"Arctic\/Longyearbyen CEST (UTC +02:00)","offset":"+02:00"},{"id":"Asia\/Aden","abbr":"+03","name":"Asia\/Aden +03 (UTC +03:00)","offset":"+03:00"},{"id":"Asia\/Almaty","abbr":"+06","name":"Asia\/Almaty +06 (UTC +06:00)","offset":"+06:00"},{"id":"Asia\/Amman","abbr":"EEST","name":"Asia\/Amman EEST (UTC +03:00)","offset":"+03:00"},{"id":"Asia\/Anadyr","abbr":"+12","name":"Asia\/Anadyr +12 (UTC +12:00)","offset":"+12:00"},{"id":"Asia\/Aqtau","abbr":"+05","name":"Asia\/Aqtau +05 (UTC +05:00)","offset":"+05:00"},{"id":"Asia\/Aqtobe","abbr":"+05","name":"Asia\/Aqtobe +05 (UTC +05:00)","offset":"+05:00"},{"id":"Asia\/Ashgabat","abbr":"+05","name":"Asia\/Ashgabat +05 (UTC +05:00)","offset":"+05:00"},{"id":"Asia\/Atyrau","abbr":"+05","name":"Asia\/Atyrau +05 (UTC +05:00)","offset":"+05:00"},{"id":"Asia\/Baghdad","abbr":"+03","name":"Asia\/Baghdad +03 (UTC +03:00)","offset":"+03:00"},{"id":"Asia\/Bahrain","abbr":"+03","name":"Asia\/Bahrain +03 (UTC +03:00)","offset":"+03:00"},{"id":"Asia\/Baku","abbr":"+04","name":"Asia\/Baku +04 (UTC +04:00)","offset":"+04:00"},{"id":"Asia\/Bangkok","abbr":"+07","name":"Asia\/Bangkok +07 (UTC +07:00)","offset":"+07:00"},{"id":"Asia\/Barnaul","abbr":"+07","name":"Asia\/Barnaul +07 (UTC +07:00)","offset":"+07:00"},{"id":"Asia\/Beirut","abbr":"EEST","name":"Asia\/Beirut EEST (UTC +03:00)","offset":"+03:00"},{"id":"Asia\/Bishkek","abbr":"+06","name":"Asia\/Bishkek +06 (UTC +06:00)","offset":"+06:00"},{"id":"Asia\/Brunei","abbr":"+08","name":"Asia\/Brunei +08 (UTC +08:00)","offset":"+08:00"},{"id":"Asia\/Chita","abbr":"+09","name":"Asia\/Chita +09 (UTC +09:00)","offset":"+09:00"},{"id":"Asia\/Choibalsan","abbr":"+08","name":"Asia\/Choibalsan +08 (UTC +08:00)","offset":"+08:00"},{"id":"Asia\/Colombo","abbr":"+0530","name":"Asia\/Colombo +0530 (UTC +05:30)","offset":"+05:30"},{"id":"Asia\/Damascus","abbr":"EEST","name":"Asia\/Damascus EEST (UTC +03:00)","offset":"+03:00"},{"id":"Asia\/Dhaka","abbr":"+06","name":"Asia\/Dhaka +06 (UTC +06:00)","offset":"+06:00"},{"id":"Asia\/Dili","abbr":"+09","name":"Asia\/Dili +09 (UTC +09:00)","offset":"+09:00"},{"id":"Asia\/Dubai","abbr":"+04","name":"Asia\/Dubai +04 (UTC +04:00)","offset":"+04:00"},{"id":"Asia\/Dushanbe","abbr":"+05","name":"Asia\/Dushanbe +05 (UTC +05:00)","offset":"+05:00"},{"id":"Asia\/Famagusta","abbr":"EEST","name":"Asia\/Famagusta EEST (UTC +03:00)","offset":"+03:00"},{"id":"Asia\/Gaza","abbr":"EEST","name":"Asia\/Gaza EEST (UTC +03:00)","offset":"+03:00"},{"id":"Asia\/Hebron","abbr":"EEST","name":"Asia\/Hebron EEST (UTC +03:00)","offset":"+03:00"},{"id":"Asia\/Ho_Chi_Minh","abbr":"+07","name":"Asia\/Ho_Chi_Minh +07 (UTC +07:00)","offset":"+07:00"},{"id":"Asia\/Hong_Kong","abbr":"HKT","name":"Asia\/Hong_Kong HKT (UTC +08:00)","offset":"+08:00"},{"id":"Asia\/Hovd","abbr":"+07","name":"Asia\/Hovd +07 (UTC +07:00)","offset":"+07:00"},{"id":"Asia\/Irkutsk","abbr":"+08","name":"Asia\/Irkutsk +08 (UTC +08:00)","offset":"+08:00"},{"id":"Asia\/Jakarta","abbr":"WIB","name":"Asia\/Jakarta WIB (UTC +07:00)","offset":"+07:00"},{"id":"Asia\/Jayapura","abbr":"WIT","name":"Asia\/Jayapura WIT (UTC +09:00)","offset":"+09:00"},{"id":"Asia\/Jerusalem","abbr":"IDT","name":"Asia\/Jerusalem IDT (UTC +03:00)","offset":"+03:00"},{"id":"Asia\/Kabul","abbr":"+0430","name":"Asia\/Kabul +0430 (UTC +04:30)","offset":"+04:30"},{"id":"Asia\/Kamchatka","abbr":"+12","name":"Asia\/Kamchatka +12 (UTC +12:00)","offset":"+12:00"},{"id":"Asia\/Karachi","abbr":"PKT","name":"Asia\/Karachi PKT (UTC +05:00)","offset":"+05:00"},{"id":"Asia\/Kathmandu","abbr":"+0545","name":"Asia\/Kathmandu +0545 (UTC +05:45)","offset":"+05:45"},{"id":"Asia\/Khandyga","abbr":"+09","name":"Asia\/Khandyga +09 (UTC +09:00)","offset":"+09:00"},{"id":"Asia\/Kolkata","abbr":"IST","name":"Asia\/Kolkata IST (UTC +05:30)","offset":"+05:30"},{"id":"Asia\/Krasnoyarsk","abbr":"+07","name":"Asia\/Krasnoyarsk +07 (UTC +07:00)","offset":"+07:00"},{"id":"Asia\/Kuala_Lumpur","abbr":"+08","name":"Asia\/Kuala_Lumpur +08 (UTC +08:00)","offset":"+08:00"},{"id":"Asia\/Kuching","abbr":"+08","name":"Asia\/Kuching +08 (UTC +08:00)","offset":"+08:00"},{"id":"Asia\/Kuwait","abbr":"+03","name":"Asia\/Kuwait +03 (UTC +03:00)","offset":"+03:00"},{"id":"Asia\/Macau","abbr":"CST","name":"Asia\/Macau CST (UTC +08:00)","offset":"+08:00"},{"id":"Asia\/Magadan","abbr":"+11","name":"Asia\/Magadan +11 (UTC +11:00)","offset":"+11:00"},{"id":"Asia\/Makassar","abbr":"WITA","name":"Asia\/Makassar WITA (UTC +08:00)","offset":"+08:00"},{"id":"Asia\/Manila","abbr":"PST","name":"Asia\/Manila PST (UTC +08:00)","offset":"+08:00"},{"id":"Asia\/Muscat","abbr":"+04","name":"Asia\/Muscat +04 (UTC +04:00)","offset":"+04:00"},{"id":"Asia\/Nicosia","abbr":"EEST","name":"Asia\/Nicosia EEST (UTC +03:00)","offset":"+03:00"},{"id":"Asia\/Novokuznetsk","abbr":"+07","name":"Asia\/Novokuznetsk +07 (UTC +07:00)","offset":"+07:00"},{"id":"Asia\/Novosibirsk","abbr":"+07","name":"Asia\/Novosibirsk +07 (UTC +07:00)","offset":"+07:00"},{"id":"Asia\/Omsk","abbr":"+06","name":"Asia\/Omsk +06 (UTC +06:00)","offset":"+06:00"},{"id":"Asia\/Oral","abbr":"+05","name":"Asia\/Oral +05 (UTC +05:00)","offset":"+05:00"},{"id":"Asia\/Phnom_Penh","abbr":"+07","name":"Asia\/Phnom_Penh +07 (UTC +07:00)","offset":"+07:00"},{"id":"Asia\/Pontianak","abbr":"WIB","name":"Asia\/Pontianak WIB (UTC +07:00)","offset":"+07:00"},{"id":"Asia\/Pyongyang","abbr":"KST","name":"Asia\/Pyongyang KST (UTC +09:00)","offset":"+09:00"},{"id":"Asia\/Qatar","abbr":"+03","name":"Asia\/Qatar +03 (UTC +03:00)","offset":"+03:00"},{"id":"Asia\/Qyzylorda","abbr":"+06","name":"Asia\/Qyzylorda +06 (UTC +06:00)","offset":"+06:00"},{"id":"Asia\/Riyadh","abbr":"+03","name":"Asia\/Riyadh +03 (UTC +03:00)","offset":"+03:00"},{"id":"Asia\/Sakhalin","abbr":"+11","name":"Asia\/Sakhalin +11 (UTC +11:00)","offset":"+11:00"},{"id":"Asia\/Samarkand","abbr":"+05","name":"Asia\/Samarkand +05 (UTC +05:00)","offset":"+05:00"},{"id":"Asia\/Seoul","abbr":"KST","name":"Asia\/Seoul KST (UTC +09:00)","offset":"+09:00"},{"id":"Asia\/Shanghai","abbr":"CST","name":"Asia\/Shanghai CST (UTC +08:00)","offset":"+08:00"},{"id":"Asia\/Singapore","abbr":"+08","name":"Asia\/Singapore +08 (UTC +08:00)","offset":"+08:00"},{"id":"Asia\/Srednekolymsk","abbr":"+11","name":"Asia\/Srednekolymsk +11 (UTC +11:00)","offset":"+11:00"},{"id":"Asia\/Taipei","abbr":"CST","name":"Asia\/Taipei CST (UTC +08:00)","offset":"+08:00"},{"id":"Asia\/Tashkent","abbr":"+05","name":"Asia\/Tashkent +05 (UTC +05:00)","offset":"+05:00"},{"id":"Asia\/Tbilisi","abbr":"+04","name":"Asia\/Tbilisi +04 (UTC +04:00)","offset":"+04:00"},{"id":"Asia\/Tehran","abbr":"+0430","name":"Asia\/Tehran +0430 (UTC +04:30)","offset":"+04:30"},{"id":"Asia\/Thimphu","abbr":"+06","name":"Asia\/Thimphu +06 (UTC +06:00)","offset":"+06:00"},{"id":"Asia\/Tokyo","abbr":"JST","name":"Asia\/Tokyo JST (UTC +09:00)","offset":"+09:00"},{"id":"Asia\/Tomsk","abbr":"+07","name":"Asia\/Tomsk +07 (UTC +07:00)","offset":"+07:00"},{"id":"Asia\/Ulaanbaatar","abbr":"+08","name":"Asia\/Ulaanbaatar +08 (UTC +08:00)","offset":"+08:00"},{"id":"Asia\/Urumqi","abbr":"+06","name":"Asia\/Urumqi +06 (UTC +06:00)","offset":"+06:00"},{"id":"Asia\/Ust-Nera","abbr":"+10","name":"Asia\/Ust-Nera +10 (UTC +10:00)","offset":"+10:00"},{"id":"Asia\/Vientiane","abbr":"+07","name":"Asia\/Vientiane +07 (UTC +07:00)","offset":"+07:00"},{"id":"Asia\/Vladivostok","abbr":"+10","name":"Asia\/Vladivostok +10 (UTC +10:00)","offset":"+10:00"},{"id":"Asia\/Yakutsk","abbr":"+09","name":"Asia\/Yakutsk +09 (UTC +09:00)","offset":"+09:00"},{"id":"Asia\/Yangon","abbr":"+0630","name":"Asia\/Yangon +0630 (UTC +06:30)","offset":"+06:30"},{"id":"Asia\/Yekaterinburg","abbr":"+05","name":"Asia\/Yekaterinburg +05 (UTC +05:00)","offset":"+05:00"},{"id":"Asia\/Yerevan","abbr":"+04","name":"Asia\/Yerevan +04 (UTC +04:00)","offset":"+04:00"},{"id":"Atlantic\/Azores","abbr":"+00","name":"Atlantic\/Azores +00 (UTC +00:00)","offset":"+00:00"},{"id":"Atlantic\/Bermuda","abbr":"ADT","name":"Atlantic\/Bermuda ADT (UTC -03:00)","offset":"-03:00"},{"id":"Atlantic\/Canary","abbr":"WEST","name":"Atlantic\/Canary WEST (UTC +01:00)","offset":"+01:00"},{"id":"Atlantic\/Cape_Verde","abbr":"-01","name":"Atlantic\/Cape_Verde -01 (UTC -01:00)","offset":"-01:00"},{"id":"Atlantic\/Faroe","abbr":"WEST","name":"Atlantic\/Faroe WEST (UTC +01:00)","offset":"+01:00"},{"id":"Atlantic\/Madeira","abbr":"WEST","name":"Atlantic\/Madeira WEST (UTC +01:00)","offset":"+01:00"},{"id":"Atlantic\/Reykjavik","abbr":"GMT","name":"Atlantic\/Reykjavik GMT (UTC +00:00)","offset":"+00:00"},{"id":"Atlantic\/South_Georgia","abbr":"-02","name":"Atlantic\/South_Georgia -02 (UTC -02:00)","offset":"-02:00"},{"id":"Atlantic\/St_Helena","abbr":"GMT","name":"Atlantic\/St_Helena GMT (UTC +00:00)","offset":"+00:00"},{"id":"Atlantic\/Stanley","abbr":"-03","name":"Atlantic\/Stanley -03 (UTC -03:00)","offset":"-03:00"},{"id":"Australia\/Adelaide","abbr":"ACST","name":"Australia\/Adelaide ACST (UTC +09:30)","offset":"+09:30"},{"id":"Australia\/Brisbane","abbr":"AEST","name":"Australia\/Brisbane AEST (UTC +10:00)","offset":"+10:00"},{"id":"Australia\/Broken_Hill","abbr":"ACST","name":"Australia\/Broken_Hill ACST (UTC +09:30)","offset":"+09:30"},{"id":"Australia\/Currie","abbr":"AEST","name":"Australia\/Currie AEST (UTC +10:00)","offset":"+10:00"},{"id":"Australia\/Darwin","abbr":"ACST","name":"Australia\/Darwin ACST (UTC +09:30)","offset":"+09:30"},{"id":"Australia\/Eucla","abbr":"+0845","name":"Australia\/Eucla +0845 (UTC +08:45)","offset":"+08:45"},{"id":"Australia\/Hobart","abbr":"AEST","name":"Australia\/Hobart AEST (UTC +10:00)","offset":"+10:00"},{"id":"Australia\/Lindeman","abbr":"AEST","name":"Australia\/Lindeman AEST (UTC +10:00)","offset":"+10:00"},{"id":"Australia\/Lord_Howe","abbr":"+1030","name":"Australia\/Lord_Howe +1030 (UTC +10:30)","offset":"+10:30"},{"id":"Australia\/Melbourne","abbr":"AEST","name":"Australia\/Melbourne AEST (UTC +10:00)","offset":"+10:00"},{"id":"Australia\/Perth","abbr":"AWST","name":"Australia\/Perth AWST (UTC +08:00)","offset":"+08:00"},{"id":"Australia\/Sydney","abbr":"AEST","name":"Australia\/Sydney AEST (UTC +10:00)","offset":"+10:00"},{"id":"Europe\/Amsterdam","abbr":"CEST","name":"Europe\/Amsterdam CEST (UTC +02:00)","offset":"+02:00"},{"id":"Europe\/Andorra","abbr":"CEST","name":"Europe\/Andorra CEST (UTC +02:00)","offset":"+02:00"},{"id":"Europe\/Astrakhan","abbr":"+04","name":"Europe\/Astrakhan +04 (UTC +04:00)","offset":"+04:00"},{"id":"Europe\/Athens","abbr":"EEST","name":"Europe\/Athens EEST (UTC +03:00)","offset":"+03:00"},{"id":"Europe\/Belgrade","abbr":"CEST","name":"Europe\/Belgrade CEST (UTC +02:00)","offset":"+02:00"},{"id":"Europe\/Berlin","abbr":"CEST","name":"Europe\/Berlin CEST (UTC +02:00)","offset":"+02:00"},{"id":"Europe\/Bratislava","abbr":"CEST","name":"Europe\/Bratislava CEST (UTC +02:00)","offset":"+02:00"},{"id":"Europe\/Brussels","abbr":"CEST","name":"Europe\/Brussels CEST (UTC +02:00)","offset":"+02:00"},{"id":"Europe\/Bucharest","abbr":"EEST","name":"Europe\/Bucharest EEST (UTC +03:00)","offset":"+03:00"},{"id":"Europe\/Budapest","abbr":"CEST","name":"Europe\/Budapest CEST (UTC +02:00)","offset":"+02:00"},{"id":"Europe\/Busingen","abbr":"CEST","name":"Europe\/Busingen CEST (UTC +02:00)","offset":"+02:00"},{"id":"Europe\/Chisinau","abbr":"EEST","name":"Europe\/Chisinau EEST (UTC +03:00)","offset":"+03:00"},{"id":"Europe\/Copenhagen","abbr":"CEST","name":"Europe\/Copenhagen CEST (UTC +02:00)","offset":"+02:00"},{"id":"Europe\/Dublin","abbr":"IST","name":"Europe\/Dublin IST (UTC +01:00)","offset":"+01:00"},{"id":"Europe\/Gibraltar","abbr":"CEST","name":"Europe\/Gibraltar CEST (UTC +02:00)","offset":"+02:00"},{"id":"Europe\/Guernsey","abbr":"BST","name":"Europe\/Guernsey BST (UTC +01:00)","offset":"+01:00"},{"id":"Europe\/Helsinki","abbr":"EEST","name":"Europe\/Helsinki EEST (UTC +03:00)","offset":"+03:00"},{"id":"Europe\/Isle_of_Man","abbr":"BST","name":"Europe\/Isle_of_Man BST (UTC +01:00)","offset":"+01:00"},{"id":"Europe\/Istanbul","abbr":"+03","name":"Europe\/Istanbul +03 (UTC +03:00)","offset":"+03:00"},{"id":"Europe\/Jersey","abbr":"BST","name":"Europe\/Jersey BST (UTC +01:00)","offset":"+01:00"},{"id":"Europe\/Kaliningrad","abbr":"EET","name":"Europe\/Kaliningrad EET (UTC +02:00)","offset":"+02:00"},{"id":"Europe\/Kiev","abbr":"EEST","name":"Europe\/Kiev EEST (UTC +03:00)","offset":"+03:00"},{"id":"Europe\/Kirov","abbr":"+03","name":"Europe\/Kirov +03 (UTC +03:00)","offset":"+03:00"},{"id":"Europe\/Lisbon","abbr":"WEST","name":"Europe\/Lisbon WEST (UTC +01:00)","offset":"+01:00"},{"id":"Europe\/Ljubljana","abbr":"CEST","name":"Europe\/Ljubljana CEST (UTC +02:00)","offset":"+02:00"},{"id":"Europe\/London","abbr":"BST","name":"Europe\/London BST (UTC +01:00)","offset":"+01:00"},{"id":"Europe\/Luxembourg","abbr":"CEST","name":"Europe\/Luxembourg CEST (UTC +02:00)","offset":"+02:00"},{"id":"Europe\/Madrid","abbr":"CEST","name":"Europe\/Madrid CEST (UTC +02:00)","offset":"+02:00"},{"id":"Europe\/Malta","abbr":"CEST","name":"Europe\/Malta CEST (UTC +02:00)","offset":"+02:00"},{"id":"Europe\/Mariehamn","abbr":"EEST","name":"Europe\/Mariehamn EEST (UTC +03:00)","offset":"+03:00"},{"id":"Europe\/Minsk","abbr":"+03","name":"Europe\/Minsk +03 (UTC +03:00)","offset":"+03:00"},{"id":"Europe\/Monaco","abbr":"CEST","name":"Europe\/Monaco CEST (UTC +02:00)","offset":"+02:00"},{"id":"Europe\/Moscow","abbr":"MSK","name":"Europe\/Moscow MSK (UTC +03:00)","offset":"+03:00"},{"id":"Europe\/Oslo","abbr":"CEST","name":"Europe\/Oslo CEST (UTC +02:00)","offset":"+02:00"},{"id":"Europe\/Paris","abbr":"CEST","name":"Europe\/Paris CEST (UTC +02:00)","offset":"+02:00"},{"id":"Europe\/Podgorica","abbr":"CEST","name":"Europe\/Podgorica CEST (UTC +02:00)","offset":"+02:00"},{"id":"Europe\/Prague","abbr":"CEST","name":"Europe\/Prague CEST (UTC +02:00)","offset":"+02:00"},{"id":"Europe\/Riga","abbr":"EEST","name":"Europe\/Riga EEST (UTC +03:00)","offset":"+03:00"},{"id":"Europe\/Rome","abbr":"CEST","name":"Europe\/Rome CEST (UTC +02:00)","offset":"+02:00"},{"id":"Europe\/Samara","abbr":"+04","name":"Europe\/Samara +04 (UTC +04:00)","offset":"+04:00"},{"id":"Europe\/San_Marino","abbr":"CEST","name":"Europe\/San_Marino CEST (UTC +02:00)","offset":"+02:00"},{"id":"Europe\/Sarajevo","abbr":"CEST","name":"Europe\/Sarajevo CEST (UTC +02:00)","offset":"+02:00"},{"id":"Europe\/Saratov","abbr":"+04","name":"Europe\/Saratov +04 (UTC +04:00)","offset":"+04:00"},{"id":"Europe\/Simferopol","abbr":"MSK","name":"Europe\/Simferopol MSK (UTC +03:00)","offset":"+03:00"},{"id":"Europe\/Skopje","abbr":"CEST","name":"Europe\/Skopje CEST (UTC +02:00)","offset":"+02:00"},{"id":"Europe\/Sofia","abbr":"EEST","name":"Europe\/Sofia EEST (UTC +03:00)","offset":"+03:00"},{"id":"Europe\/Stockholm","abbr":"CEST","name":"Europe\/Stockholm CEST (UTC +02:00)","offset":"+02:00"},{"id":"Europe\/Tallinn","abbr":"EEST","name":"Europe\/Tallinn EEST (UTC +03:00)","offset":"+03:00"},{"id":"Europe\/Tirane","abbr":"CEST","name":"Europe\/Tirane CEST (UTC +02:00)","offset":"+02:00"},{"id":"Europe\/Ulyanovsk","abbr":"+04","name":"Europe\/Ulyanovsk +04 (UTC +04:00)","offset":"+04:00"},{"id":"Europe\/Uzhgorod","abbr":"EEST","name":"Europe\/Uzhgorod EEST (UTC +03:00)","offset":"+03:00"},{"id":"Europe\/Vaduz","abbr":"CEST","name":"Europe\/Vaduz CEST (UTC +02:00)","offset":"+02:00"},{"id":"Europe\/Vatican","abbr":"CEST","name":"Europe\/Vatican CEST (UTC +02:00)","offset":"+02:00"},{"id":"Europe\/Vienna","abbr":"CEST","name":"Europe\/Vienna CEST (UTC +02:00)","offset":"+02:00"},{"id":"Europe\/Vilnius","abbr":"EEST","name":"Europe\/Vilnius EEST (UTC +03:00)","offset":"+03:00"},{"id":"Europe\/Volgograd","abbr":"+04","name":"Europe\/Volgograd +04 (UTC +04:00)","offset":"+04:00"},{"id":"Europe\/Warsaw","abbr":"CEST","name":"Europe\/Warsaw CEST (UTC +02:00)","offset":"+02:00"},{"id":"Europe\/Zagreb","abbr":"CEST","name":"Europe\/Zagreb CEST (UTC +02:00)","offset":"+02:00"},{"id":"Europe\/Zaporozhye","abbr":"EEST","name":"Europe\/Zaporozhye EEST (UTC +03:00)","offset":"+03:00"},{"id":"Europe\/Zurich","abbr":"CEST","name":"Europe\/Zurich CEST (UTC +02:00)","offset":"+02:00"},{"id":"Indian\/Antananarivo","abbr":"EAT","name":"Indian\/Antananarivo EAT (UTC +03:00)","offset":"+03:00"},{"id":"Indian\/Chagos","abbr":"+06","name":"Indian\/Chagos +06 (UTC +06:00)","offset":"+06:00"},{"id":"Indian\/Christmas","abbr":"+07","name":"Indian\/Christmas +07 (UTC +07:00)","offset":"+07:00"},{"id":"Indian\/Cocos","abbr":"+0630","name":"Indian\/Cocos +0630 (UTC +06:30)","offset":"+06:30"},{"id":"Indian\/Comoro","abbr":"EAT","name":"Indian\/Comoro EAT (UTC +03:00)","offset":"+03:00"},{"id":"Indian\/Kerguelen","abbr":"+05","name":"Indian\/Kerguelen +05 (UTC +05:00)","offset":"+05:00"},{"id":"Indian\/Mahe","abbr":"+04","name":"Indian\/Mahe +04 (UTC +04:00)","offset":"+04:00"},{"id":"Indian\/Maldives","abbr":"+05","name":"Indian\/Maldives +05 (UTC +05:00)","offset":"+05:00"},{"id":"Indian\/Mauritius","abbr":"+04","name":"Indian\/Mauritius +04 (UTC +04:00)","offset":"+04:00"},{"id":"Indian\/Mayotte","abbr":"EAT","name":"Indian\/Mayotte EAT (UTC +03:00)","offset":"+03:00"},{"id":"Indian\/Reunion","abbr":"+04","name":"Indian\/Reunion +04 (UTC +04:00)","offset":"+04:00"},{"id":"Pacific\/Apia","abbr":"+13","name":"Pacific\/Apia +13 (UTC +13:00)","offset":"+13:00"},{"id":"Pacific\/Auckland","abbr":"NZST","name":"Pacific\/Auckland NZST (UTC +12:00)","offset":"+12:00"},{"id":"Pacific\/Bougainville","abbr":"+11","name":"Pacific\/Bougainville +11 (UTC +11:00)","offset":"+11:00"},{"id":"Pacific\/Chatham","abbr":"+1245","name":"Pacific\/Chatham +1245 (UTC +12:45)","offset":"+12:45"},{"id":"Pacific\/Chuuk","abbr":"+10","name":"Pacific\/Chuuk +10 (UTC +10:00)","offset":"+10:00"},{"id":"Pacific\/Easter","abbr":"-06","name":"Pacific\/Easter -06 (UTC -06:00)","offset":"-06:00"},{"id":"Pacific\/Efate","abbr":"+11","name":"Pacific\/Efate +11 (UTC +11:00)","offset":"+11:00"},{"id":"Pacific\/Enderbury","abbr":"+13","name":"Pacific\/Enderbury +13 (UTC +13:00)","offset":"+13:00"},{"id":"Pacific\/Fakaofo","abbr":"+13","name":"Pacific\/Fakaofo +13 (UTC +13:00)","offset":"+13:00"},{"id":"Pacific\/Fiji","abbr":"+12","name":"Pacific\/Fiji +12 (UTC +12:00)","offset":"+12:00"},{"id":"Pacific\/Funafuti","abbr":"+12","name":"Pacific\/Funafuti +12 (UTC +12:00)","offset":"+12:00"},{"id":"Pacific\/Galapagos","abbr":"-06","name":"Pacific\/Galapagos -06 (UTC -06:00)","offset":"-06:00"},{"id":"Pacific\/Gambier","abbr":"-09","name":"Pacific\/Gambier -09 (UTC -09:00)","offset":"-09:00"},{"id":"Pacific\/Guadalcanal","abbr":"+11","name":"Pacific\/Guadalcanal +11 (UTC +11:00)","offset":"+11:00"},{"id":"Pacific\/Guam","abbr":"ChST","name":"Pacific\/Guam ChST (UTC +10:00)","offset":"+10:00"},{"id":"Pacific\/Honolulu","abbr":"HST","name":"Pacific\/Honolulu HST (UTC -10:00)","offset":"-10:00"},{"id":"Pacific\/Kiritimati","abbr":"+14","name":"Pacific\/Kiritimati +14 (UTC +14:00)","offset":"+14:00"},{"id":"Pacific\/Kosrae","abbr":"+11","name":"Pacific\/Kosrae +11 (UTC +11:00)","offset":"+11:00"},{"id":"Pacific\/Kwajalein","abbr":"+12","name":"Pacific\/Kwajalein +12 (UTC +12:00)","offset":"+12:00"},{"id":"Pacific\/Majuro","abbr":"+12","name":"Pacific\/Majuro +12 (UTC +12:00)","offset":"+12:00"},{"id":"Pacific\/Marquesas","abbr":"-0930","name":"Pacific\/Marquesas -0930 (UTC -10:30)","offset":"-10:30"},{"id":"Pacific\/Midway","abbr":"SST","name":"Pacific\/Midway SST (UTC -11:00)","offset":"-11:00"},{"id":"Pacific\/Nauru","abbr":"+12","name":"Pacific\/Nauru +12 (UTC +12:00)","offset":"+12:00"},{"id":"Pacific\/Niue","abbr":"-11","name":"Pacific\/Niue -11 (UTC -11:00)","offset":"-11:00"},{"id":"Pacific\/Norfolk","abbr":"+11","name":"Pacific\/Norfolk +11 (UTC +11:00)","offset":"+11:00"},{"id":"Pacific\/Noumea","abbr":"+11","name":"Pacific\/Noumea +11 (UTC +11:00)","offset":"+11:00"},{"id":"Pacific\/Pago_Pago","abbr":"SST","name":"Pacific\/Pago_Pago SST (UTC -11:00)","offset":"-11:00"},{"id":"Pacific\/Palau","abbr":"+09","name":"Pacific\/Palau +09 (UTC +09:00)","offset":"+09:00"},{"id":"Pacific\/Pitcairn","abbr":"-08","name":"Pacific\/Pitcairn -08 (UTC -08:00)","offset":"-08:00"},{"id":"Pacific\/Pohnpei","abbr":"+11","name":"Pacific\/Pohnpei +11 (UTC +11:00)","offset":"+11:00"},{"id":"Pacific\/Port_Moresby","abbr":"+10","name":"Pacific\/Port_Moresby +10 (UTC +10:00)","offset":"+10:00"},{"id":"Pacific\/Rarotonga","abbr":"-10","name":"Pacific\/Rarotonga -10 (UTC -10:00)","offset":"-10:00"},{"id":"Pacific\/Saipan","abbr":"ChST","name":"Pacific\/Saipan ChST (UTC +10:00)","offset":"+10:00"},{"id":"Pacific\/Tahiti","abbr":"-10","name":"Pacific\/Tahiti -10 (UTC -10:00)","offset":"-10:00"},{"id":"Pacific\/Tarawa","abbr":"+12","name":"Pacific\/Tarawa +12 (UTC +12:00)","offset":"+12:00"},{"id":"Pacific\/Tongatapu","abbr":"+13","name":"Pacific\/Tongatapu +13 (UTC +13:00)","offset":"+13:00"},{"id":"Pacific\/Wake","abbr":"+12","name":"Pacific\/Wake +12 (UTC +12:00)","offset":"+12:00"},{"id":"Pacific\/Wallis","abbr":"+12","name":"Pacific\/Wallis +12 (UTC +12:00)","offset":"+12:00"},{"id":"UTC","abbr":"UTC","name":"UTC UTC (UTC +00:00)","offset":"+00:00"}];
+    if(typeof(Obj_Vtg_Realtime) != 'undefined') {
+                Obj_Vtg_Realtime.chartFilters = {"size":{"lt25k":{"label":"< 25k","min":0,"max":"24999"},"25kTo100k":{"label":"25k-100k","min":25000,"max":"99999"},"100kTo250k":{"label":"100k-250k","min":100000,"max":"249999"},"250kTo500k":{"label":"250k-500k","min":250000,"max":"499999"},"500kTo1mm":{"label":"500k-1mm","min":500000,"max":"999999"},"1mmTo5mm":{"label":"1mm-5mm","min":1000000,"max":"4999999"},"gt5mm":{"min":5000000,"label":"5mm+"}},"side":{"B":{"label":"Dealer Buy","color":{"normal":{"inner":"#00B22D","outer":"#009726"},"cancel":{"inner":"#0f5621","outer":"#FF0000"},"correct":{"inner":"#0f5621","outer":"#0f5621"}}},"S":{"label":"Dealer Sell","color":{"normal":{"inner":"#FF0000","outer":"#D90000"},"cancel":{"inner":"#750f0f","outer":"#FF0000"},"correct":{"inner":"#750f0f","outer":"#750f0f"}}},"D":{"label":"Interdealer Trade","color":{"normal":{"inner":"#FFFF00","outer":"#D9D900"},"cancel":{"inner":"#75750f","outer":"#FF0000"},"correct":{"inner":"#75750f","outer":"#75750f"}}},"U":{"label":"Side Undisclosed Trade","color":{"normal":{"inner":"#aaa","outer":"white"}}}}};
+    }
+</script></body>
+</html>
